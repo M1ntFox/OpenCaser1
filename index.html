@@ -27,7 +27,6 @@
       padding-bottom: 70px;
     }
 
-    /* Хедер */
     .header {
       display: flex;
       justify-content: space-between;
@@ -50,13 +49,11 @@
       gap: 8px;
     }
 
-    /* Вкладки */
     .tab-content { display: none; padding: 20px; flex-direction: column; align-items: center; }
     .tab-content.active { display: flex; }
 
     .page-title { margin-top: 10px; margin-bottom: 25px; font-size: 16px; font-weight: 600; text-align: center; }
 
-    /* Выбор кейсов */
     .cases-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -69,7 +66,7 @@
       background: var(--card-bg);
       border: 1px solid #2a2b3d;
       border-radius: 16px;
-      padding: 20px 15px;
+      padding: 15px 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -82,15 +79,14 @@
     .case-card:hover { border-color: var(--accent-color); }
     
     .case-img {
-      width: 120px;
-      height: 120px;
+      width: 110px;
+      height: 110px;
       object-fit: contain;
     }
     
     .case-title { font-weight: bold; font-size: 15px; }
     .case-price { color: var(--green-color); font-weight: bold; font-size: 13px; }
 
-    /* Рулетка */
     .roulette-screen {
       width: 100%;
       max-width: 400px;
@@ -219,7 +215,6 @@
       display: none;
     }
 
-    /* Инвентарь */
     .inventory-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -230,7 +225,6 @@
 
     .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
 
-    /* Модальное окно */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -283,7 +277,6 @@
     .btn-modal-sell { background: var(--green-color); color: #fff; }
     .btn-modal-close { background: #3a3d54; color: #fff; }
 
-    /* Нижнее меню */
     .nav-bar {
       position: fixed;
       bottom: 0; left: 0; right: 0;
@@ -313,7 +306,6 @@
 </head>
 <body>
 
-  <!-- Хедер -->
   <div class="header">
     <div class="user-info" id="username">Игрок</div>
     <div class="balance-badge">
@@ -321,12 +313,10 @@
     </div>
   </div>
 
-  <!-- Вкладка 1: Выбор кейсов -->
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
     
     <div class="cases-grid">
-      <!-- Настроенный кейс с текстурой -->
       <div class="case-card" onclick="openSpinScreen('Стандартный', 100)">
         <img src="/images/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Стандартный</div>
@@ -335,7 +325,6 @@
     </div>
   </div>
 
-  <!-- Экран рулетки -->
   <div id="tab-spin" class="tab-content">
     <div class="roulette-screen">
       <button class="btn-back" id="backBtn" onclick="backToShop()">
@@ -356,7 +345,6 @@
     </div>
   </div>
 
-  <!-- Вкладка 2: Инвентарь -->
   <div id="tab-inventory" class="tab-content">
     <div class="page-title">Мой инвентарь</div>
     <div class="inventory-grid" id="inventory-list">
@@ -364,7 +352,6 @@
     </div>
   </div>
 
-  <!-- Модальное окно просмотра/продажи -->
   <div class="modal-overlay" id="itemModal">
     <div class="modal-card">
       <h3 id="modalTitle">Предмет</h3>
@@ -378,7 +365,6 @@
     </div>
   </div>
 
-  <!-- Нижнее меню -->
   <div class="nav-bar">
     <div class="nav-item active" id="nav-shop" onclick="switchTab('shop')">
       <span style="font-size: 20px;">📦</span>
@@ -398,7 +384,63 @@
       document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
     }
 
-    // Список 9 предметов для Стандартного кейса
+    // Web Audio API Звуковой движок
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    let audioCtx = null;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new AudioCtx();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    // Звук щелчка (тиканье)
+    function playClickSound() {
+      if (!audioCtx) return;
+      
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(400, audioCtx.currentTime + 0.03);
+
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.03);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.03);
+    }
+
+    // Победный звук при остановке
+    function playWinSound() {
+      if (!audioCtx) return;
+
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // Аккорд C-E-G-C
+      notes.forEach((freq, idx) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime + idx * 0.08);
+
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime + idx * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + idx * 0.08 + 0.3);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(audioCtx.currentTime + idx * 0.08);
+        osc.stop(audioCtx.currentTime + idx * 0.08 + 0.3);
+      });
+    }
+
     const casePool = [
       { name: 'Деревянный меч', rarity: 'common', price: 15, icon: '/images/item1.png' },
       { name: 'Кожаный щит', rarity: 'common', price: 25, icon: '/images/item2.png' },
@@ -417,6 +459,7 @@
     let isSpinning = false;
     let lastWonItemIndex = null;
     let selectedInventoryIndex = null;
+    let spinSoundInterval = null;
 
     const tape = document.getElementById('tape');
     const openBtn = document.getElementById('openBtn');
@@ -497,7 +540,44 @@
       document.getElementById('nav-inventory').classList.toggle('is-disabled', locked);
     }
 
+    // Симуляция звука вращения с замедлением
+    function startSpinAudio() {
+      let currentPos = 0;
+      let lastCardIndex = 0;
+      const startTime = Date.now();
+      const duration = 5000;
+
+      spinSoundInterval = setInterval(() => {
+        const elapsed = Date.now() - startTime;
+        if (elapsed >= duration) {
+          clearInterval(spinSoundInterval);
+          return;
+        }
+
+        // Вычисляем текущее смещение ленты по кубической кривой (Cubic-Bezier)
+        const progress = elapsed / duration;
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        const cardWidth = 100; // Ширина 90px + margin 10px
+        
+        const estPosition = easeOut * 4250;
+        const currentCardIndex = Math.floor(estPosition / cardWidth);
+
+        if (currentCardIndex > lastCardIndex) {
+          playClickSound();
+          
+          // Вибрация в Telegram при прохождении карточки (Haptic Feedback)
+          if (tg.HapticFeedback) {
+            tg.HapticFeedback.impactOccurred('light');
+          }
+          
+          lastCardIndex = currentCardIndex;
+        }
+      }, 20);
+    }
+
     function openCase() {
+      initAudio(); // Инициализация звука по клику
+
       if (balance < currentCase.price) {
         resultText.innerText = 'Недостаточно средств!';
         return;
@@ -510,21 +590,16 @@
       balance -= currentCase.price;
       updateBalanceUI();
 
-      // Шансы выпадения предметов из 9 имеющихся
       const rand = Math.random() * 100;
       let winningItem;
 
       if (rand < 55) {
-        // Common (предметы 0, 1, 2)
         winningItem = casePool[Math.floor(Math.random() * 3)];
       } else if (rand < 85) {
-        // Rare (предметы 3, 4, 5)
         winningItem = casePool[3 + Math.floor(Math.random() * 3)];
       } else if (rand < 97) {
-        // Epic (предметы 6, 7)
         winningItem = casePool[6 + Math.floor(Math.random() * 2)];
       } else {
-        // Legendary (предмет 8)
         winningItem = casePool[8];
       }
 
@@ -538,10 +613,19 @@
       tape.style.transition = 'transform 5s cubic-bezier(0.15, 0.9, 0.15, 1)';
       tape.style.transform = `translateX(-${targetPosition}px)`;
 
+      // Запускаем звуки тиканья и виброотклик
+      startSpinAudio();
+
       setTimeout(() => {
         const wonItem = { ...winningItem, id: Date.now() };
         inventory.unshift(wonItem);
         lastWonItemIndex = 0;
+
+        playWinSound(); // Праздничный аккорд
+
+        if (tg.HapticFeedback) {
+          tg.HapticFeedback.notificationOccurred('success');
+        }
 
         resultText.innerText = `Выбито: ${wonItem.name}!`;
         quickSellBtn.innerText = `Продать за ${wonItem.price} 💰`;
