@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Case Opener</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <!-- Supabase JS Client SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root {
       --bg-color: #12131c;
@@ -377,14 +380,24 @@
   </div>
 
   <script>
+    // --- Конфигурация Supabase ---
+    // Вставьте ваш Project URL из раздела Data API
+    const SUPABASE_URL = 'https://jbywybwncekaoawzqury.supabase.co';
+    // Ключ Publishable API Key (sb_publishable_...)
+    const SUPABASE_KEY = 'sb_publishable_WAL11ngzElD9llZZKnpJ9g_cWMgT1kz';
+    
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
     const tg = window.Telegram.WebApp;
     tg.expand();
+
+    let userId = tg.initDataUnsafe?.user?.id || 'guest_user';
 
     if (tg.initDataUnsafe?.user?.first_name) {
       document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
     }
 
-    // Web Audio API Звуковой движок
+    // --- Web Audio API ---
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
 
@@ -397,10 +410,8 @@
       }
     }
 
-    // Звук щелчка (тиканье)
     function playClickSound() {
       if (!audioCtx) return;
-      
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
 
@@ -418,11 +429,9 @@
       osc.stop(audioCtx.currentTime + 0.03);
     }
 
-    // Победный звук при остановке
     function playWinSound() {
       if (!audioCtx) return;
-
-      const notes = [523.25, 659.25, 783.99, 1046.50]; // Аккорд C-E-G-C
+      const notes = [523.25, 659.25, 783.99, 1046.50];
       notes.forEach((freq, idx) => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
@@ -467,6 +476,45 @@
     const resultText = document.getElementById('result-text');
     const balanceSpan = document.getElementById('balance');
     const quickSellBtn = document.getElementById('quickSellBtn');
+
+    // --- Взаимодействие с Supabase ---
+    async function loadUserData() {
+      try {
+        const { data, error } = await supabaseClient
+          .from('users')
+          .select('balance, inventory')
+          .eq('user_id', userId)
+          .single();
+
+        if (error && error.code !== 'PGRST116') {
+          console.error('Ошибка загрузки данных:', error);
+          return;
+        }
+
+        if (data) {
+          balance = data.balance ?? 1000;
+          inventory = data.inventory ?? [];
+        } else {
+          // Инициализация пользователя при первом входе
+          await supabaseClient
+            .from('users')
+            .insert([{ user_id: userId, balance: balance, inventory: inventory }]);
+        }
+        updateBalanceUI();
+      } catch (e) {
+        console.error('Ошибка Supabase:', e);
+      }
+    }
+
+    async function syncUserData() {
+      try {
+        await supabaseClient
+          .from('users')
+          .upsert({ user_id: userId, balance: balance, inventory: inventory });
+      } catch (e) {
+        console.error('Ошибка сохранения данных в Supabase:', e);
+      }
+    }
 
     function updateBalanceUI() {
       balanceSpan.innerText = balance;
@@ -540,9 +588,7 @@
       document.getElementById('nav-inventory').classList.toggle('is-disabled', locked);
     }
 
-    // Симуляция звука вращения с замедлением
     function startSpinAudio() {
-      let currentPos = 0;
       let lastCardIndex = 0;
       const startTime = Date.now();
       const duration = 5000;
@@ -554,29 +600,25 @@
           return;
         }
 
-        // Вычисляем текущее смещение ленты по кубической кривой (Cubic-Bezier)
         const progress = elapsed / duration;
         const easeOut = 1 - Math.pow(1 - progress, 3);
-        const cardWidth = 100; // Ширина 90px + margin 10px
+        const cardWidth = 100;
         
         const estPosition = easeOut * 4250;
         const currentCardIndex = Math.floor(estPosition / cardWidth);
 
         if (currentCardIndex > lastCardIndex) {
           playClickSound();
-          
-          // Вибрация в Telegram при прохождении карточки (Haptic Feedback)
           if (tg.HapticFeedback) {
             tg.HapticFeedback.impactOccurred('light');
           }
-          
           lastCardIndex = currentCardIndex;
         }
       }, 20);
     }
 
     function openCase() {
-      initAudio(); // Инициализация звука по клику
+      initAudio();
 
       if (balance < currentCase.price) {
         resultText.innerText = 'Недостаточно средств!';
@@ -589,6 +631,7 @@
       
       balance -= currentCase.price;
       updateBalanceUI();
+      syncUserData();
 
       const rand = Math.random() * 100;
       let winningItem;
@@ -613,7 +656,6 @@
       tape.style.transition = 'transform 5s cubic-bezier(0.15, 0.9, 0.15, 1)';
       tape.style.transform = `translateX(-${targetPosition}px)`;
 
-      // Запускаем звуки тиканья и виброотклик
       startSpinAudio();
 
       setTimeout(() => {
@@ -621,7 +663,8 @@
         inventory.unshift(wonItem);
         lastWonItemIndex = 0;
 
-        playWinSound(); // Праздничный аккорд
+        playWinSound();
+        syncUserData();
 
         if (tg.HapticFeedback) {
           tg.HapticFeedback.notificationOccurred('success');
@@ -640,6 +683,7 @@
         const soldItem = inventory.shift();
         balance += soldItem.price;
         updateBalanceUI();
+        syncUserData();
 
         resultText.innerText = `Продано за +${soldItem.price} 💰`;
         quickSellBtn.style.display = 'none';
@@ -690,12 +734,14 @@
         inventory.splice(selectedInventoryIndex, 1);
         
         updateBalanceUI();
+        syncUserData();
         closeModal();
         renderInventory();
       }
     }
 
-    updateBalanceUI();
+    // Старт загрузки данных при инициализации
+    loadUserData();
   </script>
 </body>
 </html>
