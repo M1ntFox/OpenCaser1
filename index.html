@@ -528,6 +528,12 @@
 
     // --- Работа с базами данных (Загрузка и Сохранение) ---
     async function loadUserData() {
+      // Игнорируем загрузку из БД для гостей
+      if (userId === 'guest_user') {
+        updateBalanceUI();
+        return;
+      }
+
       try {
         let { data, error } = await supabaseClient
           .from('users')
@@ -559,6 +565,9 @@
     }
 
     async function syncUserData() {
+      // Игнорируем гостей — не сохраняем их в общую базу
+      if (userId === 'guest_user') return;
+
       try {
         const { error } = await supabaseClient
           .from('users')
