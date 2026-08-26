@@ -1204,25 +1204,28 @@
 
       inventory.splice(upgradeMyIndex, 1);
 
-      // 1. Сначала определяем, победа или поражение по шансу
+      // 1. Определяем результат по шансу
       const roll = Math.random() * 100;
       const success = roll <= window.currentUpgradeChance;
 
-      // 2. Вычисляем размер синего сектора в градусах
+      // 2. Размер синего сектора в градусах
       const chance = window.currentUpgradeChance;
       const successDeg = (chance / 100) * 360;
 
-      // 3. Рассчитываем точный угол остановки стрелки в зависимости от результата
+      // 3. Точный расчет с учетом острия стрелки (0°) и отступов от границ
       let randomStop;
       if (success) {
-        // Останавливаемся внутри синего сектора (с небольшим отступом от границ)
-        randomStop = Math.random() * (successDeg - 10) + 5;
+        if (successDeg > 15) {
+          randomStop = Math.random() * (successDeg - 14) + 7;
+        } else {
+          randomStop = successDeg / 2;
+        }
       } else {
-        // Останавливаемся в серой зоне (от конца синего сектора до 360 градусов)
-        randomStop = Math.random() * (360 - successDeg - 10) + successDeg + 5;
+        const grayZoneSize = 360 - successDeg;
+        randomStop = Math.random() * (grayZoneSize - 14) + successDeg + 7;
       }
 
-      // Добавляем полные обороты для анимации
+      // Добавляем полные обороты для плавности анимации (минимум 5 оборотов)
       const extraSpins = 5 * 360;
       const totalRotation = extraSpins + randomStop;
 
