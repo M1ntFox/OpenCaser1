@@ -52,7 +52,7 @@
       gap: 8px;
     }
 
-    .tab-content { display: none; padding: 20px; flex-direction: column; align-items: center; width: 100%; }
+    .tab-content { display: none; padding: 20px; flex-direction: column; align-items: center; }
     .tab-content.active { display: flex; }
 
     .page-title { margin-top: 10px; margin-bottom: 25px; font-size: 16px; font-weight: 600; text-align: center; }
@@ -228,53 +228,6 @@
 
     .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
 
-    /* Стили для таблицы лидеров */
-    .leaderboard-list {
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .leader-item {
-      background: var(--card-bg);
-      border: 1px solid #2a2b3d;
-      border-radius: 12px;
-      padding: 12px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .leader-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .leader-rank {
-      font-weight: bold;
-      font-size: 16px;
-      color: var(--text-muted);
-      width: 24px;
-    }
-
-    .leader-rank-1 { color: #f6e05e; }
-    .leader-rank-2 { color: #cbd5e0; }
-    .leader-rank-3 { color: #ed8936; }
-
-    .leader-name {
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .leader-balance {
-      color: var(--green-color);
-      font-weight: bold;
-      font-size: 14px;
-    }
-
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -347,7 +300,7 @@
       color: var(--text-muted);
       font-size: 12px;
       cursor: pointer;
-      width: 33.33%;
+      width: 50%;
     }
 
     .nav-item.active { color: var(--accent-color); font-weight: bold; }
@@ -368,7 +321,7 @@
     
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('Стандартный', 100)">
-        <img src="https://raw.githubusercontent.com/username/repo/main/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Стандартный</div>
         <div class="case-price">100 💰</div>
       </div>
@@ -402,14 +355,6 @@
     </div>
   </div>
 
-  <!-- Вкладка таблицы лидеров -->
-  <div id="tab-leaderboard" class="tab-content">
-    <div class="page-title">Топ игроков</div>
-    <div class="leaderboard-list" id="leaderboard-list">
-      <div class="inventory-empty">Загрузка рейтинга...</div>
-    </div>
-  </div>
-
   <div class="modal-overlay" id="itemModal">
     <div class="modal-card">
       <h3 id="modalTitle">Предмет</h3>
@@ -432,10 +377,6 @@
       <span style="font-size: 20px;">🎒</span>
       <span>Инвентарь</span>
     </div>
-    <div class="nav-item" id="nav-leaderboard" onclick="switchTab('leaderboard')">
-      <span style="font-size: 20px;">🏆</span>
-      <span>Топ</span>
-    </div>
   </div>
 
   <script>
@@ -453,9 +394,8 @@
       ? String(tg.initDataUnsafe.user.id) 
       : 'guest_user';
 
-    let userFirstName = tg.initDataUnsafe?.user?.first_name || 'Игрок';
     if (tg.initDataUnsafe?.user?.first_name) {
-      document.getElementById('username').innerText = userFirstName;
+      document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
     }
 
     // --- Web Audio API ---
@@ -500,15 +440,15 @@
     }
 
     const casePool = [
-      { name: 'Плюшевый Пепе', rarity: 'epic', price: 260, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item1.png' },
-      { name: 'Злой Глаз', rarity: 'common', price: 25, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item2.png' },
-      { name: 'Снуп Дог', rarity: 'legendary', price: 800, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item3.png' },
-      { name: 'Медведь Террорист', rarity: 'epic', price: 200, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item4.png' },
-      { name: 'Шляпа Честера', rarity: 'rare', price: 110, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item5.png' },
-      { name: 'Шляпа', rarity: 'rare', price: 140, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item6.png' },
-      { name: 'Золотые Часы', rarity: 'epic', price: 260, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item7.png' },
-      { name: 'Лепесток Сакуры', rarity: 'epic', price: 380, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item8.png' },
-      { name: 'Надувной Фламинго', rarity: 'rare', price: 80, icon: 'https://raw.githubusercontent.com/username/repo/main/images/case_standart/item9.png' }
+      { name: 'Плюшевый Пепе', rarity: 'epic', price: 260, icon: '/images/case_standart/item1.png' },
+      { name: 'Злой Глаз', rarity: 'common', price: 25, icon: '/images/case_standart/item2.png' },
+      { name: 'Снуп Дог', rarity: 'legendary', price: 800, icon: '/images/case_standart/item3.png' },
+      { name: 'Медведь Террорист', rarity: 'epic', price: 200, icon: '/images/case_standart/item4.png' },
+      { name: 'Шляпа Честера', rarity: 'rare', price: 110, icon: '/images/case_standart/item5.png' },
+      { name: 'Шляпа', rarity: 'rare', price: 140, icon: '/images/case_standart/item6.png' },
+      { name: 'Золотые Часы', rarity: 'epic', price: 260, icon: '/images/case_standart/item7.png' },
+      { name: 'Лепесток Сакуры', rarity: 'epic', price: 380, icon: '/images/case_standart/item8.png' },
+      { name: 'Надувной Фламинго', rarity: 'rare', price: 80, icon: '/images/case_standart/item9.png' }
     ];
 
     let balance = 1000;
@@ -547,12 +487,11 @@
           // Инициализация при первом входе
           const { error: insertError } = await supabaseClient
             .from('users')
-            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName }]);
+            .insert([{ user_id: userId, balance: 1000, inventory: [] }]);
             
           if (insertError) console.error('Ошибка создания:', insertError.message);
         }
         updateBalanceUI();
-        syncUserData(); // Синхронизируем имя на случай изменений
       } catch (e) {
         console.error('Сбой сети/клиента Supabase:', e);
       }
@@ -562,61 +501,15 @@
       try {
         const { error } = await supabaseClient
           .from('users')
-          .upsert({ user_id: userId, balance: balance, inventory: inventory, username: userFirstName }, { onConflict: 'user_id' });
+          .upsert({ user_id: userId, balance: balance, inventory: inventory }, { onConflict: 'user_id' });
         
         if (error) {
           console.error('Ошибка сохранения в Supabase:', error.message);
+        } else {
+          console.log('Данные успешно сохранены!');
         }
       } catch (e) {
         console.error('Сбой отправки данных:', e);
-      }
-    }
-
-    // Загрузка таблицы лидеров из базы
-    async function loadLeaderboard() {
-      const listContainer = document.getElementById('leaderboard-list');
-      listContainer.innerHTML = '<div class="inventory-empty">Загрузка рейтинга...</div>';
-
-      try {
-        let { data, error } = await supabaseClient
-          .from('users')
-          .select('username, balance')
-          .order('balance', { ascending: false })
-          .limit(10);
-
-        if (error) {
-          console.error('Ошибка загрузки топа:', error.message);
-          listContainer.innerHTML = '<div class="inventory-empty">Ошибка загрузки рейтинга</div>';
-          return;
-        }
-
-        if (!data || data.length === 0) {
-          listContainer.innerHTML = '<div class="inventory-empty">Список лидеров пуст</div>';
-          return;
-        }
-
-        listContainer.innerHTML = '';
-        data.forEach((user, index) => {
-          const rank = index + 1;
-          let rankClass = '';
-          if (rank === 1) rankClass = 'leader-rank-1';
-          else if (rank === 2) rankClass = 'leader-rank-2';
-          else if (rank === 3) rankClass = 'leader-rank-3';
-
-          const item = document.createElement('div');
-          item.className = 'leader-item';
-          item.innerHTML = `
-            <div class="leader-info">
-              <div class="leader-rank ${rankClass}">#${rank}</div>
-              <div class="leader-name">${user.username || 'Игрок'}</div>
-            </div>
-            <div class="leader-balance">${user.balance} 💰</div>
-          `;
-          listContainer.appendChild(item);
-        });
-      } catch (e) {
-        console.error('Сбой при запросе топа:', e);
-        listContainer.innerHTML = '<div class="inventory-empty">Ошибка соединения</div>';
       }
     }
 
@@ -645,10 +538,6 @@
         document.getElementById('tab-inventory').classList.add('active');
         document.getElementById('nav-inventory').classList.add('active');
         renderInventory();
-      } else if (tabName === 'leaderboard') {
-        document.getElementById('tab-leaderboard').classList.add('active');
-        document.getElementById('nav-leaderboard').classList.add('active');
-        loadLeaderboard();
       }
     }
 
@@ -691,7 +580,6 @@
       backBtn.classList.toggle('is-disabled', locked);
       document.getElementById('nav-shop').classList.toggle('is-disabled', locked);
       document.getElementById('nav-inventory').classList.toggle('is-disabled', locked);
-      document.getElementById('nav-leaderboard').classList.toggle('is-disabled', locked);
     }
 
     function startSpinAudio() {
@@ -766,7 +654,6 @@
         inventory.unshift(wonItem);
         lastWonItemIndex = 0;
 
-        playWinStatus = true;
         playWinSound();
         syncUserData();
 
@@ -826,7 +713,7 @@
 
     function closeModal() {
       document.getElementById('itemModal').classList.remove('active');
-      selectedIdentifierIndex = null;
+      selectedInventoryIndex = null;
     }
 
     function sellSelectedItem() {
