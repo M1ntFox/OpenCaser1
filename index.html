@@ -118,10 +118,11 @@
 
     .btn-back:active { transform: scale(0.95); background: #252738; }
 
+    /* УВЕЛИЧЕННАЯ РУЛЕТКА */
     .roulette-wrapper {
       position: relative;
       width: 100%;
-      height: 130px;
+      height: 160px;
       border: 2px solid #33334d;
       border-radius: 16px;
       overflow: hidden;
@@ -149,32 +150,33 @@
       transition: transform 5s cubic-bezier(0.15, 0.9, 0.15, 1);
     }
 
+    /* УВЕЛИЧЕННЫЕ КАРТОЧКИ В РУЛЕТКЕ */
     .item-card {
-      width: 90px;
-      height: 100px;
-      margin: 0 5px;
+      width: 110px;
+      height: 130px;
+      margin: 0 6px;
       border-radius: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: bold;
       flex-shrink: 0;
       box-sizing: border-box;
       text-align: center;
-      padding: 5px;
+      padding: 8px;
       cursor: pointer;
     }
 
     .item-img {
-      width: 42px;
-      height: 42px;
+      width: 60px;
+      height: 60px;
       object-fit: contain;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
-    .item-price-tag { font-size: 10px; opacity: 0.85; }
+    .item-price-tag { font-size: 11px; opacity: 0.85; }
 
     .common { background: #2d3748; border: 2px solid #4a5568; }
     .rare { background: #1a365d; border: 2px solid #2b6cb0; }
@@ -228,7 +230,7 @@
 
     .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
 
-    /* Стили для таблицы лидеров */
+    /* Таблица лидеров */
     .leaderboard-list {
       width: 100%;
       max-width: 400px;
@@ -302,16 +304,23 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
+    /* КРУПНОЕ ОКНО ПРЕДМЕТА ПРИ НАЖАТИИ В ИНВЕНТАРЕ */
     .modal-item-preview {
-      width: 110px;
-      height: 110px;
-      border-radius: 14px;
+      width: 140px;
+      height: 150px;
+      border-radius: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       font-weight: bold;
       font-size: 13px;
+    }
+    
+    .modal-item-preview .item-img {
+      width: 75px;
+      height: 75px;
+      margin-bottom: 8px;
     }
 
     .modal-actions { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
@@ -367,10 +376,10 @@
     <div class="page-title">Выберите кейс</div>
     
     <div class="cases-grid">
-      <div class="case-card" onclick="openSpinScreen('Стандартный', 100)">
+      <div class="case-card" onclick="openSpinScreen('Праздничный', 200)">
         <img src="/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
-        <div class="case-title">Стандартный</div>
-        <div class="case-price">100 💰</div>
+        <div class="case-title">Праздничный</div>
+        <div class="case-price">200 💰</div>
       </div>
     </div>
   </div>
@@ -386,7 +395,7 @@
         <div class="roulette-tape" id="tape"></div>
       </div>
 
-      <button id="openBtn" class="btn-spin" onclick="openCase()">Открыть кейс (100 💰)</button>
+      <button id="openBtn" class="btn-spin" onclick="openCase()">Открыть кейс (200 💰)</button>
       
       <div class="result-container">
         <div id="result-text"></div>
@@ -448,7 +457,6 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // Фиксация уникального Telegram ID (fallback на 'guest_user')
     let userId = tg.initDataUnsafe?.user?.id 
       ? String(tg.initDataUnsafe.user.id) 
       : 'guest_user';
@@ -499,20 +507,37 @@
       });
     }
 
+    // Звук при продаже предмета
+    function playSellSound() {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1400, audioCtx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.1);
+    }
+
+    // Предметы со значениями из скриншота
     const casePool = [
-      { name: 'Плюшевый Пепе', rarity: 'epic', price: 260, icon: '/images/case_standart/item1.png' },
-      { name: 'Злой Глаз', rarity: 'common', price: 25, icon: '/images/case_standart/item2.png' },
-      { name: 'Снуп Дог', rarity: 'legendary', price: 800, icon: '/images/case_standart/item3.png' },
-      { name: 'Медведь Террорист', rarity: 'epic', price: 200, icon: '/images/case_standart/item4.png' },
-      { name: 'Шляпа Честера', rarity: 'rare', price: 110, icon: '/images/case_standart/item5.png' },
-      { name: 'Шляпа', rarity: 'rare', price: 140, icon: '/images/case_standart/item6.png' },
-      { name: 'Золотые Часы', rarity: 'epic', price: 260, icon: '/images/case_standart/item7.png' },
-      { name: 'Лепесток Сакуры', rarity: 'epic', price: 380, icon: '/images/case_standart/item8.png' },
-      { name: 'Надувной Фламинго', rarity: 'rare', price: 80, icon: '/images/case_standart/item9.png' }
+      { name: 'Love Potion', rarity: 'legendary', price: 2075, chance: 0.5, icon: '/images/case_standart/item1.png' },
+      { name: 'Evil Eye', rarity: 'epic', price: 925, chance: 2.0, icon: '/images/case_standart/item2.png' },
+      { name: 'Witch Hat', rarity: 'epic', price: 725, chance: 5.0, icon: '/images/case_standart/item3.png' },
+      { name: 'Holiday Drink', rarity: 'rare', price: 450, chance: 10.0, icon: '/images/case_standart/item4.png' },
+      { name: 'Tama Gadget', rarity: 'rare', price: 450, chance: 12.0, icon: '/images/case_standart/item5.png' },
+      { name: 'Lunar Snake', rarity: 'rare', price: 350, chance: 15.0, icon: '/images/case_standart/item6.png' },
+      { name: 'Lol Pop', rarity: 'common', price: 325, chance: 16.0, icon: '/images/case_standart/item7.png' },
+      { name: 'Ring', rarity: 'common', price: 100, chance: 18.5, icon: '/images/case_standart/item8.png' },
+      { name: 'Diamond', rarity: 'common', price: 100, chance: 21.0, icon: '/images/case_standart/item9.png' }
     ];
 
     let balance = 1000;
-    let currentCase = { name: 'Стандартный', price: 100 };
+    let currentCase = { name: 'Праздничный', price: 200 };
     let inventory = [];
     let isSpinning = false;
     let lastWonItemIndex = null;
@@ -526,9 +551,7 @@
     const balanceSpan = document.getElementById('balance');
     const quickSellBtn = document.getElementById('quickSellBtn');
 
-    // --- Работа с базами данных (Загрузка и Сохранение) ---
     async function loadUserData() {
-      // Игнорируем загрузку из БД для гостей
       if (userId === 'guest_user') {
         updateBalanceUI();
         return;
@@ -550,7 +573,6 @@
           balance = data.balance ?? 1000;
           inventory = data.inventory ?? [];
         } else {
-          // Инициализация при первом входе
           const { error: insertError } = await supabaseClient
             .from('users')
             .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName }]);
@@ -558,14 +580,13 @@
           if (insertError) console.error('Ошибка создания:', insertError.message);
         }
         updateBalanceUI();
-        syncUserData(); // Синхронизируем данные и имя
+        syncUserData();
       } catch (e) {
         console.error('Сбой сети/клиента Supabase:', e);
       }
     }
 
     async function syncUserData() {
-      // Игнорируем гостей — не сохраняем их в общую базу
       if (userId === 'guest_user') return;
 
       try {
@@ -581,7 +602,6 @@
       }
     }
 
-    // Загрузка таблицы лидеров (с использованием username)
     async function loadLeaderboard() {
       const listContainer = document.getElementById('leaderboard-list');
       listContainer.innerHTML = '<div class="inventory-empty">Загрузка рейтинга...</div>';
@@ -684,7 +704,7 @@
       tape.style.transform = 'translateX(0px)';
 
       for (let i = 0; i < 50; i++) {
-        let item = casePool[Math.floor(Math.random() * casePool.length)];
+        let item = getRandomItem();
         if (i === 44) item = winningItem;
 
         const card = document.createElement('div');
@@ -692,6 +712,18 @@
         card.innerHTML = getItemHTML(item);
         tape.appendChild(card);
       }
+    }
+
+    function getRandomItem() {
+      const rand = Math.random() * 100;
+      let sum = 0;
+      for (const item of casePool) {
+        sum += item.chance;
+        if (rand <= sum) {
+          return item;
+        }
+      }
+      return casePool[casePool.length - 1];
     }
 
     function setLockState(locked) {
@@ -717,8 +749,8 @@
 
         const progress = elapsed / duration;
         const easeOut = 1 - Math.pow(1 - progress, 3);
-        const cardWidth = 100;
-        const estPosition = easeOut * 4250;
+        const cardWidth = 122; // С учетом ширины карты и отступов
+        const estPosition = easeOut * (50 * cardWidth - 200);
         const currentCardIndex = Math.floor(estPosition / cardWidth);
 
         if (currentCardIndex > lastCardIndex) {
@@ -745,25 +777,15 @@
       updateBalanceUI();
       syncUserData();
 
-      const rand = Math.random() * 100;
-      let winningItem;
-
-      if (rand < 55) {
-        winningItem = casePool[Math.floor(Math.random() * 3)];
-      } else if (rand < 85) {
-        winningItem = casePool[3 + Math.floor(Math.random() * 3)];
-      } else if (rand < 97) {
-        winningItem = casePool[6 + Math.floor(Math.random() * 2)];
-      } else {
-        winningItem = casePool[8];
-      }
+      const winningItem = getRandomItem();
 
       generateTape(winningItem);
       tape.offsetHeight;
 
       const targetIndex = 44;
-      const randomOffset = Math.floor(Math.random() * 60) - 30;
-      const targetPosition = (targetIndex * 100) - (200 - 50) + randomOffset;
+      const randomOffset = Math.floor(Math.random() * 70) - 35;
+      const cardWidth = 122;
+      const targetPosition = (targetIndex * cardWidth) - (200 - 55) + randomOffset;
 
       tape.style.transition = 'transform 5s cubic-bezier(0.15, 0.9, 0.15, 1)';
       tape.style.transform = `translateX(-${targetPosition}px)`;
@@ -790,6 +812,7 @@
 
     function sellLatestItem() {
       if (lastWonItemIndex !== null && inventory.length > 0) {
+        playSellSound();
         const soldItem = inventory.shift();
         balance += soldItem.price;
         updateBalanceUI();
@@ -839,6 +862,7 @@
 
     function sellSelectedItem() {
       if (selectedInventoryIndex !== null) {
+        playSellSound();
         const item = inventory[selectedInventoryIndex];
         balance += item.price;
         inventory.splice(selectedInventoryIndex, 1);
@@ -850,7 +874,6 @@
       }
     }
 
-    // Запуск инициализации данных из БД
     loadUserData();
   </script>
 </body>
