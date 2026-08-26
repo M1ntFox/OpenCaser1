@@ -142,23 +142,29 @@
     }
 
     .item-card {
-      width: 110px; height: 130px;
-      margin: 0 6px;
+      width: 100%; 
+      height: 110px; /* Уменьшенная высота карточки для инвентаря */
       border-radius: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
       flex-shrink: 0;
       box-sizing: border-box;
       text-align: center;
-      padding: 8px;
+      padding: 6px;
       cursor: pointer;
     }
 
-    .item-img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 6px; }
+    .item-img { 
+      width: 48px; /* Уменьшенный размер иконки предмета */
+      height: 48px; 
+      object-fit: contain; 
+      margin-bottom: 4px; 
+    }
+
     .item-price-tag { font-size: 11px; opacity: 0.85; }
 
     .common { background: #2d3748; border: 2px solid #4a5568; }
@@ -285,7 +291,6 @@
       background: #161722;
     }
 
-    /* Статичная шкала шанса */
     .upgrade-wheel-fill {
       position: absolute;
       width: 100%;
@@ -294,7 +299,6 @@
       background: conic-gradient(var(--accent-color) 0deg, #161722 0deg);
     }
 
-    /* ВРАЩАЮЩАЯСЯ стрелочка поверх круга */
     .upgrade-wheel-arrow {
       position: absolute;
       top: 0;
@@ -349,7 +353,7 @@
     .inventory-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      gap: 8px; /* Уменьшенный отступ сетки инвентаря */
       width: 100%;
       max-width: 400px;
     }
@@ -750,7 +754,6 @@
     let selectedInventoryIndex = null;
     let spinSoundInterval = null;
 
-    // Переменные апгрейда
     let upgradeMyItem = null;
     let upgradeMyIndex = null;
     let upgradeTargetItem = null;
@@ -955,7 +958,7 @@
         const card = document.createElement('div');
         card.className = `item-card ${item.rarity}`;
         card.style.width = '80px'; card.style.height = '90px';
-        card.innerHTML = `<img src="${item.icon}" style="width:40px;height:40px;object-fit:contain;"><div style="font-size:10px;">${item.name}</div>`;
+        card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:10px;">${item.name}</div>`;
         card.onclick = () => addTradeItem(idx);
         picker.appendChild(card);
       });
@@ -1102,7 +1105,6 @@
       });
     }
 
-    // --- Логика Апгрейда ---
     function openUpgradePicker(type) {
       const container = document.getElementById('upgradePickerContainer');
       const grid = document.getElementById('upgradeSelectorGrid');
@@ -1120,7 +1122,7 @@
           const card = document.createElement('div');
           card.className = `item-card ${item.rarity}`;
           card.style.width = '70px'; card.style.height = '80px';
-          card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
+          card.innerHTML = `<img src="${item.icon}" style="width:30px;height:30px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
           card.onclick = () => {
             upgradeMyItem = item;
             upgradeMyIndex = idx;
@@ -1159,7 +1161,7 @@
             updateUpgradeChance();
           };
 
-          card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
+          card.innerHTML = `<img src="${item.icon}" style="width:30px;height:30px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
           grid.appendChild(card);
         });
 
@@ -1204,15 +1206,12 @@
 
       inventory.splice(upgradeMyIndex, 1);
 
-      // 1. Определяем результат по шансу
       const roll = Math.random() * 100;
       const success = roll <= window.currentUpgradeChance;
 
-      // 2. Размер синего сектора в градусах
       const chance = window.currentUpgradeChance;
       const successDeg = (chance / 100) * 360;
 
-      // 3. Точный расчет с учетом острия стрелки (0°) и отступов от границ
       let randomStop;
       if (success) {
         if (successDeg > 15) {
@@ -1225,7 +1224,6 @@
         randomStop = Math.random() * (grayZoneSize - 14) + successDeg + 7;
       }
 
-      // Добавляем полные обороты для плавности анимации (минимум 5 оборотов)
       const extraSpins = 5 * 360;
       const totalRotation = extraSpins + randomStop;
 
