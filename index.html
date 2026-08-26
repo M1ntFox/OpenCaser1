@@ -10,7 +10,7 @@
       --bg-color: #12131c;
       --card-bg: #1c1d2a;
       --accent-color: #5865f2;
-      --accent-hover: #4752c4;
+      --accent-disabled: #3f425a;
       --text-muted: #8e9297;
     }
 
@@ -23,10 +23,10 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      padding-bottom: 70px;
+      padding-bottom: 80px;
     }
 
-    /* Верхняя панель (Хедер) */
+    /* Хедер */
     .header {
       display: flex;
       justify-content: space-between;
@@ -46,49 +46,61 @@
       border: 1px solid rgba(72, 187, 120, 0.3);
     }
 
-    /* Секции (Вкладки) */
+    /* Вкладки */
     .tab-content { display: none; padding: 20px; flex-direction: column; align-items: center; }
     .tab-content.active { display: flex; }
 
-    /* --- Вкладка 1: Магазин кейсов --- */
+    /* Сетка выбора кейсов */
     .cases-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       width: 100%;
       max-width: 500px;
+      margin-bottom: 25px;
     }
 
     .case-card {
       background: var(--card-bg);
-      border: 1px solid #2a2b3d;
+      border: 2px solid #2a2b3d;
       border-radius: 16px;
-      padding: 20px;
+      padding: 15px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       cursor: pointer;
-      transition: transform 0.2s, border-color 0.2s;
+      transition: all 0.2s;
     }
 
-    .case-card:active { transform: scale(0.96); }
-    .case-card:hover { border-color: var(--accent-color); }
-    .case-icon { font-size: 48px; }
-    .case-title { font-weight: bold; font-size: 16px; }
-    .case-price { color: #48bb78; font-weight: bold; font-size: 14px; }
+    .case-card.selected { border-color: var(--accent-color); background: #252738; }
+    .case-card.disabled-click { pointer-events: none; opacity: 0.6; }
+    
+    /* Пример использования картинок-текстур (для замены эмодзи) */
+    .case-icon { width: 50px; height: 50px; object-fit: contain; }
+    .case-icon-emoji { font-size: 40px; }
+    
+    .case-title { font-weight: bold; font-size: 15px; }
+    .case-price { color: #48bb78; font-weight: bold; font-size: 13px; }
 
-    /* --- Вкладка 2: Рулетка --- */
+    /* Зона рулетки */
+    .roulette-container {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .roulette-wrapper {
       position: relative;
       width: 100%;
-      max-width: 400px;
       height: 120px;
       border: 2px solid #33334d;
       border-radius: 16px;
       overflow: hidden;
       background: #0b0c12;
-      margin: 30px 0;
+      margin: 15px 0;
     }
 
     .pointer {
@@ -111,6 +123,7 @@
       transition: transform 5s cubic-bezier(0.15, 0.9, 0.15, 1);
     }
 
+    /* Карточки предметов в рулетке */
     .item-card {
       width: 90px;
       height: 100px;
@@ -126,6 +139,13 @@
       box-sizing: border-box;
       text-align: center;
       padding: 5px;
+    }
+
+    .item-card img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+      margin-bottom: 5px;
     }
 
     .common { background: #2d3748; border: 2px solid #4a5568; }
@@ -146,11 +166,11 @@
       cursor: pointer;
     }
 
-    .btn-main:disabled { background: #3f425a; cursor: not-allowed; }
+    .btn-main:disabled { background: var(--accent-disabled); cursor: not-allowed; opacity: 0.7; }
 
     #result-text { margin-top: 15px; font-weight: bold; font-size: 16px; height: 20px; }
 
-    /* --- Вкладка 3: Инвентарь --- */
+    /* Инвентарь */
     .inventory-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -161,7 +181,7 @@
 
     .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
 
-    /* Нижее навигационное меню */
+    /* Нижнее навигационное меню (2 кнопки) */
     .nav-bar {
       position: fixed;
       bottom: 0;
@@ -184,10 +204,11 @@
       color: var(--text-muted);
       font-size: 12px;
       cursor: pointer;
-      width: 33%;
+      width: 50%;
     }
 
     .nav-item.active { color: var(--accent-color); font-weight: bold; }
+    .nav-item.disabled { pointer-events: none; opacity: 0.4; }
     .nav-icon { font-size: 20px; }
   </style>
 </head>
@@ -203,37 +224,38 @@
     </div>
   </div>
 
-  <!-- Вкладка 1: Магазин -->
+  <!-- Вкладка 1: Кейсы и Рулетка -->
   <div id="tab-shop" class="tab-content active">
-    <h3 style="margin-bottom: 20px;">Выберите кейс</h3>
+    <h3 style="margin-bottom: 15px;">Выберите кейс</h3>
+    
     <div class="cases-grid">
-      <div class="case-card" onclick="selectCase('Стандартный', 100)">
-        <div class="case-icon">📦</div>
+      <div class="case-card selected" id="case-100" onclick="selectCase('Стандартный', 100, 'case-100')">
+        <!-- Пример с использованием картинки (если есть файл /images/case1.png) -->
+        <!-- <img src="/images/case1.png" class="case-icon"> -->
+        <div class="case-icon-emoji">📦</div>
         <div class="case-title">Стандартный</div>
         <div class="case-price">100 💰</div>
       </div>
-      <div class="case-card" onclick="selectCase('Премиум', 250)">
-        <div class="case-icon">🎁</div>
+      <div class="case-card" id="case-250" onclick="selectCase('Премиум', 250, 'case-250')">
+        <div class="case-icon-emoji">🎁</div>
         <div class="case-title">Премиум</div>
         <div class="case-price">250 💰</div>
       </div>
     </div>
-  </div>
 
-  <!-- Вкладка 2: Рулетка -->
-  <div id="tab-roulette" class="tab-content">
-    <h3 id="selected-case-title">Кейс не выбран</h3>
-    
-    <div class="roulette-wrapper">
-      <div class="pointer"></div>
-      <div class="roulette-tape" id="tape"></div>
+    <!-- Встроенное окно рулетки -->
+    <div class="roulette-container">
+      <div class="roulette-wrapper">
+        <div class="pointer"></div>
+        <div class="roulette-tape" id="tape"></div>
+      </div>
+
+      <button id="openBtn" class="btn-main" onclick="openCase()">Открыть кейс (100 💰)</button>
+      <div id="result-text"></div>
     </div>
-
-    <button id="openBtn" class="btn-main" onclick="openCase()">Крутить кейс</button>
-    <div id="result-text"></div>
   </div>
 
-  <!-- Вкладка 3: Инвентарь -->
+  <!-- Вкладка 2: Инвентарь -->
   <div id="tab-inventory" class="tab-content">
     <h3 style="margin-bottom: 20px;">Мой инвентарь</h3>
     <div class="inventory-grid" id="inventory-list">
@@ -241,17 +263,13 @@
     </div>
   </div>
 
-  <!-- Нижнее меню -->
+  <!-- Нижнее меню (2 вкладки) -->
   <div class="nav-bar">
-    <div class="nav-item active" onclick="switchTab('shop')">
-      <span class="nav-icon">🛒</span>
+    <div class="nav-item active" id="nav-shop" onclick="switchTab('shop')">
+      <span class="nav-icon">📦</span>
       <span>Кейсы</span>
     </div>
-    <div class="nav-item" onclick="switchTab('roulette')">
-      <span class="nav-icon">🎰</span>
-      <span>Рулетка</span>
-    </div>
-    <div class="nav-item" onclick="switchTab('inventory')">
+    <div class="nav-item" id="nav-inventory" onclick="switchTab('inventory')">
       <span class="nav-icon">🎒</span>
       <span>Инвентарь</span>
     </div>
@@ -261,7 +279,6 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // Берем юзернейм из Telegram, если доступен
     if (tg.initDataUnsafe?.user?.first_name) {
       document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
     }
@@ -270,38 +287,40 @@
     
     let currentCase = { name: 'Стандартный', price: 100 };
     let inventory = [];
+    let isSpinning = false; // Флаг прокрутки
 
     const tape = document.getElementById('tape');
     const openBtn = document.getElementById('openBtn');
     const resultText = document.getElementById('result-text');
     const balanceSpan = document.getElementById('balance');
 
-    // Переключение вкладок
     function switchTab(tabName) {
+      if (isSpinning) return; // Запрещаем переключение во время кручения
+
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
       if (tabName === 'shop') {
         document.getElementById('tab-shop').classList.add('active');
-        document.querySelectorAll('.nav-item')[0].classList.add('active');
-      } else if (tabName === 'roulette') {
-        document.getElementById('tab-roulette').classList.add('active');
-        document.querySelectorAll('.nav-item')[1].classList.add('active');
+        document.getElementById('nav-shop').classList.add('active');
       } else if (tabName === 'inventory') {
         document.getElementById('tab-inventory').classList.add('active');
-        document.querySelectorAll('.nav-item')[2].classList.add('active');
+        document.getElementById('nav-inventory').classList.add('active');
         renderInventory();
       }
     }
 
-    // Выбор кейса из магазина
-    function selectCase(name, price) {
+    function selectCase(name, price, cardId) {
+      if (isSpinning) return; // Блокировка во время прокрутки
+
       currentCase = { name, price };
-      document.getElementById('selected-case-title').innerText = `Кейс: ${name} (${price} 💰)`;
-      switchTab('roulette');
+      
+      document.querySelectorAll('.case-card').forEach(el => el.classList.remove('selected'));
+      document.getElementById(cardId).classList.add('selected');
+      
+      openBtn.innerText = `Открыть кейс (${price} 💰)`;
     }
 
-    // Загрузка баланса
     async function loadBalance() {
       try {
         const res = await fetch('/api/get-balance', {
@@ -334,13 +353,35 @@
 
         const card = document.createElement('div');
         card.className = `item-card ${item.rarity}`;
-        card.innerText = item.name;
+        
+        // Пример вставки текстуры/изображения, если у предмета есть свойство image
+        if (item.image) {
+          card.innerHTML = `<img src="${item.image}" alt="${item.name}"><span>${item.name}</span>`;
+        } else {
+          card.innerText = item.name;
+        }
+
         tape.appendChild(card);
       }
     }
 
+    // Включение / выключение блокировки UI
+    function setUIState(disabled) {
+      isSpinning = disabled;
+      openBtn.disabled = disabled;
+      
+      // Блокируем нижнее меню
+      document.getElementById('nav-shop').classList.toggle('disabled', disabled);
+      document.getElementById('nav-inventory').classList.toggle('disabled', disabled);
+
+      // Блокируем клики по карточкам кейсов
+      document.querySelectorAll('.case-card').forEach(el => {
+        el.classList.toggle('disabled-click', disabled);
+      });
+    }
+
     async function openCase() {
-      openBtn.disabled = true;
+      setUIState(true); // Блокируем весь интерфейс
       resultText.innerText = '';
 
       try {
@@ -354,7 +395,7 @@
 
         if (res.status !== 200) {
           resultText.innerText = data.error;
-          openBtn.disabled = false;
+          setUIState(false); // Снимаем блокировку при ошибке
           return;
         }
 
@@ -369,21 +410,21 @@
         tape.style.transition = 'transform 5s cubic-bezier(0.15, 0.9, 0.15, 1)';
         tape.style.transform = `translateX(-${targetPosition}px)`;
 
+        // Возвращаем активность UI ровно через 5 секунд после завершения рулетки
         setTimeout(() => {
           resultText.innerText = `Выбито: ${winningItem.name}!`;
           balanceSpan.innerText = data.newBalance;
-          inventory.unshift(winningItem); // Сохраняем в локальный инвентарь
-          openBtn.disabled = false;
+          inventory.unshift(winningItem);
+          setUIState(false); // Разблокируем интерфейс
         }, 5000);
 
       } catch (err) {
         console.error(err);
         resultText.innerText = 'Ошибка соединения';
-        openBtn.disabled = false;
+        setUIState(false);
       }
     }
 
-    // Отрисовка предметов в инвентаре
     function renderInventory() {
       const list = document.getElementById('inventory-list');
       if (inventory.length === 0) {
@@ -395,13 +436,17 @@
       inventory.forEach(item => {
         const card = document.createElement('div');
         card.className = `item-card ${item.rarity}`;
-        card.innerText = item.name;
+        if (item.image) {
+          card.innerHTML = `<img src="${item.image}"><span>${item.name}</span>`;
+        } else {
+          card.innerText = item.name;
+        }
         list.appendChild(card);
       });
     }
 
-    // Старт
-    selectCase('Стандартный', 100);
+    // Инициализация
+    generateTape({ name: 'Кейс готов', rarity: 'common' });
     loadBalance();
   </script>
 </body>
