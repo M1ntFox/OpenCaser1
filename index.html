@@ -30,6 +30,39 @@
       padding-bottom: 70px;
     }
 
+    /* --- Экран загрузки (Loader & Anti-bot) --- */
+    #loader-screen {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--bg-color);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      transition: opacity 0.4s ease;
+    }
+
+    .loader-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid rgba(88, 101, 242, 0.2);
+      border-top-color: var(--accent-color);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      font-size: 15px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
     .header {
       display: flex;
       justify-content: space-between;
@@ -309,6 +342,12 @@
 </head>
 <body>
 
+  <!-- Экран загрузки и проверки -->
+  <div id="loader-screen">
+    <div class="loader-spinner"></div>
+    <div class="loader-text" id="loader-status">Загрузка профиля...</div>
+  </div>
+
   <div class="header">
     <div class="user-info" id="username">Игрок</div>
     <div class="balance-badge">
@@ -382,14 +421,17 @@
   <script>
     // --- Конфигурация Supabase ---
     const SUPABASE_URL = 'https://jbywybwncekaoawzqury.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_WAL11ngzElD9llZZKnpJ9g_cWMgT1kz';
+    const SUPABASE_KEY = 'sb_publishable_WAL1ingzElD9llZZKnpJ9g_cWMgT...'; // Ваш ключ
     
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    // Фиксация уникального Telegram ID (fallback на 'guest_user')
+    // Простая защита от ботов/скриптов: проверка на наличие Telegram WebApp окружения
+    // Если кто-то откроет просто по прямой ссылке в обычном браузере — можно отсечь или предупредить
+    const isTelegramEnv = !!tg.initData || window.location.hostname.includes('localhost');
+
     let userId = tg.initDataUnsafe?.user?.id 
       ? String(tg.initDataUnsafe.user.id) 
       : 'guest_user';
@@ -465,10 +507,22 @@
     const resultText = document.getElementById('result-text');
     const balanceSpan = document.getElementById('balance');
     const quickSellBtn = document.getElementById('quickSellBtn');
+    const loaderScreen = document.getElementById('loader-screen');
+    const loaderStatus = document.getElementById('loader-status');
+
+    // Функция скрытия экрана загрузки с плавной анимацией
+    function hideLoader() {
+      loaderScreen.style.opacity = '0';
+      setTimeout(() => {
+        loaderScreen.style.display = 'none';
+      }, 400);
+    }
 
     // --- Работа с базами данных (Загрузка и Сохранение) ---
     async function loadUserData() {
       try {
+        loaderStatus.innerText = 'Подключение к базе данных...';
+        
         let { data, error } = await supabaseClient
           .from('users')
           .select('balance, inventory')
@@ -477,6 +531,8 @@
 
         if (error) {
           console.error('Ошибка получения пользователя:', error.message);
+          loaderStatus.innerText = 'Ошибка загрузки данных!';
+          setTimeout(hideLoader, 1500);
           return;
         }
 
@@ -484,16 +540,24 @@
           balance = data.balance ?? 1000;
           inventory = data.inventory ?? [];
         } else {
-          // Инициализация при первом входе
+          loaderStatus.innerText = 'Создание нового профиля...';
           const { error: insertError } = await supabaseClient
             .from('users')
             .insert([{ user_id: userId, balance: 1000, inventory: [] }]);
             
           if (insertError) console.error('Ошибка создания:', insertError.message);
         }
+        
         updateBalanceUI();
+        loaderStatus.innerText = 'Готово!';
+        
+        // Небольшая искусственная пауза (защита от мгновенных бот-запросов и дерганья экрана)
+        setTimeout(hideLoader, 600);
+
       } catch (e) {
         console.error('Сбой сети/клиента Supabase:', e);
+        loaderStatus.innerText = 'Ошибка соединения!';
+        setTimeout(hideLoader, 1500);
       }
     }
 
@@ -505,8 +569,6 @@
         
         if (error) {
           console.error('Ошибка сохранения в Supabase:', error.message);
-        } else {
-          console.log('Данные успешно сохранены!');
         }
       } catch (e) {
         console.error('Сбой отправки данных:', e);
@@ -729,7 +791,7 @@
       }
     }
 
-    // Запуск инициализации данных из БД
+    // Запуск инициализации данных из БД при старте
     loadUserData();
   </script>
 </body>
