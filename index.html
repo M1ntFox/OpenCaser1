@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Case Opener & Trade</title>
+  <title>Case Opener, Upgrade & Trade</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Supabase JS Client SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -81,12 +81,7 @@
     .case-card:active { transform: scale(0.96); }
     .case-card:hover { border-color: var(--accent-color); }
     
-    .case-img {
-      width: 110px;
-      height: 110px;
-      object-fit: contain;
-    }
-    
+    .case-img { width: 110px; height: 110px; object-fit: contain; }
     .case-title { font-weight: bold; font-size: 15px; }
     .case-price { color: var(--green-color); font-weight: bold; font-size: 13px; }
 
@@ -131,11 +126,9 @@
 
     .pointer {
       position: absolute;
-      top: 0;
-      left: 50%;
+      top: 0; left: 50%;
       transform: translateX(-50%);
-      width: 3px;
-      height: 100%;
+      width: 3px; height: 100%;
       background: var(--red-color);
       z-index: 10;
       box-shadow: 0 0 10px var(--red-color);
@@ -144,14 +137,12 @@
     .roulette-tape {
       display: flex;
       position: absolute;
-      left: 0;
-      top: 15px;
+      left: 0; top: 15px;
       transition: transform 5s cubic-bezier(0.15, 0.9, 0.15, 1);
     }
 
     .item-card {
-      width: 110px;
-      height: 130px;
+      width: 110px; height: 130px;
       margin: 0 6px;
       border-radius: 12px;
       display: flex;
@@ -167,13 +158,7 @@
       cursor: pointer;
     }
 
-    .item-img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-      margin-bottom: 6px;
-    }
-
+    .item-img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 6px; }
     .item-price-tag { font-size: 11px; opacity: 0.85; }
 
     .common { background: #2d3748; border: 2px solid #4a5568; }
@@ -218,7 +203,6 @@
       display: none;
     }
 
-    /* Блок содержимого кейса */
     .case-contents-section {
       width: 100%;
       margin-top: 25px;
@@ -227,11 +211,7 @@
       gap: 10px;
     }
 
-    .case-contents-title {
-      font-size: 13px;
-      font-weight: bold;
-      color: var(--text-muted);
-    }
+    .case-contents-title { font-size: 13px; font-weight: bold; color: var(--text-muted); }
 
     .contents-grid {
       display: grid;
@@ -253,15 +233,82 @@
       gap: 4px;
     }
 
-    .content-item-card img {
-      width: 45px;
-      height: 45px;
-      object-fit: contain;
+    .content-item-card img { width: 45px; height: 45px; object-fit: contain; }
+    .content-item-chance { font-size: 10px; color: var(--text-muted); }
+
+    /* Стили для Апгрейда */
+    .upgrade-container {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
     }
 
-    .content-item-chance {
-      font-size: 10px;
-      color: var(--text-muted);
+    .upgrade-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+    }
+
+    .upgrade-slot {
+      flex: 1;
+      height: 150px;
+      background: var(--card-bg);
+      border: 2px dashed #33334d;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .upgrade-slot.filled { border-style: solid; }
+
+    .upgrade-wheel-box {
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent-color) 0deg, #161722 0deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+    }
+
+    .upgrade-wheel-inner {
+      width: 85px;
+      height: 85px;
+      background: var(--bg-color);
+      border-radius: 50%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .upgrade-selector-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-height: 160px;
+      overflow-y: auto;
+      width: 100%;
+      background: #161722;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #2a2b3d;
     }
 
     .inventory-grid {
@@ -292,12 +339,7 @@
       align-items: center;
     }
 
-    .leader-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
+    .leader-info { display: flex; align-items: center; gap: 12px; }
     .leader-rank { font-weight: bold; font-size: 16px; color: var(--text-muted); width: 24px; }
     .leader-rank-1 { color: #f6e05e; }
     .leader-rank-2 { color: #cbd5e0; }
@@ -344,8 +386,7 @@
     }
 
     .modal-item-preview {
-      width: 140px;
-      height: 150px;
+      width: 140px; height: 150px;
       border-radius: 16px;
       display: flex;
       flex-direction: column;
@@ -355,21 +396,10 @@
       font-size: 13px;
     }
     
-    .modal-item-preview .item-img {
-      width: 75px;
-      height: 75px;
-      margin-bottom: 8px;
-    }
+    .modal-item-preview .item-img { width: 75px; height: 75px; margin-bottom: 8px; }
 
     .modal-actions { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
-    .btn-modal {
-      flex: 1;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
+    .btn-modal { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
 
     .btn-modal-sell { background: var(--green-color); color: #fff; }
     .btn-modal-close { background: #3a3d54; color: #fff; }
@@ -377,18 +407,11 @@
     .btn-modal-decline { background: var(--red-color); color: #fff; }
 
     .trade-container {
-      width: 100%;
-      max-width: 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
+      width: 100%; max-width: 400px;
+      display: flex; flex-direction: column; gap: 15px;
     }
 
-    .trade-grid-row {
-      display: flex;
-      gap: 10px;
-      justify-content: space-between;
-    }
+    .trade-grid-row { display: flex; gap: 10px; justify-content: space-between; }
 
     .trade-box {
       flex: 1;
@@ -396,13 +419,9 @@
       border: 1px solid #2a2b3d;
       border-radius: 12px;
       padding: 10px;
-      min-height: 150px;
-      max-height: 200px;
+      min-height: 150px; max-height: 200px;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
     }
 
     .trade-box-title { font-size: 12px; color: var(--text-muted); font-weight: bold; text-align: center; }
@@ -420,14 +439,8 @@
     }
 
     .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      color: var(--text-muted);
-      font-size: 12px;
-      cursor: pointer;
-      width: 25%;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      color: var(--text-muted); font-size: 12px; cursor: pointer; width: 20%;
     }
 
     .nav-item.active { color: var(--accent-color); font-weight: bold; }
@@ -443,6 +456,7 @@
     </div>
   </div>
 
+  <!-- Вкладка Магазин Кейсов -->
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
     <div class="cases-grid">
@@ -454,6 +468,7 @@
     </div>
   </div>
 
+  <!-- Вкладка Открытие кейса -->
   <div id="tab-spin" class="tab-content">
     <div class="roulette-screen">
       <button class="btn-back" id="backBtn" onclick="backToShop()">
@@ -472,7 +487,6 @@
         <button id="quickSellBtn" class="btn-sell-quick" onclick="sellLatestItem()">Продать предмет</button>
       </div>
 
-      <!-- Секция содержимого кейса с шансами и ценами -->
       <div class="case-contents-section">
         <div class="case-contents-title">Содержимое кейса:</div>
         <div class="contents-grid" id="contentsGrid"></div>
@@ -480,6 +494,43 @@
     </div>
   </div>
 
+  <!-- Вкладка Апгрейд -->
+  <div id="tab-upgrade" class="tab-content">
+    <div class="page-title">Апгрейд предметов</div>
+    <div class="upgrade-container">
+      <div class="upgrade-top-row">
+        <!-- Ваш предмет -->
+        <div class="upgrade-slot" id="upgrade-my-slot" onclick="openUpgradePicker('my')">
+          <div style="color: var(--text-muted)">Ваш предмет</div>
+          <div id="upgrade-my-placeholder" style="font-size: 24px; margin-top: 10px;">➕</div>
+        </div>
+
+        <!-- Колесо шанса -->
+        <div class="upgrade-wheel-box" id="upgradeWheel">
+          <div class="upgrade-wheel-inner">
+            <span id="upgradeChanceText">0%</span>
+          </div>
+        </div>
+
+        <!-- Желаемый предмет -->
+        <div class="upgrade-slot" id="upgrade-target-slot" onclick="openUpgradePicker('target')">
+          <div style="color: var(--text-muted)">Желаемый</div>
+          <div id="upgrade-target-placeholder" style="font-size: 24px; margin-top: 10px;">➕</div>
+        </div>
+      </div>
+
+      <!-- Селектор предметов (выдвигается при выборе слота) -->
+      <div id="upgradePickerContainer" style="display: none; width: 100%;">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;" id="pickerTitle">Выберите предмет:</div>
+        <div class="upgrade-selector-grid" id="upgradeSelectorGrid"></div>
+      </div>
+
+      <button class="btn-spin" id="btnUpgrade" onclick="startUpgrade()" disabled>АПГРЕЙД</button>
+      <div id="upgradeResultText" style="font-weight: bold; text-align: center; min-height: 20px;"></div>
+    </div>
+  </div>
+
+  <!-- Вкладка Инвентарь -->
   <div id="tab-inventory" class="tab-content">
     <div class="page-title">Мой инвентарь</div>
     <div class="inventory-grid" id="inventory-list">
@@ -487,6 +538,7 @@
     </div>
   </div>
 
+  <!-- Вкладка Трейд -->
   <div id="tab-trade" class="tab-content">
     <div class="page-title">Игроки онлайн для обмена</div>
     <div class="online-list" id="online-list-container">
@@ -494,6 +546,7 @@
     </div>
   </div>
 
+  <!-- Вкладка Топ -->
   <div id="tab-leaderboard" class="tab-content">
     <div class="page-title">Топ игроков</div>
     <div class="leaderboard-list" id="leaderboard-list">
@@ -501,13 +554,12 @@
     </div>
   </div>
 
-  <!-- Модальное окно предмета инвентаря -->
+  <!-- Модальные окна -->
   <div class="modal-overlay" id="itemModal">
     <div class="modal-card">
       <h3 id="modalTitle">Предмет</h3>
       <div class="modal-item-preview" id="modalPreview"></div>
       <div id="modalPrice" style="color: var(--green-color); font-weight: bold;"></div>
-      
       <div class="modal-actions">
         <button class="btn-modal btn-modal-sell" onclick="sellSelectedItem()">Продать</button>
         <button class="btn-modal btn-modal-close" onclick="closeModal()">Закрыть</button>
@@ -515,7 +567,6 @@
     </div>
   </div>
 
-  <!-- Модальное окно входящего приглашения в трейд -->
   <div class="modal-overlay" id="tradeInviteModal">
     <div class="modal-card">
       <h3>Запрос на обмен</h3>
@@ -527,26 +578,17 @@
     </div>
   </div>
 
-  <!-- Модальное окно активной сделки -->
   <div class="modal-overlay" id="activeTradeModal">
     <div class="modal-card" style="max-width: 380px;">
       <h3 id="activeTradeTitle">Обмен с игроком</h3>
-      
       <div class="trade-container">
         <div class="trade-grid-row">
-          <div class="trade-box" id="my-offer-box">
-            <div class="trade-box-title">Ваш вклад</div>
-          </div>
-          <div class="trade-box" id="peer-offer-box">
-            <div class="trade-box-title">Вклад оппонента</div>
-          </div>
+          <div class="trade-box" id="my-offer-box"><div class="trade-box-title">Ваш вклад</div></div>
+          <div class="trade-box" id="peer-offer-box"><div class="trade-box-title">Вклад оппонента</div></div>
         </div>
-
         <div style="font-size: 13px; font-weight: bold; text-align: center;" id="tradeStatusText">Выберите предмет из инвентаря для обмена</div>
-        
         <div style="font-size: 12px; color: var(--text-muted);">Ваш инвентарь (нажмите, чтобы добавить):</div>
         <div class="inventory-grid" id="trade-inventory-picker" style="max-height: 120px; overflow-y: auto;"></div>
-
         <div class="modal-actions">
           <button class="btn-modal btn-modal-accept" id="btnReadyTrade" onclick="toggleReadyTrade()">Готов</button>
           <button class="btn-modal btn-modal-decline" onclick="cancelActiveTrade()">Отмена</button>
@@ -555,10 +597,15 @@
     </div>
   </div>
 
+  <!-- Нижняя навигация -->
   <div class="nav-bar">
     <div class="nav-item active" id="nav-shop" onclick="switchTab('shop')">
       <span style="font-size: 20px;">📦</span>
       <span>Кейсы</span>
+    </div>
+    <div class="nav-item" id="nav-upgrade" onclick="switchTab('upgrade')">
+      <span style="font-size: 20px;">⚡</span>
+      <span>Апгрейд</span>
     </div>
     <div class="nav-item" id="nav-inventory" onclick="switchTab('inventory')">
       <span style="font-size: 20px;">🎒</span>
@@ -577,7 +624,6 @@
   <script>
     const SUPABASE_URL = 'https://jbywybwncekaoawzqury.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_WAL11ngzElD9llZZKnpJ9g_cWMgT1kz';
-    
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     const tg = window.Telegram.WebApp;
@@ -667,6 +713,11 @@
     let selectedInventoryIndex = null;
     let spinSoundInterval = null;
 
+    // Переменные апгрейда
+    let upgradeMyItem = null;
+    let upgradeMyIndex = null;
+    let upgradeTargetItem = null;
+
     let activeTradeId = null;
     let isSender = false;
     let myTradeItems = [];
@@ -748,9 +799,7 @@
           const item = document.createElement('div');
           item.className = 'leader-item';
           item.innerHTML = `
-            <div class="leader-info">
-              <div class="leader-name">${user.username || 'Игрок'}</div>
-            </div>
+            <div class="leader-info"><div class="leader-name">${user.username || 'Игрок'}</div></div>
             <button class="btn-trade-action" onclick="sendTradeInvite('${user.user_id}', '${user.username}')">Обмен</button>
           `;
           container.appendChild(item);
@@ -782,10 +831,7 @@
           .select()
           .single();
 
-        if (error) {
-          alert('Не удалось отправить запрос');
-          return;
-        }
+        if (error) { alert('Не удалось отправить запрос'); return; }
 
         activeTradeId = data.id;
         isSender = true;
@@ -807,11 +853,7 @@
       peerTradeItems = [];
       isReady = false;
 
-      await supabaseClient
-        .from('trades')
-        .update({ status: 'active' })
-        .eq('id', activeTradeId);
-
+      await supabaseClient.from('trades').update({ status: 'active' }).eq('id', activeTradeId);
       openActiveTradeWindow('Обмен предметами');
       subscribeToTradeChannel(activeTradeId);
     }
@@ -819,40 +861,28 @@
     async function declineTradeInvite() {
       document.getElementById('tradeInviteModal').classList.remove('active');
       if (activeTradeId) {
-        await supabaseClient
-          .from('trades')
-          .update({ status: 'cancelled' })
-          .eq('id', activeTradeId);
+        await supabaseClient.from('trades').update({ status: 'cancelled' }).eq('id', activeTradeId);
         activeTradeId = null;
       }
     }
 
     function subscribeToTradeChannel(tradeId) {
-      if (currentTradeSubscription) {
-        supabaseClient.removeChannel(currentTradeSubscription);
-      }
+      if (currentTradeSubscription) { supabaseClient.removeChannel(currentTradeSubscription); }
 
       currentTradeSubscription = supabaseClient
         .channel(`trade:${tradeId}`)
         .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'trades', filter: `id=eq.${tradeId}` }, payload => {
           const updated = payload.new;
-
           if (updated.status === 'cancelled') {
             alert('Сделка была отменена');
             closeActiveTradeModal();
             return;
           }
-
-          if (isSender) {
-            peerTradeItems = updated.receiver_items || [];
-          } else {
-            peerTradeItems = updated.sender_items || [];
-          }
-
+          peerTradeItems = isSender ? (updated.receiver_items || []) : (updated.sender_items || []);
           renderTradeOffers();
 
           if (updated.sender_ready && updated.receiver_ready && updated.status === 'active') {
-            executeTradeCompletion(updated);
+            executeTradeCompletion();
           }
         })
         .subscribe();
@@ -884,12 +914,10 @@
         picker.innerHTML = '<div class="inventory-empty" style="margin-top:10px;">Инвентарь пуст</div>';
         return;
       }
-
       inventory.forEach((item, idx) => {
         const card = document.createElement('div');
         card.className = `item-card ${item.rarity}`;
-        card.style.width = '80px';
-        card.style.height = '90px';
+        card.style.width = '80px'; card.style.height = '90px';
         card.innerHTML = `<img src="${item.icon}" style="width:40px;height:40px;object-fit:contain;"><div style="font-size:10px;">${item.name}</div>`;
         card.onclick = () => addTradeItem(idx);
         picker.appendChild(card);
@@ -901,7 +929,6 @@
       const item = inventory[invIndex];
       inventory.splice(invIndex, 1);
       myTradeItems.push(item);
-
       renderTradePicker();
       renderTradeOffers();
       pushTradeStateToSupabase();
@@ -914,8 +941,7 @@
       myBox.innerHTML = '<div class="trade-box-title">Ваш вклад</div>';
       myTradeItems.forEach((item) => {
         const div = document.createElement('div');
-        div.style.fontSize = '11px';
-        div.style.color = 'var(--green-color)';
+        div.style.fontSize = '11px'; div.style.color = 'var(--green-color)';
         div.innerText = `• ${item.name}`;
         myBox.appendChild(div);
       });
@@ -923,8 +949,7 @@
       peerBox.innerHTML = '<div class="trade-box-title">Вклад оппонента</div>';
       peerTradeItems.forEach((item) => {
         const div = document.createElement('div');
-        div.style.fontSize = '11px';
-        div.style.color = 'var(--green-color)';
+        div.style.fontSize = '11px'; div.style.color = 'var(--green-color)';
         div.innerText = `• ${item.name}`;
         peerBox.appendChild(div);
       });
@@ -935,11 +960,7 @@
       const updateData = isSender 
         ? { sender_items: myTradeItems, sender_ready: isReady }
         : { receiver_items: myTradeItems, receiver_ready: isReady };
-
-      await supabaseClient
-        .from('trades')
-        .update(updateData)
-        .eq('id', activeTradeId);
+      await supabaseClient.from('trades').update(updateData).eq('id', activeTradeId);
     }
 
     async function toggleReadyTrade() {
@@ -947,7 +968,6 @@
       const btn = document.getElementById('btnReadyTrade');
       btn.style.background = isReady ? 'var(--red-color)' : 'var(--green-color)';
       btn.innerText = isReady ? 'Отменить готовность' : 'Готов';
-
       await pushTradeStateToSupabase();
     }
 
@@ -955,10 +975,7 @@
       if (activeTradeId) {
         inventory.push(...myTradeItems);
         myTradeItems = [];
-        await supabaseClient
-          .from('trades')
-          .update({ status: 'cancelled' })
-          .eq('id', activeTradeId);
+        await supabaseClient.from('trades').update({ status: 'cancelled' }).eq('id', activeTradeId);
       }
       closeActiveTradeModal();
       renderInventory();
@@ -968,15 +985,11 @@
       if (isSender) {
         inventory.push(...peerTradeItems);
         syncUserData();
-        await supabaseClient
-          .from('trades')
-          .update({ status: 'completed' })
-          .eq('id', activeTradeId);
+        await supabaseClient.from('trades').update({ status: 'completed' }).eq('id', activeTradeId);
       } else {
         inventory.push(...peerTradeItems);
         syncUserData();
       }
-
       playWinSound();
       alert('Обмен успешно завершен!');
       closeActiveTradeModal();
@@ -1052,6 +1065,126 @@
       });
     }
 
+    // --- Логика Апгрейда ---
+    function openUpgradePicker(type) {
+      const container = document.getElementById('upgradePickerContainer');
+      const grid = document.getElementById('upgradeSelectorGrid');
+      const title = document.getElementById('pickerTitle');
+      container.style.display = 'block';
+      grid.innerHTML = '';
+
+      if (type === 'my') {
+        title.innerText = 'Выберите ваш предмет из инвентаря:';
+        if (inventory.length === 0) {
+          grid.innerHTML = '<div class="inventory-empty" style="grid-column:1/-1;">Инвентарь пуст</div>';
+          return;
+        }
+        inventory.forEach((item, idx) => {
+          const card = document.createElement('div');
+          card.className = `item-card ${item.rarity}`;
+          card.style.width = '70px'; card.style.height = '80px';
+          card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
+          card.onclick = () => {
+            upgradeMyItem = item;
+            upgradeMyIndex = idx;
+            document.getElementById('upgrade-my-slot').classList.add('filled');
+            document.getElementById('upgrade-my-slot').innerHTML = getItemHTML(item);
+            container.style.display = 'none';
+            updateUpgradeChance();
+          };
+          grid.appendChild(card);
+        });
+      } else {
+        title.innerText = 'Выберите желаемый предмет:';
+        casePool.forEach((item) => {
+          const card = document.createElement('div');
+          card.className = `item-card ${item.rarity}`;
+          card.style.width = '70px'; card.style.height = '80px';
+          card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
+          card.onclick = () => {
+            upgradeTargetItem = item;
+            document.getElementById('upgrade-target-slot').classList.add('filled');
+            document.getElementById('upgrade-target-slot').innerHTML = getItemHTML(item);
+            container.style.display = 'none';
+            updateUpgradeChance();
+          };
+          grid.appendChild(card);
+        });
+      }
+    }
+
+    function updateUpgradeChance() {
+      const btn = document.getElementById('btnUpgrade');
+      const chanceText = document.getElementById('upgradeChanceText');
+      const wheel = document.getElementById('upgradeWheel');
+
+      if (!upgradeMyItem || !upgradeTargetItem) {
+        chanceText.innerText = '0%';
+        wheel.style.background = `conic-gradient(var(--accent-color) 0deg, #161722 0deg)`;
+        btn.disabled = true;
+        return;
+      }
+
+      // Расчет шанса: цена вашего / цена желаемого * 100% (максимум 90%)
+      let chance = (upgradeMyItem.price / upgradeTargetItem.price) * 100;
+      if (chance > 90) chance = 90;
+      if (chance < 5) chance = 5;
+      chance = Math.round(chance);
+
+      chanceText.innerText = chance + '%';
+      const deg = (chance / 100) * 360;
+      wheel.style.background = `conic-gradient(var(--accent-color) ${deg}deg, #161722 ${deg}deg)`;
+      btn.disabled = false;
+      window.currentUpgradeChance = chance;
+    }
+
+    function startUpgrade() {
+      if (!upgradeMyItem || !upgradeTargetItem) return;
+      initAudio();
+
+      const btn = document.getElementById('btnUpgrade');
+      const resText = document.getElementById('upgradeResultText');
+      btn.disabled = true;
+      resText.innerText = 'Крутится апгрейд...';
+
+      // Списываем поставленный предмет из инвентаря
+      inventory.splice(upgradeMyIndex, 1);
+
+      setTimeout(() => {
+        const roll = Math.random() * 100;
+        const success = roll <= window.currentUpgradeChance;
+
+        if (success) {
+          playWinSound();
+          const wonItem = { ...upgradeTargetItem, id: Date.now() };
+          inventory.unshift(wonItem);
+          resText.innerHTML = `<span style="color: var(--green-color);">Успех! Вы получили ${wonItem.name}!</span>`;
+          if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+        } else {
+          playSellSound();
+          resText.innerHTML = `<span style="color: var(--red-color);">Неудача! Предмет сгорел.</span>`;
+          if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+        }
+
+        syncUserData();
+        resetUpgradeSlots();
+        btn.disabled = false;
+      }, 2000);
+    }
+
+    function resetUpgradeSlots() {
+      upgradeMyItem = null;
+      upgradeMyIndex = null;
+      upgradeTargetItem = null;
+      document.getElementById('upgrade-my-slot').classList.remove('filled');
+      document.getElementById('upgrade-my-slot').innerHTML = `<div style="color: var(--text-muted)">Ваш предмет</div><div style="font-size: 24px; margin-top: 10px;">➕</div>`;
+      document.getElementById('upgrade-target-slot').classList.remove('filled');
+      document.getElementById('upgrade-target-slot').innerHTML = `<div style="color: var(--text-muted)">Желаемый</div><div style="font-size: 24px; margin-top: 10px;">➕</div>`;
+      document.getElementById('upgradeChanceText').innerText = '0%';
+      document.getElementById('upgradeWheel').style.background = `conic-gradient(var(--accent-color) 0deg, #161722 0deg)`;
+      document.getElementById('btnUpgrade').disabled = true;
+    }
+
     function switchTab(tabName) {
       if (isSpinning) return;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -1060,6 +1193,10 @@
       if (tabName === 'shop') {
         document.getElementById('tab-shop').classList.add('active');
         document.getElementById('nav-shop').classList.add('active');
+      } else if (tabName === 'upgrade') {
+        document.getElementById('tab-upgrade').classList.add('active');
+        document.getElementById('nav-upgrade').classList.add('active');
+        resetUpgradeSlots();
       } else if (tabName === 'inventory') {
         document.getElementById('tab-inventory').classList.add('active');
         document.getElementById('nav-inventory').classList.add('active');
@@ -1114,9 +1251,7 @@
       let sum = 0;
       for (const item of casePool) {
         sum += item.chance;
-        if (rand <= sum) {
-          return item;
-        }
+        if (rand <= sum) return item;
       }
       return casePool[casePool.length - 1];
     }
@@ -1125,10 +1260,7 @@
       isSpinning = locked;
       openBtn.disabled = locked;
       backBtn.classList.toggle('is-disabled', locked);
-      document.getElementById('nav-shop').classList.toggle('is-disabled', locked);
-      document.getElementById('nav-inventory').classList.toggle('is-disabled', locked);
-      document.getElementById('nav-trade').classList.toggle('is-disabled', locked);
-      document.getElementById('nav-leaderboard').classList.toggle('is-disabled', locked);
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('is-disabled', locked));
     }
 
     function startSpinAudio() {
@@ -1138,10 +1270,7 @@
 
       spinSoundInterval = setInterval(() => {
         const elapsed = Date.now() - startTime;
-        if (elapsed >= duration) {
-          clearInterval(spinSoundInterval);
-          return;
-        }
+        if (elapsed >= duration) { clearInterval(spinSoundInterval); return; }
 
         const progress = elapsed / duration;
         const easeOut = 1 - Math.pow(1 - progress, 3);
@@ -1174,7 +1303,6 @@
       syncUserData();
 
       const winningItem = getRandomItem();
-
       generateTape(winningItem);
       tape.offsetHeight;
 
