@@ -141,28 +141,34 @@
       transition: transform 5s cubic-bezier(0.15, 0.9, 0.15, 1);
     }
 
+    /* Стандартная карточка для рулетки */
     .item-card {
-      width: 100%; 
-      height: 110px; /* Уменьшенная высота карточки для инвентаря */
-      border-radius: 12px;
+      width: 110px;
+      height: 130px;
+      border-radius: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: bold;
       flex-shrink: 0;
       box-sizing: border-box;
       text-align: center;
-      padding: 6px;
+      margin-right: 12px;
+      padding: 8px;
       cursor: pointer;
     }
 
+    .roulette-tape .item-card {
+      margin-right: 12px;
+    }
+
     .item-img { 
-      width: 48px; /* Уменьшенный размер иконки предмета */
-      height: 48px; 
+      width: 60px; 
+      height: 60px; 
       object-fit: contain; 
-      margin-bottom: 4px; 
+      margin-bottom: 8px; 
     }
 
     .item-price-tag { font-size: 11px; opacity: 0.85; }
@@ -171,6 +177,21 @@
     .rare { background: #1a365d; border: 2px solid #2b6cb0; }
     .epic { background: #44337a; border: 2px solid #6b46c1; }
     .legendary { background: #7b341e; border: 2px solid #c05621; }
+
+    /* Уменьшенные карточки только для сетки инвентаря */
+    .inventory-grid .item-card {
+      width: 100%;
+      height: 110px;
+      margin-right: 0;
+      font-size: 11px;
+      padding: 6px;
+    }
+
+    .inventory-grid .item-card .item-img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 4px;
+    }
 
     .btn-spin {
       width: 100%;
@@ -353,7 +374,7 @@
     .inventory-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 8px; /* Уменьшенный отступ сетки инвентаря */
+      gap: 8px;
       width: 100%;
       max-width: 400px;
     }
