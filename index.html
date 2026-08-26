@@ -89,20 +89,29 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 20px;
+      margin-top: 10px;
     }
 
     .btn-back {
       align-self: flex-start;
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
+      background: #1c1d2a;
+      border: 1px solid #2a2b3d;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 10px;
       font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
       margin-bottom: 20px;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-back:active {
+      transform: scale(0.95);
+      background: #252738;
     }
 
     .roulette-wrapper {
@@ -243,10 +252,12 @@
     </div>
   </div>
 
-  <!-- Экран рулетки (Открывается поверх при клике на кейс) -->
+  <!-- Экран рулетки -->
   <div id="tab-spin" class="tab-content">
     <div class="roulette-screen">
-      <button class="btn-back" id="backBtn" onclick="backToShop()">← Назад к кейсам</button>
+      <button class="btn-back" id="backBtn" onclick="backToShop()">
+        <span>←</span> Назад к кейсам
+      </button>
 
       <div class="roulette-wrapper">
         <div class="pointer"></div>
@@ -298,7 +309,6 @@
     const resultText = document.getElementById('result-text');
     const balanceSpan = document.getElementById('balance');
 
-    // Переключение между КЕЙСЫ / ИНВЕНТАРЬ
     function switchTab(tabName) {
       if (isSpinning) return;
 
@@ -315,7 +325,6 @@
       }
     }
 
-    // Открытие экрана рулетки для выбранного кейса
     function openSpinScreen(name, price) {
       if (isSpinning) return;
       currentCase = { name, price };
@@ -323,11 +332,9 @@
       openBtn.innerText = `Открыть кейс (${price} 💰)`;
       resultText.innerText = '';
       
-      // Переключаем экран на рулетку
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById('tab-spin').classList.add('active');
 
-      // Базовое наполнение рулетки до старта
       generateTape({ name: 'Кейс', rarity: 'common' });
     }
 
@@ -373,12 +380,10 @@
       }
     }
 
-    // Полная блокировка UI во время кручения
     function setLockState(locked) {
       isSpinning = locked;
       openBtn.disabled = locked;
 
-      // Блокируем кнопку "Назад" и нижнее меню
       backBtn.classList.toggle('is-disabled', locked);
       document.getElementById('nav-shop').classList.toggle('is-disabled', locked);
       document.getElementById('nav-inventory').classList.toggle('is-disabled', locked);
@@ -418,7 +423,7 @@
           resultText.innerText = `Выбито: ${winningItem.name}!`;
           balanceSpan.innerText = data.newBalance;
           inventory.unshift(winningItem);
-          setLockState(false); // Снимаем блокировку после анимации
+          setLockState(false);
         }, 5000);
 
       } catch (err) {
