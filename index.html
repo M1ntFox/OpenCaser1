@@ -236,7 +236,7 @@
     .content-item-card img { width: 45px; height: 45px; object-fit: contain; }
     .content-item-chance { font-size: 10px; color: var(--text-muted); }
 
-    /* Стили для Апгрейда со стрелкой и анимацией */
+    /* Стили для Апгрейда */
     .upgrade-container {
       width: 100%;
       max-width: 400px;
@@ -277,31 +277,51 @@
       width: 110px;
       height: 110px;
       border-radius: 50%;
-      background: conic-gradient(var(--accent-color) 0deg, #161722 0deg);
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+      background: #161722;
+    }
+
+    /* Статичная шкала шанса */
+    .upgrade-wheel-fill {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: conic-gradient(var(--accent-color) 0deg, #161722 0deg);
+    }
+
+    /* ВРАЩАЮЩАЯСЯ стрелочка поверх круга */
+    .upgrade-wheel-arrow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      z-index: 10;
+      pointer-events: none;
       transition: transform 3s cubic-bezier(0.15, 0.9, 0.15, 1);
     }
 
-    /* Стрелочка-указатель сверху на круге апгрейда */
-    .upgrade-wheel-box::after {
+    .upgrade-wheel-arrow::before {
       content: '';
       position: absolute;
-      top: -5px;
+      top: -4px;
       left: 50%;
       transform: translateX(-50%);
       border-left: 6px solid transparent;
       border-right: 6px solid transparent;
-      border-bottom: 10px solid var(--red-color);
-      z-index: 5;
+      border-bottom: 12px solid var(--red-color);
+      filter: drop-shadow(0 0 4px var(--red-color));
     }
 
     .upgrade-wheel-inner {
-      width: 85px;
-      height: 85px;
+      width: 80px;
+      height: 80px;
       background: var(--bg-color);
       border-radius: 50%;
       display: flex;
@@ -309,7 +329,8 @@
       align-items: center;
       justify-content: center;
       font-weight: bold;
-      font-size: 16px;
+      font-size: 15px;
+      z-index: 5;
     }
 
     .upgrade-selector-grid {
@@ -519,8 +540,10 @@
           <div id="upgrade-my-placeholder" style="font-size: 24px; margin-top: 10px;">➕</div>
         </div>
 
-        <!-- Колесо шанса -->
-        <div class="upgrade-wheel-box" id="upgradeWheel">
+        <!-- Колесо шанса со вращающейся стрелочкой -->
+        <div class="upgrade-wheel-box" id="upgradeWheelBox">
+          <div class="upgrade-wheel-fill" id="upgradeWheelFill"></div>
+          <div class="upgrade-wheel-arrow" id="upgradeWheelArrow"></div>
           <div class="upgrade-wheel-inner">
             <span id="upgradeChanceText">0%</span>
           </div>
@@ -1079,7 +1102,7 @@
       });
     }
 
-    // --- Логика Апгрейда с ограничением ≤ 70% ---
+    // --- Логика Апгрейда ---
     function openUpgradePicker(type) {
       const container = document.getElementById('upgradePickerContainer');
       const grid = document.getElementById('upgradeSelectorGrid');
@@ -1104,6 +1127,10 @@
             document.getElementById('upgrade-my-slot').classList.add('filled');
             document.getElementById('upgrade-my-slot').innerHTML = getItemHTML(item);
             container.style.display = 'none';
+            
+            upgradeTargetItem = null;
+            document.getElementById('upgrade-target-slot').classList.remove('filled');
+            document.getElementById('upgrade-target-slot').innerHTML = `<div style="color: var(--text-muted)">Желаемый</div><div style="font-size: 24px; margin-top: 10px;">➕</div>`;
             updateUpgradeChance();
           };
           grid.appendChild(card);
@@ -1113,34 +1140,31 @@
         
         let availableCount = 0;
         casePool.forEach((item) => {
-          // Вычисляем потенциальный шанс
-          let chance = upgradeMyItem ? Math.min(Math.round((upgradeMyItem.price / item.price) * 100), 100) : 100;
+          let chance = upgradeMyItem ? Math.round((upgradeMyItem.price / item.price) * 100) : 100;
           
+          if (upgradeMyItem && chance > 70) {
+            return;
+          }
+
+          availableCount++;
           const card = document.createElement('div');
           card.className = `item-card ${item.rarity}`;
           card.style.width = '70px'; card.style.height = '80px';
           
-          // Если шанс выше 70% и выбран свой предмет — делаем недоступным
-          if (upgradeMyItem && chance > 70) {
-            card.style.opacity = '0.3';
-            card.style.pointerEvents = 'none';
-          } else {
-            availableCount++;
-            card.onclick = () => {
-              upgradeTargetItem = item;
-              document.getElementById('upgrade-target-slot').classList.add('filled');
-              document.getElementById('upgrade-target-slot').innerHTML = getItemHTML(item);
-              container.style.display = 'none';
-              updateUpgradeChance();
-            };
-          }
+          card.onclick = () => {
+            upgradeTargetItem = item;
+            document.getElementById('upgrade-target-slot').classList.add('filled');
+            document.getElementById('upgrade-target-slot').innerHTML = getItemHTML(item);
+            container.style.display = 'none';
+            updateUpgradeChance();
+          };
 
           card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
           grid.appendChild(card);
         });
 
-        if (upgradeMyItem && availableCount === 0) {
-          grid.innerHTML = '<div class="inventory-empty" style="grid-column:1/-1; font-size:11px;">Нет предметов с шансом 70% и ниже (выберите более дешевый свой предмет)</div>';
+        if (availableCount === 0) {
+          grid.innerHTML = '<div class="inventory-empty" style="grid-column:1/-1; font-size:11px;">Нет доступных предметов (выберите более дешевый свой предмет)</div>';
         }
       }
     }
@@ -1148,22 +1172,22 @@
     function updateUpgradeChance() {
       const btn = document.getElementById('btnUpgrade');
       const chanceText = document.getElementById('upgradeChanceText');
-      const wheel = document.getElementById('upgradeWheel');
+      const wheelFill = document.getElementById('upgradeWheelFill');
 
       if (!upgradeMyItem || !upgradeTargetItem) {
         chanceText.innerText = '0%';
-        wheel.style.background = `conic-gradient(var(--accent-color) 0deg, #161722 0deg)`;
+        wheelFill.style.background = `conic-gradient(var(--accent-color) 0deg, #161722 0deg)`;
         btn.disabled = true;
         return;
       }
 
       let chance = Math.round((upgradeMyItem.price / upgradeTargetItem.price) * 100);
-      if (chance > 70) chance = 70; // Жесткое ограничение
+      if (chance > 70) chance = 70;
       if (chance < 1) chance = 1;
 
       chanceText.innerText = chance + '%';
       const deg = (chance / 100) * 360;
-      wheel.style.background = `conic-gradient(var(--accent-color) ${deg}deg, #161722 ${deg}deg)`;
+      wheelFill.style.background = `conic-gradient(var(--accent-color) ${deg}deg, #161722 ${deg}deg)`;
       btn.disabled = false;
       window.currentUpgradeChance = chance;
     }
@@ -1174,21 +1198,19 @@
 
       const btn = document.getElementById('btnUpgrade');
       const resText = document.getElementById('upgradeResultText');
-      const wheel = document.getElementById('upgradeWheel');
+      const wheelArrow = document.getElementById('upgradeWheelArrow');
       btn.disabled = true;
-      resText.innerText = 'Вращается колесо апгрейда...';
+      resText.innerText = 'Вращается стрелочка...';
 
-      // Списываем поставленный предмет из инвентаря
       inventory.splice(upgradeMyIndex, 1);
 
-      // Запуск анимации вращения колеса (несколько оборотов + случайный угол)
-      const extraSpins = 5 * 360; // 5 полных оборотов
-      const targetDeg = (window.currentUpgradeChance / 100) * 360;
+      // Вращаем СТРЕЛОЧКУ поверх круга (несколько оборотов + случайный угол)
+      const extraSpins = 5 * 360;
       const randomStop = Math.random() * 360;
       const totalRotation = extraSpins + randomStop;
 
-      wheel.style.transition = 'transform 3s cubic-bezier(0.15, 0.9, 0.15, 1)';
-      wheel.style.transform = `rotate(${totalRotation}deg)`;
+      wheelArrow.style.transition = 'transform 3s cubic-bezier(0.15, 0.9, 0.15, 1)';
+      wheelArrow.style.transform = `rotate(${totalRotation}deg)`;
 
       setTimeout(() => {
         const roll = Math.random() * 100;
@@ -1216,17 +1238,18 @@
       upgradeMyItem = null;
       upgradeMyIndex = null;
       upgradeTargetItem = null;
-      const wheel = document.getElementById('upgradeWheel');
-      wheel.style.transition = 'none';
-      wheel.style.transform = 'rotate(0deg)';
+      const wheelArrow = document.getElementById('upgradeWheelArrow');
+      wheelArrow.style.transition = 'none';
+      wheelArrow.style.transform = 'rotate(0deg)';
 
       document.getElementById('upgrade-my-slot').classList.remove('filled');
       document.getElementById('upgrade-my-slot').innerHTML = `<div style="color: var(--text-muted)">Ваш предмет</div><div style="font-size: 24px; margin-top: 10px;">➕</div>`;
       document.getElementById('upgrade-target-slot').classList.remove('filled');
       document.getElementById('upgrade-target-slot').innerHTML = `<div style="color: var(--text-muted)">Желаемый</div><div style="font-size: 24px; margin-top: 10px;">➕</div>`;
       document.getElementById('upgradeChanceText').innerText = '0%';
-      document.getElementById('upgradeWheel').style.background = `conic-gradient(var(--accent-color) 0deg, #161722 0deg)`;
+      document.getElementById('upgradeWheelFill').style.background = `conic-gradient(var(--accent-color) 0deg, #161722 0deg)`;
       document.getElementById('btnUpgrade').disabled = true;
+      document.getElementById('upgradePickerContainer').style.display = 'none';
     }
 
     function switchTab(tabName) {
