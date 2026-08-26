@@ -236,7 +236,7 @@
     .content-item-card img { width: 45px; height: 45px; object-fit: contain; }
     .content-item-chance { font-size: 10px; color: var(--text-muted); }
 
-    /* Стили для Апгрейда */
+    /* Стили для Апгрейда со стрелкой и анимацией */
     .upgrade-container {
       width: 100%;
       max-width: 400px;
@@ -283,6 +283,20 @@
       justify-content: center;
       position: relative;
       box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+      transition: transform 3s cubic-bezier(0.15, 0.9, 0.15, 1);
+    }
+
+    /* Стрелочка-указатель сверху на круге апгрейда */
+    .upgrade-wheel-box::after {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 10px solid var(--red-color);
+      z-index: 5;
     }
 
     .upgrade-wheel-inner {
@@ -496,7 +510,7 @@
 
   <!-- Вкладка Апгрейд -->
   <div id="tab-upgrade" class="tab-content">
-    <div class="page-title">Апгрейд предметов</div>
+    <div class="page-title">Апгрейд предметов (шанс ≤ 70%)</div>
     <div class="upgrade-container">
       <div class="upgrade-top-row">
         <!-- Ваш предмет -->
@@ -519,7 +533,7 @@
         </div>
       </div>
 
-      <!-- Селектор предметов (выдвигается при выборе слота) -->
+      <!-- Селектор предметов -->
       <div id="upgradePickerContainer" style="display: none; width: 100%;">
         <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;" id="pickerTitle">Выберите предмет:</div>
         <div class="upgrade-selector-grid" id="upgradeSelectorGrid"></div>
@@ -1065,7 +1079,7 @@
       });
     }
 
-    // --- Логика Апгрейда ---
+    // --- Логика Апгрейда с ограничением ≤ 70% ---
     function openUpgradePicker(type) {
       const container = document.getElementById('upgradePickerContainer');
       const grid = document.getElementById('upgradeSelectorGrid');
@@ -1095,21 +1109,39 @@
           grid.appendChild(card);
         });
       } else {
-        title.innerText = 'Выберите желаемый предмет:';
+        title.innerText = 'Выберите желаемый предмет (шанс ≤ 70%):';
+        
+        let availableCount = 0;
         casePool.forEach((item) => {
+          // Вычисляем потенциальный шанс
+          let chance = upgradeMyItem ? Math.min(Math.round((upgradeMyItem.price / item.price) * 100), 100) : 100;
+          
           const card = document.createElement('div');
           card.className = `item-card ${item.rarity}`;
           card.style.width = '70px'; card.style.height = '80px';
+          
+          // Если шанс выше 70% и выбран свой предмет — делаем недоступным
+          if (upgradeMyItem && chance > 70) {
+            card.style.opacity = '0.3';
+            card.style.pointerEvents = 'none';
+          } else {
+            availableCount++;
+            card.onclick = () => {
+              upgradeTargetItem = item;
+              document.getElementById('upgrade-target-slot').classList.add('filled');
+              document.getElementById('upgrade-target-slot').innerHTML = getItemHTML(item);
+              container.style.display = 'none';
+              updateUpgradeChance();
+            };
+          }
+
           card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
-          card.onclick = () => {
-            upgradeTargetItem = item;
-            document.getElementById('upgrade-target-slot').classList.add('filled');
-            document.getElementById('upgrade-target-slot').innerHTML = getItemHTML(item);
-            container.style.display = 'none';
-            updateUpgradeChance();
-          };
           grid.appendChild(card);
         });
+
+        if (upgradeMyItem && availableCount === 0) {
+          grid.innerHTML = '<div class="inventory-empty" style="grid-column:1/-1; font-size:11px;">Нет предметов с шансом 70% и ниже (выберите более дешевый свой предмет)</div>';
+        }
       }
     }
 
@@ -1125,11 +1157,9 @@
         return;
       }
 
-      // Расчет шанса: цена вашего / цена желаемого * 100% (максимум 90%)
-      let chance = (upgradeMyItem.price / upgradeTargetItem.price) * 100;
-      if (chance > 90) chance = 90;
-      if (chance < 5) chance = 5;
-      chance = Math.round(chance);
+      let chance = Math.round((upgradeMyItem.price / upgradeTargetItem.price) * 100);
+      if (chance > 70) chance = 70; // Жесткое ограничение
+      if (chance < 1) chance = 1;
 
       chanceText.innerText = chance + '%';
       const deg = (chance / 100) * 360;
@@ -1144,11 +1174,21 @@
 
       const btn = document.getElementById('btnUpgrade');
       const resText = document.getElementById('upgradeResultText');
+      const wheel = document.getElementById('upgradeWheel');
       btn.disabled = true;
-      resText.innerText = 'Крутится апгрейд...';
+      resText.innerText = 'Вращается колесо апгрейда...';
 
       // Списываем поставленный предмет из инвентаря
       inventory.splice(upgradeMyIndex, 1);
+
+      // Запуск анимации вращения колеса (несколько оборотов + случайный угол)
+      const extraSpins = 5 * 360; // 5 полных оборотов
+      const targetDeg = (window.currentUpgradeChance / 100) * 360;
+      const randomStop = Math.random() * 360;
+      const totalRotation = extraSpins + randomStop;
+
+      wheel.style.transition = 'transform 3s cubic-bezier(0.15, 0.9, 0.15, 1)';
+      wheel.style.transform = `rotate(${totalRotation}deg)`;
 
       setTimeout(() => {
         const roll = Math.random() * 100;
@@ -1158,7 +1198,7 @@
           playWinSound();
           const wonItem = { ...upgradeTargetItem, id: Date.now() };
           inventory.unshift(wonItem);
-          resText.innerHTML = `<span style="color: var(--green-color);">Успех! Вы получили ${wonItem.name}!</span>`;
+          resText.innerHTML = `<span style="color: var(--green-color);">Успех! Вы апгрейднули предмет до ${wonItem.name}!</span>`;
           if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         } else {
           playSellSound();
@@ -1169,13 +1209,17 @@
         syncUserData();
         resetUpgradeSlots();
         btn.disabled = false;
-      }, 2000);
+      }, 3000);
     }
 
     function resetUpgradeSlots() {
       upgradeMyItem = null;
       upgradeMyIndex = null;
       upgradeTargetItem = null;
+      const wheel = document.getElementById('upgradeWheel');
+      wheel.style.transition = 'none';
+      wheel.style.transform = 'rotate(0deg)';
+
       document.getElementById('upgrade-my-slot').classList.remove('filled');
       document.getElementById('upgrade-my-slot').innerHTML = `<div style="color: var(--text-muted)">Ваш предмет</div><div style="font-size: 24px; margin-top: 10px;">➕</div>`;
       document.getElementById('upgrade-target-slot').classList.remove('filled');
