@@ -218,6 +218,52 @@
       display: none;
     }
 
+    /* Блок содержимого кейса */
+    .case-contents-section {
+      width: 100%;
+      margin-top: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .case-contents-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--text-muted);
+    }
+
+    .contents-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+
+    .content-item-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      font-size: 11px;
+      border: 1px solid #2a2b3d;
+      gap: 4px;
+    }
+
+    .content-item-card img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+    }
+
+    .content-item-chance {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
     .inventory-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -228,7 +274,6 @@
 
     .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
 
-    /* Таблица лидеров и Онлайн-игроки */
     .leaderboard-list, .online-list {
       width: 100%;
       max-width: 400px;
@@ -253,27 +298,12 @@
       gap: 12px;
     }
 
-    .leader-rank {
-      font-weight: bold;
-      font-size: 16px;
-      color: var(--text-muted);
-      width: 24px;
-    }
-
+    .leader-rank { font-weight: bold; font-size: 16px; color: var(--text-muted); width: 24px; }
     .leader-rank-1 { color: #f6e05e; }
     .leader-rank-2 { color: #cbd5e0; }
     .leader-rank-3 { color: #ed8936; }
-
-    .leader-name {
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .leader-balance {
-      color: var(--green-color);
-      font-weight: bold;
-      font-size: 14px;
-    }
+    .leader-name { font-weight: 600; font-size: 14px; }
+    .leader-balance { color: var(--green-color); font-weight: bold; font-size: 14px; }
 
     .btn-trade-action {
       background: var(--accent-color);
@@ -346,7 +376,6 @@
     .btn-modal-accept { background: var(--green-color); color: #fff; }
     .btn-modal-decline { background: var(--red-color); color: #fff; }
 
-    /* Окно обмена (Трейда) */
     .trade-container {
       width: 100%;
       max-width: 400px;
@@ -442,6 +471,12 @@
         <div id="result-text"></div>
         <button id="quickSellBtn" class="btn-sell-quick" onclick="sellLatestItem()">Продать предмет</button>
       </div>
+
+      <!-- Секция содержимого кейса с шансами и ценами -->
+      <div class="case-contents-section">
+        <div class="case-contents-title">Содержимое кейса:</div>
+        <div class="contents-grid" id="contentsGrid"></div>
+      </div>
     </div>
   </div>
 
@@ -452,7 +487,6 @@
     </div>
   </div>
 
-  <!-- Вкладка Трейд (Обмен) -->
   <div id="tab-trade" class="tab-content">
     <div class="page-title">Игроки онлайн для обмена</div>
     <div class="online-list" id="online-list-container">
@@ -510,7 +544,6 @@
 
         <div style="font-size: 13px; font-weight: bold; text-align: center;" id="tradeStatusText">Выберите предмет из инвентаря для обмена</div>
         
-        <!-- Выбор своих предметов для добавления в трейд -->
         <div style="font-size: 12px; color: var(--text-muted);">Ваш инвентарь (нажмите, чтобы добавить):</div>
         <div class="inventory-grid" id="trade-inventory-picker" style="max-height: 120px; overflow-y: auto;"></div>
 
@@ -559,7 +592,6 @@
       document.getElementById('username').innerText = userFirstName;
     }
 
-    // --- Web Audio API ---
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
 
@@ -635,7 +667,6 @@
     let selectedInventoryIndex = null;
     let spinSoundInterval = null;
 
-    // --- Переменные для обмена ---
     let activeTradeId = null;
     let isSender = false;
     let myTradeItems = [];
@@ -685,7 +716,6 @@
       }
     }
 
-    // Сердцебиение онлайн-статуса
     function startHeartbeat() {
       setInterval(() => {
         supabaseClient
@@ -730,7 +760,6 @@
       }
     }
 
-    // Подписка на входящие заявки обмена
     function initRealtimeListener() {
       supabaseClient
         .channel('public:trades')
@@ -822,7 +851,6 @@
 
           renderTradeOffers();
 
-          // Проверяем завершение сделки
           if (updated.sender_ready && updated.receiver_ready && updated.status === 'active') {
             executeTradeCompletion(updated);
           }
@@ -869,9 +897,8 @@
     }
 
     function addTradeItem(invIndex) {
-      if (isReady) return; // Нельзя менять предметы после подтверждения
+      if (isReady) return;
       const item = inventory[invIndex];
-      // Убираем из инвентаря игрока и добавляем в трейд временно
       inventory.splice(invIndex, 1);
       myTradeItems.push(item);
 
@@ -885,7 +912,7 @@
       const peerBox = document.getElementById('peer-offer-box');
 
       myBox.innerHTML = '<div class="trade-box-title">Ваш вклад</div>';
-      myTradeItems.forEach((item, i) => {
+      myTradeItems.forEach((item) => {
         const div = document.createElement('div');
         div.style.fontSize = '11px';
         div.style.color = 'var(--green-color)';
@@ -926,7 +953,6 @@
 
     async function cancelActiveTrade() {
       if (activeTradeId) {
-        // Возвращаем предметы обратно в инвентарь при отмене
         inventory.push(...myTradeItems);
         myTradeItems = [];
         await supabaseClient
@@ -938,9 +964,8 @@
       renderInventory();
     }
 
-    async function executeTradeCompletion(tradeData) {
+    async function executeTradeCompletion() {
       if (isSender) {
-        // Отправитель фиксирует смену предметов в базе один раз
         inventory.push(...peerTradeItems);
         syncUserData();
         await supabaseClient
@@ -1011,6 +1036,22 @@
       `;
     }
 
+    function renderCaseContents() {
+      const grid = document.getElementById('contentsGrid');
+      grid.innerHTML = '';
+      casePool.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = `content-item-card ${item.rarity}`;
+        div.innerHTML = `
+          <img src="${item.icon}">
+          <div style="font-weight: bold; font-size: 10px;">${item.name}</div>
+          <div style="color: var(--green-color);">${item.price} 💰</div>
+          <div class="content-item-chance">${item.chance}%</div>
+        `;
+        grid.appendChild(div);
+      });
+    }
+
     function switchTab(tabName) {
       if (isSpinning) return;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -1044,6 +1085,7 @@
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById('tab-spin').classList.add('active');
       generateTape(casePool[0]);
+      renderCaseContents();
     }
 
     function backToShop() {
@@ -1188,7 +1230,7 @@
       list.innerHTML = '';
       inventory.forEach((item, index) => {
         const card = document.createElement('div');
-        card.className = `item-card ${item.rarition || item.rarity}`;
+        card.className = `item-card ${item.rarity}`;
         card.innerHTML = getItemHTML(item);
         card.onclick = () => openModal(index);
         list.appendChild(card);
