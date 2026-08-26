@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Case Opener</title>
+  <title>Case Opener & Trade</title>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Supabase JS Client SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -118,7 +118,6 @@
 
     .btn-back:active { transform: scale(0.95); background: #252738; }
 
-    /* УВЕЛИЧЕННАЯ РУЛЕТКА */
     .roulette-wrapper {
       position: relative;
       width: 100%;
@@ -150,7 +149,6 @@
       transition: transform 5s cubic-bezier(0.15, 0.9, 0.15, 1);
     }
 
-    /* УВЕЛИЧЕННЫЕ КАРТОЧКИ В РУЛЕТКЕ */
     .item-card {
       width: 110px;
       height: 130px;
@@ -230,8 +228,8 @@
 
     .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
 
-    /* Таблица лидеров */
-    .leaderboard-list {
+    /* Таблица лидеров и Онлайн-игроки */
+    .leaderboard-list, .online-list {
       width: 100%;
       max-width: 400px;
       display: flex;
@@ -277,6 +275,17 @@
       font-size: 14px;
     }
 
+    .btn-trade-action {
+      background: var(--accent-color);
+      color: #fff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -295,8 +304,8 @@
       border: 1px solid #2a2b3d;
       border-radius: 20px;
       padding: 25px;
-      width: 85%;
-      max-width: 320px;
+      width: 90%;
+      max-width: 360px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -304,7 +313,6 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
-    /* КРУПНОЕ ОКНО ПРЕДМЕТА ПРИ НАЖАТИИ В ИНВЕНТАРЕ */
     .modal-item-preview {
       width: 140px;
       height: 150px;
@@ -335,6 +343,40 @@
 
     .btn-modal-sell { background: var(--green-color); color: #fff; }
     .btn-modal-close { background: #3a3d54; color: #fff; }
+    .btn-modal-accept { background: var(--green-color); color: #fff; }
+    .btn-modal-decline { background: var(--red-color); color: #fff; }
+
+    /* Окно обмена (Трейда) */
+    .trade-container {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .trade-grid-row {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+    }
+
+    .trade-box {
+      flex: 1;
+      background: #161722;
+      border: 1px solid #2a2b3d;
+      border-radius: 12px;
+      padding: 10px;
+      min-height: 150px;
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .trade-box-title { font-size: 12px; color: var(--text-muted); font-weight: bold; text-align: center; }
 
     .nav-bar {
       position: fixed;
@@ -356,7 +398,7 @@
       color: var(--text-muted);
       font-size: 12px;
       cursor: pointer;
-      width: 33.33%;
+      width: 25%;
     }
 
     .nav-item.active { color: var(--accent-color); font-weight: bold; }
@@ -374,7 +416,6 @@
 
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
-    
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('Праздничный', 200)">
         <img src="/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
@@ -411,7 +452,14 @@
     </div>
   </div>
 
-  <!-- Вкладка таблицы лидеров -->
+  <!-- Вкладка Трейд (Обмен) -->
+  <div id="tab-trade" class="tab-content">
+    <div class="page-title">Игроки онлайн для обмена</div>
+    <div class="online-list" id="online-list-container">
+      <div class="inventory-empty">Поиск игроков онлайн...</div>
+    </div>
+  </div>
+
   <div id="tab-leaderboard" class="tab-content">
     <div class="page-title">Топ игроков</div>
     <div class="leaderboard-list" id="leaderboard-list">
@@ -419,6 +467,7 @@
     </div>
   </div>
 
+  <!-- Модальное окно предмета инвентаря -->
   <div class="modal-overlay" id="itemModal">
     <div class="modal-card">
       <h3 id="modalTitle">Предмет</h3>
@@ -432,6 +481,47 @@
     </div>
   </div>
 
+  <!-- Модальное окно входящего приглашения в трейд -->
+  <div class="modal-overlay" id="tradeInviteModal">
+    <div class="modal-card">
+      <h3>Запрос на обмен</h3>
+      <div id="inviteText" style="text-align: center; color: var(--text-muted);">Игрок хочет обменяться с вами предметами</div>
+      <div class="modal-actions">
+        <button class="btn-modal btn-modal-accept" onclick="acceptTradeInvite()">Принять</button>
+        <button class="btn-modal btn-modal-decline" onclick="declineTradeInvite()">Отклонить</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно активной сделки -->
+  <div class="modal-overlay" id="activeTradeModal">
+    <div class="modal-card" style="max-width: 380px;">
+      <h3 id="activeTradeTitle">Обмен с игроком</h3>
+      
+      <div class="trade-container">
+        <div class="trade-grid-row">
+          <div class="trade-box" id="my-offer-box">
+            <div class="trade-box-title">Ваш вклад</div>
+          </div>
+          <div class="trade-box" id="peer-offer-box">
+            <div class="trade-box-title">Вклад оппонента</div>
+          </div>
+        </div>
+
+        <div style="font-size: 13px; font-weight: bold; text-align: center;" id="tradeStatusText">Выберите предмет из инвентаря для обмена</div>
+        
+        <!-- Выбор своих предметов для добавления в трейд -->
+        <div style="font-size: 12px; color: var(--text-muted);">Ваш инвентарь (нажмите, чтобы добавить):</div>
+        <div class="inventory-grid" id="trade-inventory-picker" style="max-height: 120px; overflow-y: auto;"></div>
+
+        <div class="modal-actions">
+          <button class="btn-modal btn-modal-accept" id="btnReadyTrade" onclick="toggleReadyTrade()">Готов</button>
+          <button class="btn-modal btn-modal-decline" onclick="cancelActiveTrade()">Отмена</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="nav-bar">
     <div class="nav-item active" id="nav-shop" onclick="switchTab('shop')">
       <span style="font-size: 20px;">📦</span>
@@ -441,6 +531,10 @@
       <span style="font-size: 20px;">🎒</span>
       <span>Инвентарь</span>
     </div>
+    <div class="nav-item" id="nav-trade" onclick="switchTab('trade')">
+      <span style="font-size: 20px;">🤝</span>
+      <span>Обмен</span>
+    </div>
     <div class="nav-item" id="nav-leaderboard" onclick="switchTab('leaderboard')">
       <span style="font-size: 20px;">🏆</span>
       <span>Топ</span>
@@ -448,7 +542,6 @@
   </div>
 
   <script>
-    // --- Конфигурация Supabase ---
     const SUPABASE_URL = 'https://jbywybwncekaoawzqury.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_WAL11ngzElD9llZZKnpJ9g_cWMgT1kz';
     
@@ -459,7 +552,7 @@
 
     let userId = tg.initDataUnsafe?.user?.id 
       ? String(tg.initDataUnsafe.user.id) 
-      : 'guest_user';
+      : 'guest_user_' + Math.floor(Math.random()*1000);
 
     let userFirstName = tg.initDataUnsafe?.user?.first_name || 'Игрок';
     if (tg.initDataUnsafe?.user?.first_name) {
@@ -507,7 +600,6 @@
       });
     }
 
-    // Звук при продаже предмета
     function playSellSound() {
       if (!audioCtx) return;
       const osc = audioCtx.createOscillator();
@@ -523,7 +615,6 @@
       osc.stop(audioCtx.currentTime + 0.1);
     }
 
-    // Предметы со значениями из скриншота
     const casePool = [
       { name: 'Снуп Дог', rarity: 'legendary', price: 2075, chance: 0.5, icon: '/images/case_standart/item3.png' },
       { name: 'Плюшевый Пепе', rarity: 'epic', price: 925, chance: 2.0, icon: '/images/case_standart/item1.png' },
@@ -544,6 +635,14 @@
     let selectedInventoryIndex = null;
     let spinSoundInterval = null;
 
+    // --- Переменные для обмена ---
+    let activeTradeId = null;
+    let isSender = false;
+    let myTradeItems = [];
+    let peerTradeItems = [];
+    let isReady = false;
+    let currentTradeSubscription = null;
+
     const tape = document.getElementById('tape');
     const openBtn = document.getElementById('openBtn');
     const backBtn = document.getElementById('backBtn');
@@ -552,11 +651,6 @@
     const quickSellBtn = document.getElementById('quickSellBtn');
 
     async function loadUserData() {
-      if (userId === 'guest_user') {
-        updateBalanceUI();
-        return;
-      }
-
       try {
         let { data, error } = await supabaseClient
           .from('users')
@@ -564,42 +658,304 @@
           .eq('user_id', userId)
           .maybeSingle();
 
-        if (error) {
-          console.error('Ошибка получения пользователя:', error.message);
-          return;
-        }
-
         if (data) {
           balance = data.balance ?? 1000;
           inventory = data.inventory ?? [];
         } else {
-          const { error: insertError } = await supabaseClient
+          await supabaseClient
             .from('users')
             .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName }]);
-            
-          if (insertError) console.error('Ошибка создания:', insertError.message);
         }
         updateBalanceUI();
         syncUserData();
+        startHeartbeat();
+        initRealtimeListener();
       } catch (e) {
-        console.error('Сбой сети/клиента Supabase:', e);
+        console.error('Ошибка инициализации профиля:', e);
       }
     }
 
     async function syncUserData() {
-      if (userId === 'guest_user') return;
+      try {
+        await supabaseClient
+          .from('users')
+          .upsert({ user_id: userId, balance: balance, inventory: inventory, username: userFirstName, last_seen: new Date().toISOString() }, { onConflict: 'user_id' });
+      } catch (e) {
+        console.error('Ошибка синхронизации данных:', e);
+      }
+    }
+
+    // Сердцебиение онлайн-статуса
+    function startHeartbeat() {
+      setInterval(() => {
+        supabaseClient
+          .from('users')
+          .update({ last_seen: new Date().toISOString() })
+          .eq('user_id', userId)
+          .then(() => {});
+      }, 15000);
+    }
+
+    async function loadOnlineUsers() {
+      const container = document.getElementById('online-list-container');
+      container.innerHTML = '<div class="inventory-empty">Поиск игроков онлайн...</div>';
 
       try {
-        const { error } = await supabaseClient
+        const thirtySecondsAgo = new Date(Date.now() - 30000).toISOString();
+        let { data, error } = await supabaseClient
           .from('users')
-          .upsert({ user_id: userId, balance: balance, inventory: inventory, username: userFirstName }, { onConflict: 'user_id' });
-        
-        if (error) {
-          console.error('Ошибка сохранения в Supabase:', error.message);
+          .select('user_id, username, balance')
+          .gt('last_seen', thirtySecondsAgo)
+          .neq('user_id', userId);
+
+        if (error || !data || data.length === 0) {
+          container.innerHTML = '<div class="inventory-empty">Нет игроков онлайн</div>';
+          return;
         }
+
+        container.innerHTML = '';
+        data.forEach((user) => {
+          const item = document.createElement('div');
+          item.className = 'leader-item';
+          item.innerHTML = `
+            <div class="leader-info">
+              <div class="leader-name">${user.username || 'Игрок'}</div>
+            </div>
+            <button class="btn-trade-action" onclick="sendTradeInvite('${user.user_id}', '${user.username}')">Обмен</button>
+          `;
+          container.appendChild(item);
+        });
       } catch (e) {
-        console.error('Сбой отправки данных:', e);
+        container.innerHTML = '<div class="inventory-empty">Ошибка загрузки онлайн-листа</div>';
       }
+    }
+
+    // Подписка на входящие заявки обмена
+    function initRealtimeListener() {
+      supabaseClient
+        .channel('public:trades')
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'trades', filter: `receiver_id=eq.${userId}` }, payload => {
+          const newTrade = payload.new;
+          if (newTrade.status === 'pending') {
+            activeTradeId = newTrade.id;
+            isSender = false;
+            document.getElementById('tradeInviteModal').classList.add('active');
+          }
+        })
+        .subscribe();
+    }
+
+    async function sendTradeInvite(peerId, peerName) {
+      try {
+        const { data, error } = await supabaseClient
+          .from('trades')
+          .insert([{ sender_id: userId, receiver_id: peerId, status: 'pending' }])
+          .select()
+          .single();
+
+        if (error) {
+          alert('Не удалось отправить запрос');
+          return;
+        }
+
+        activeTradeId = data.id;
+        isSender = true;
+        myTradeItems = [];
+        peerTradeItems = [];
+        isReady = false;
+
+        openActiveTradeWindow(`Обмен с ${peerName}`);
+        subscribeToTradeChannel(activeTradeId);
+      } catch (e) {
+        console.error('Ошибка отправки приглашения:', e);
+      }
+    }
+
+    async function acceptTradeInvite() {
+      document.getElementById('tradeInviteModal').classList.remove('active');
+      isSender = false;
+      myTradeItems = [];
+      peerTradeItems = [];
+      isReady = false;
+
+      await supabaseClient
+        .from('trades')
+        .update({ status: 'active' })
+        .eq('id', activeTradeId);
+
+      openActiveTradeWindow('Обмен предметами');
+      subscribeToTradeChannel(activeTradeId);
+    }
+
+    async function declineTradeInvite() {
+      document.getElementById('tradeInviteModal').classList.remove('active');
+      if (activeTradeId) {
+        await supabaseClient
+          .from('trades')
+          .update({ status: 'cancelled' })
+          .eq('id', activeTradeId);
+        activeTradeId = null;
+      }
+    }
+
+    function subscribeToTradeChannel(tradeId) {
+      if (currentTradeSubscription) {
+        supabaseClient.removeChannel(currentTradeSubscription);
+      }
+
+      currentTradeSubscription = supabaseClient
+        .channel(`trade:${tradeId}`)
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'trades', filter: `id=eq.${tradeId}` }, payload => {
+          const updated = payload.new;
+
+          if (updated.status === 'cancelled') {
+            alert('Сделка была отменена');
+            closeActiveTradeModal();
+            return;
+          }
+
+          if (isSender) {
+            peerTradeItems = updated.receiver_items || [];
+          } else {
+            peerTradeItems = updated.sender_items || [];
+          }
+
+          renderTradeOffers();
+
+          // Проверяем завершение сделки
+          if (updated.sender_ready && updated.receiver_ready && updated.status === 'active') {
+            executeTradeCompletion(updated);
+          }
+        })
+        .subscribe();
+    }
+
+    function openActiveTradeWindow(title) {
+      document.getElementById('activeTradeTitle').innerText = title;
+      document.getElementById('activeTradeModal').classList.add('active');
+      renderTradePicker();
+      renderTradeOffers();
+    }
+
+    function closeActiveTradeModal() {
+      document.getElementById('activeTradeModal').classList.remove('active');
+      activeTradeId = null;
+      myTradeItems = [];
+      peerTradeItems = [];
+      isReady = false;
+      if (currentTradeSubscription) {
+        supabaseClient.removeChannel(currentTradeSubscription);
+        currentTradeSubscription = null;
+      }
+    }
+
+    function renderTradePicker() {
+      const picker = document.getElementById('trade-inventory-picker');
+      picker.innerHTML = '';
+      if (inventory.length === 0) {
+        picker.innerHTML = '<div class="inventory-empty" style="margin-top:10px;">Инвентарь пуст</div>';
+        return;
+      }
+
+      inventory.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = `item-card ${item.rarity}`;
+        card.style.width = '80px';
+        card.style.height = '90px';
+        card.innerHTML = `<img src="${item.icon}" style="width:40px;height:40px;object-fit:contain;"><div style="font-size:10px;">${item.name}</div>`;
+        card.onclick = () => addTradeItem(idx);
+        picker.appendChild(card);
+      });
+    }
+
+    function addTradeItem(invIndex) {
+      if (isReady) return; // Нельзя менять предметы после подтверждения
+      const item = inventory[invIndex];
+      // Убираем из инвентаря игрока и добавляем в трейд временно
+      inventory.splice(invIndex, 1);
+      myTradeItems.push(item);
+
+      renderTradePicker();
+      renderTradeOffers();
+      pushTradeStateToSupabase();
+    }
+
+    function renderTradeOffers() {
+      const myBox = document.getElementById('my-offer-box');
+      const peerBox = document.getElementById('peer-offer-box');
+
+      myBox.innerHTML = '<div class="trade-box-title">Ваш вклад</div>';
+      myTradeItems.forEach((item, i) => {
+        const div = document.createElement('div');
+        div.style.fontSize = '11px';
+        div.style.color = 'var(--green-color)';
+        div.innerText = `• ${item.name}`;
+        myBox.appendChild(div);
+      });
+
+      peerBox.innerHTML = '<div class="trade-box-title">Вклад оппонента</div>';
+      peerTradeItems.forEach((item) => {
+        const div = document.createElement('div');
+        div.style.fontSize = '11px';
+        div.style.color = 'var(--green-color)';
+        div.innerText = `• ${item.name}`;
+        peerBox.appendChild(div);
+      });
+    }
+
+    async function pushTradeStateToSupabase() {
+      if (!activeTradeId) return;
+      const updateData = isSender 
+        ? { sender_items: myTradeItems, sender_ready: isReady }
+        : { receiver_items: myTradeItems, receiver_ready: isReady };
+
+      await supabaseClient
+        .from('trades')
+        .update(updateData)
+        .eq('id', activeTradeId);
+    }
+
+    async function toggleReadyTrade() {
+      isReady = !isReady;
+      const btn = document.getElementById('btnReadyTrade');
+      btn.style.background = isReady ? 'var(--red-color)' : 'var(--green-color)';
+      btn.innerText = isReady ? 'Отменить готовность' : 'Готов';
+
+      await pushTradeStateToSupabase();
+    }
+
+    async function cancelActiveTrade() {
+      if (activeTradeId) {
+        // Возвращаем предметы обратно в инвентарь при отмене
+        inventory.push(...myTradeItems);
+        myTradeItems = [];
+        await supabaseClient
+          .from('trades')
+          .update({ status: 'cancelled' })
+          .eq('id', activeTradeId);
+      }
+      closeActiveTradeModal();
+      renderInventory();
+    }
+
+    async function executeTradeCompletion(tradeData) {
+      if (isSender) {
+        // Отправитель фиксирует смену предметов в базе один раз
+        inventory.push(...peerTradeItems);
+        syncUserData();
+        await supabaseClient
+          .from('trades')
+          .update({ status: 'completed' })
+          .eq('id', activeTradeId);
+      } else {
+        inventory.push(...peerTradeItems);
+        syncUserData();
+      }
+
+      playWinSound();
+      alert('Обмен успешно завершен!');
+      closeActiveTradeModal();
+      renderInventory();
     }
 
     async function loadLeaderboard() {
@@ -613,14 +969,8 @@
           .order('balance', { ascending: false })
           .limit(10);
 
-        if (error) {
-          console.error('Ошибка загрузки топа:', error.message);
+        if (error || !data) {
           listContainer.innerHTML = '<div class="inventory-empty">Ошибка загрузки рейтинга</div>';
-          return;
-        }
-
-        if (!data || data.length === 0) {
-          listContainer.innerHTML = '<div class="inventory-empty">Список лидеров пуст</div>';
           return;
         }
 
@@ -644,7 +994,6 @@
           listContainer.appendChild(item);
         });
       } catch (e) {
-        console.error('Сбой при запросе топа:', e);
         listContainer.innerHTML = '<div class="inventory-empty">Ошибка соединения</div>';
       }
     }
@@ -674,6 +1023,10 @@
         document.getElementById('tab-inventory').classList.add('active');
         document.getElementById('nav-inventory').classList.add('active');
         renderInventory();
+      } else if (tabName === 'trade') {
+        document.getElementById('tab-trade').classList.add('active');
+        document.getElementById('nav-trade').classList.add('active');
+        loadOnlineUsers();
       } else if (tabName === 'leaderboard') {
         document.getElementById('tab-leaderboard').classList.add('active');
         document.getElementById('nav-leaderboard').classList.add('active');
@@ -732,6 +1085,7 @@
       backBtn.classList.toggle('is-disabled', locked);
       document.getElementById('nav-shop').classList.toggle('is-disabled', locked);
       document.getElementById('nav-inventory').classList.toggle('is-disabled', locked);
+      document.getElementById('nav-trade').classList.toggle('is-disabled', locked);
       document.getElementById('nav-leaderboard').classList.toggle('is-disabled', locked);
     }
 
@@ -749,7 +1103,7 @@
 
         const progress = elapsed / duration;
         const easeOut = 1 - Math.pow(1 - progress, 3);
-        const cardWidth = 122; // С учетом ширины карты и отступов
+        const cardWidth = 122;
         const estPosition = easeOut * (50 * cardWidth - 200);
         const currentCardIndex = Math.floor(estPosition / cardWidth);
 
@@ -834,7 +1188,7 @@
       list.innerHTML = '';
       inventory.forEach((item, index) => {
         const card = document.createElement('div');
-        card.className = `item-card ${item.rarity}`;
+        card.className = `item-card ${item.rarition || item.rarity}`;
         card.innerHTML = getItemHTML(item);
         card.onclick = () => openModal(index);
         list.appendChild(card);
