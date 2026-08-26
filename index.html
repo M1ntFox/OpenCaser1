@@ -11,6 +11,8 @@
       --card-bg: #1c1d2a;
       --accent-color: #5865f2;
       --text-muted: #8e9297;
+      --green-color: #48bb78;
+      --red-color: #ff4757;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
@@ -38,7 +40,7 @@
 
     .balance-badge {
       background: rgba(30, 41, 59, 0.8);
-      color: #48bb78;
+      color: var(--green-color);
       padding: 8px 18px;
       border-radius: 30px;
       font-weight: bold;
@@ -48,13 +50,13 @@
       gap: 8px;
     }
 
-    /* Экран / Вкладка */
+    /* Вкладки */
     .tab-content { display: none; padding: 20px; flex-direction: column; align-items: center; }
     .tab-content.active { display: flex; }
 
     .page-title { margin-top: 10px; margin-bottom: 25px; font-size: 16px; font-weight: 600; text-align: center; }
 
-    /* Сетка кейсов */
+    /* Выбор кейсов */
     .cases-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -80,9 +82,9 @@
     .case-card:hover { border-color: var(--accent-color); }
     .case-icon-emoji { font-size: 42px; }
     .case-title { font-weight: bold; font-size: 15px; }
-    .case-price { color: #48bb78; font-weight: bold; font-size: 13px; }
+    .case-price { color: var(--green-color); font-weight: bold; font-size: 13px; }
 
-    /* Экран рулетки */
+    /* Рулетка */
     .roulette-screen {
       width: 100%;
       max-width: 400px;
@@ -109,10 +111,7 @@
       transition: all 0.2s;
     }
 
-    .btn-back:active {
-      transform: scale(0.95);
-      background: #252738;
-    }
+    .btn-back:active { transform: scale(0.95); background: #252738; }
 
     .roulette-wrapper {
       position: relative;
@@ -122,7 +121,7 @@
       border-radius: 16px;
       overflow: hidden;
       background: #0b0c12;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
     }
 
     .pointer {
@@ -132,9 +131,9 @@
       transform: translateX(-50%);
       width: 3px;
       height: 100%;
-      background: #ff4757;
+      background: var(--red-color);
       z-index: 10;
-      box-shadow: 0 0 10px #ff4757;
+      box-shadow: 0 0 10px var(--red-color);
     }
 
     .roulette-tape {
@@ -154,12 +153,16 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: bold;
       flex-shrink: 0;
       box-sizing: border-box;
       text-align: center;
+      padding: 5px;
+      cursor: pointer;
     }
+
+    .item-price-tag { font-size: 10px; margin-top: 4px; opacity: 0.8; }
 
     .common { background: #2d3748; border: 2px solid #4a5568; }
     .rare { background: #1a365d; border: 2px solid #2b6cb0; }
@@ -181,7 +184,27 @@
 
     .btn-spin:disabled { background: #3f425a; opacity: 0.6; cursor: not-allowed; box-shadow: none; }
 
-    #result-text { margin-top: 20px; font-weight: bold; font-size: 16px; height: 24px; text-align: center; }
+    .result-container {
+      margin-top: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
+    #result-text { font-weight: bold; font-size: 16px; text-align: center; min-height: 24px; }
+
+    .btn-sell-quick {
+      background: rgba(72, 187, 120, 0.2);
+      border: 1px solid var(--green-color);
+      color: var(--green-color);
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      display: none;
+    }
 
     /* Инвентарь */
     .inventory-grid {
@@ -194,12 +217,63 @@
 
     .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
 
+    /* Модальное окно */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+      background: var(--card-bg);
+      border: 1px solid #2a2b3d;
+      border-radius: 20px;
+      padding: 25px;
+      width: 85%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-item-preview {
+      width: 100px;
+      height: 100px;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .modal-actions { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
+    .btn-modal {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-modal-sell { background: var(--green-color); color: #fff; }
+    .btn-modal-close { background: #3a3d54; color: #fff; }
+
     /* Нижнее меню */
     .nav-bar {
       position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
+      bottom: 0; left: 0; right: 0;
       height: 65px;
       background: #161722;
       border-top: 1px solid #2a2b3d;
@@ -230,11 +304,11 @@
   <div class="header">
     <div class="user-info" id="username">Игрок</div>
     <div class="balance-badge">
-      <span id="balance">...</span> 💰
+      <span id="balance">1000</span> 💰
     </div>
   </div>
 
-  <!-- Вкладка 1: Выбор кейсов (Главный экран) -->
+  <!-- Вкладка 1: Выбор кейсов -->
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
     
@@ -265,7 +339,11 @@
       </div>
 
       <button id="openBtn" class="btn-spin" onclick="openCase()">Открыть кейс (100 💰)</button>
-      <div id="result-text"></div>
+      
+      <div class="result-container">
+        <div id="result-text"></div>
+        <button id="quickSellBtn" class="btn-sell-quick" onclick="sellLatestItem()">Продать предмет</button>
+      </div>
     </div>
   </div>
 
@@ -274,6 +352,20 @@
     <div class="page-title">Мой инвентарь</div>
     <div class="inventory-grid" id="inventory-list">
       <div class="inventory-empty">Пока нет выпавших предметов</div>
+    </div>
+  </div>
+
+  <!-- Модальное окно осмотра/продажи предмета -->
+  <div class="modal-overlay" id="itemModal">
+    <div class="modal-card">
+      <h3 id="modalTitle">Предмет</h3>
+      <div class="modal-item-preview" id="modalPreview"></div>
+      <div id="modalPrice" style="color: var(--green-color); font-weight: bold;"></div>
+      
+      <div class="modal-actions">
+        <button class="btn-modal btn-modal-sell" onclick="sellSelectedItem()">Продать</button>
+        <button class="btn-modal btn-modal-close" onclick="closeModal()">Закрыть</button>
+      </div>
     </div>
   </div>
 
@@ -297,17 +389,24 @@
       document.getElementById('username').innerText = tg.initDataUnsafe.user.first_name;
     }
 
-    const userId = tg.initDataUnsafe?.user?.id || 123456789;
-    
+    // Состояние экономики и инвентаря
+    let balance = 1000;
     let currentCase = { name: 'Стандартный', price: 100 };
     let inventory = [];
     let isSpinning = false;
+    let lastWonItemIndex = null;
+    let selectedInventoryIndex = null;
 
     const tape = document.getElementById('tape');
     const openBtn = document.getElementById('openBtn');
     const backBtn = document.getElementById('backBtn');
     const resultText = document.getElementById('result-text');
     const balanceSpan = document.getElementById('balance');
+    const quickSellBtn = document.getElementById('quickSellBtn');
+
+    function updateBalanceUI() {
+      balanceSpan.innerText = balance;
+    }
 
     function switchTab(tabName) {
       if (isSpinning) return;
@@ -331,30 +430,17 @@
       
       openBtn.innerText = `Открыть кейс (${price} 💰)`;
       resultText.innerText = '';
+      quickSellBtn.style.display = 'none';
       
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById('tab-spin').classList.add('active');
 
-      generateTape({ name: 'Кейс', rarity: 'common' });
+      generateTape({ name: 'Кейс', rarity: 'common', price: 20 });
     }
 
     function backToShop() {
       if (isSpinning) return;
       switchTab('shop');
-    }
-
-    async function loadBalance() {
-      try {
-        const res = await fetch('/api/get-balance', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ telegram_id: userId })
-        });
-        const data = await res.json();
-        if (data.balance !== undefined) balanceSpan.innerText = data.balance;
-      } catch (err) {
-        console.error('Ошибка загрузки баланса', err);
-      }
     }
 
     function generateTape(winningItem) {
@@ -363,10 +449,10 @@
       tape.style.transform = 'translateX(0px)';
 
       const dummyItems = [
-        { name: 'Ширпотреб', rarity: 'common' },
-        { name: 'Редкий', rarity: 'rare' },
-        { name: 'Эпический', rarity: 'epic' },
-        { name: 'Легенда', rarity: 'legendary' }
+        { name: 'Ширпотреб', rarity: 'common', price: 20 },
+        { name: 'Редкий', rarity: 'rare', price: 60 },
+        { name: 'Эпический', rarity: 'epic', price: 150 },
+        { name: 'Легенда', rarity: 'legendary', price: 500 }
       ];
 
       for (let i = 0; i < 50; i++) {
@@ -375,7 +461,7 @@
 
         const card = document.createElement('div');
         card.className = `item-card ${item.rarity}`;
-        card.innerText = item.name;
+        card.innerHTML = `<div>${item.name}</div><div class="item-price-tag">${item.price} 💰</div>`;
         tape.appendChild(card);
       }
     }
@@ -383,56 +469,74 @@
     function setLockState(locked) {
       isSpinning = locked;
       openBtn.disabled = locked;
-
       backBtn.classList.toggle('is-disabled', locked);
       document.getElementById('nav-shop').classList.toggle('is-disabled', locked);
       document.getElementById('nav-inventory').classList.toggle('is-disabled', locked);
     }
 
-    async function openCase() {
+    function openCase() {
+      if (balance < currentCase.price) {
+        resultText.innerText = 'Недостаточно средств!';
+        return;
+      }
+
       setLockState(true);
+      quickSellBtn.style.display = 'none';
       resultText.innerText = '';
+      
+      // Списываем баланс
+      balance -= currentCase.price;
+      updateBalanceUI();
 
-      try {
-        const res = await fetch('/api/open-case', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ telegram_id: userId, case_price: currentCase.price })
-        });
+      // Генерируем случайный результат
+      const dummyItems = [
+        { name: 'Ширпотреб', rarity: 'common', price: 20 },
+        { name: 'Редкий', rarity: 'rare', price: 60 },
+        { name: 'Эпический', rarity: 'epic', price: 150 },
+        { name: 'Легенда', rarity: 'legendary', price: 500 }
+      ];
+      
+      // Небольшой рандом для предметов
+      const winningItem = dummyItems[Math.floor(Math.random() * dummyItems.length)];
 
-        const data = await res.json();
+      generateTape(winningItem);
+      tape.offsetHeight;
 
-        if (res.status !== 200) {
-          resultText.innerText = data.error;
-          setLockState(false);
-          return;
-        }
+      const targetIndex = 44;
+      const randomOffset = Math.floor(Math.random() * 60) - 30;
+      const targetPosition = (targetIndex * 100) - (200 - 50) + randomOffset;
 
-        const winningItem = data.item;
-        generateTape(winningItem);
-        tape.offsetHeight;
+      tape.style.transition = 'transform 5s cubic-bezier(0.15, 0.9, 0.15, 1)';
+      tape.style.transform = `translateX(-${targetPosition}px)`;
 
-        const targetIndex = 44;
-        const randomOffset = Math.floor(Math.random() * 60) - 30;
-        const targetPosition = (targetIndex * 100) - (200 - 50) + randomOffset;
+      setTimeout(() => {
+        // Создаем копию предмета с уникальным id
+        const wonItem = { ...winningItem, id: Date.now() };
+        inventory.unshift(wonItem);
+        lastWonItemIndex = 0;
 
-        tape.style.transition = 'transform 5s cubic-bezier(0.15, 0.9, 0.15, 1)';
-        tape.style.transform = `translateX(-${targetPosition}px)`;
+        resultText.innerText = `Выбито: ${wonItem.name}!`;
+        quickSellBtn.innerText = `Продать за ${wonItem.price} 💰`;
+        quickSellBtn.style.display = 'block';
 
-        setTimeout(() => {
-          resultText.innerText = `Выбито: ${winningItem.name}!`;
-          balanceSpan.innerText = data.newBalance;
-          inventory.unshift(winningItem);
-          setLockState(false);
-        }, 5000);
-
-      } catch (err) {
-        console.error(err);
-        resultText.innerText = 'Ошибка соединения';
         setLockState(false);
+      }, 5000);
+    }
+
+    // Быстрая продажа выбитого предмета сразу после рулетки
+    function sellLatestItem() {
+      if (lastWonItemIndex !== null && inventory.length > 0) {
+        const soldItem = inventory.shift();
+        balance += soldItem.price;
+        updateBalanceUI();
+
+        resultText.innerText = `Продано за +${soldItem.price} 💰`;
+        quickSellBtn.style.display = 'none';
+        lastWonItemIndex = null;
       }
     }
 
+    // Отрисовка Инвентаря
     function renderInventory() {
       const list = document.getElementById('inventory-list');
       if (inventory.length === 0) {
@@ -441,15 +545,50 @@
       }
 
       list.innerHTML = '';
-      inventory.forEach(item => {
+      inventory.forEach((item, index) => {
         const card = document.createElement('div');
         card.className = `item-card ${item.rarity}`;
-        card.innerText = item.name;
+        card.innerHTML = `<div>${item.name}</div><div class="item-price-tag">${item.price} 💰</div>`;
+        card.onclick = () => openModal(index);
         list.appendChild(card);
       });
     }
 
-    loadBalance();
+    // Модальное окно предмета
+    function openModal(index) {
+      selectedInventoryIndex = index;
+      const item = inventory[index];
+
+      document.getElementById('modalTitle').innerText = item.name;
+      document.getElementById('modalPrice').innerText = `Цена продажи: ${item.price} 💰`;
+
+      const preview = document.getElementById('modalPreview');
+      preview.className = `modal-item-preview ${item.rarity}`;
+      preview.innerText = item.name;
+
+      document.getElementById('itemModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('itemModal').classList.remove('active');
+      selectedInventoryIndex = null;
+    }
+
+    // Продажа предмета из модального окна инвентаря
+    function sellSelectedItem() {
+      if (selectedInventoryIndex !== null) {
+        const item = inventory[selectedInventoryIndex];
+        balance += item.price;
+        inventory.splice(selectedInventoryIndex, 1);
+        
+        updateBalanceUI();
+        closeModal();
+        renderInventory();
+      }
+    }
+
+    // Инициализация
+    updateBalanceUI();
   </script>
 </body>
 </html>
