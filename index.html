@@ -1204,18 +1204,32 @@
 
       inventory.splice(upgradeMyIndex, 1);
 
-      // Вращаем СТРЕЛОЧКУ поверх круга (несколько оборотов + случайный угол)
+      // 1. Сначала определяем, победа или поражение по шансу
+      const roll = Math.random() * 100;
+      const success = roll <= window.currentUpgradeChance;
+
+      // 2. Вычисляем размер синего сектора в градусах
+      const chance = window.currentUpgradeChance;
+      const successDeg = (chance / 100) * 360;
+
+      // 3. Рассчитываем точный угол остановки стрелки в зависимости от результата
+      let randomStop;
+      if (success) {
+        // Останавливаемся внутри синего сектора (с небольшим отступом от границ)
+        randomStop = Math.random() * (successDeg - 10) + 5;
+      } else {
+        // Останавливаемся в серой зоне (от конца синего сектора до 360 градусов)
+        randomStop = Math.random() * (360 - successDeg - 10) + successDeg + 5;
+      }
+
+      // Добавляем полные обороты для анимации
       const extraSpins = 5 * 360;
-      const randomStop = Math.random() * 360;
       const totalRotation = extraSpins + randomStop;
 
       wheelArrow.style.transition = 'transform 3s cubic-bezier(0.15, 0.9, 0.15, 1)';
       wheelArrow.style.transform = `rotate(${totalRotation}deg)`;
 
       setTimeout(() => {
-        const roll = Math.random() * 100;
-        const success = roll <= window.currentUpgradeChance;
-
         if (success) {
           playWinSound();
           const wonItem = { ...upgradeTargetItem, id: Date.now() };
