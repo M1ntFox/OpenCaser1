@@ -1,10 +1,6 @@
-const { createClient } = require('@supabase/supabase-js');
-
 const SUPABASE_URL = 'https://jbywybwncekaoawzqury.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'sb_publishable_WAL11ngzElD9llZZKnpJ9g_cWMgT1kz';
 const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 module.exports = async function handler(req, res) {
   if (!BOT_TOKEN) {
@@ -14,17 +10,22 @@ module.exports = async function handler(req, res) {
   try {
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-    const { data: users, error } = await supabase
-      .from('users')
-      .select('user_id, username, last_daily_claim, last_notified_daily')
-      .not('last_daily_claim', 'is', null)
-      .lte('last_daily_claim', twentyFourHoursAgo);
+    const supabaseRes = await fetch(
+      `${SUPABASE_URL}/rest/v1/users?select=user_id,username,last_daily_claim,last_notified_daily&last_daily_claim=not.is.null&last_daily_claim=lte.${twentyFourHoursAgo}`,
+      {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': `Bearer ${SUPABASE_KEY}`
+        }
+      }
+    );
 
-    if (error) {
-      console.error('Ошибка Supabase:', error);
-      return res.status(500).json({ error: error.message });
+    if (!supabaseRes.ok) {
+      const errText = await supabaseRes.text();
+      return res.status(500).json({ error: `Supabase REST Error: ${errText}` });
     }
 
+    const users = await supabaseRes.json();
     let notifiedCount = 0;
 
     for (const user of users || []) {
@@ -51,10 +52,16 @@ module.exports = async function handler(req, res) {
 
         if (tgRes.ok) {
           notifiedCount++;
-          await supabase
-            .from('users')
-            .update({ last_notified_daily: new Date().toISOString() })
-            .eq('user_id', user.user_id);
+          await fetch(`${SUPABASE_URL}/rest/v1/users?user_id=eq.${user.user_id}`, {
+            method: 'PATCH',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': `Bearer ${SUPABASE_KEY}`,
+              'Content-Type': 'application/json',
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({ last_notified_daily: new Date().toISOString() })
+          });
         }
       }
     }
