@@ -390,6 +390,40 @@
 
     .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
 
+    .inventory-sort-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 15px;
+    }
+
+    .inventory-sort-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-right: 2px;
+    }
+
+    .btn-sort {
+      background: var(--card-bg);
+      border: 1px solid #2a2b3d;
+      color: #fff;
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-sort:active { transform: scale(0.95); }
+    .btn-sort.active {
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+    }
+
     .leaderboard-list, .online-list {
       width: 100%;
       max-width: 400px;
@@ -685,6 +719,11 @@
   <!-- Вкладка Инвентарь -->
   <div id="tab-inventory" class="tab-content">
     <div class="page-title">Мой инвентарь</div>
+    <div class="inventory-sort-row" id="inventorySortRow">
+      <span class="inventory-sort-label">Сортировка по цене:</span>
+      <button class="btn-sort" id="sortPriceAsc" onclick="sortInventory('asc')">Дешевле ↑</button>
+      <button class="btn-sort" id="sortPriceDesc" onclick="sortInventory('desc')">Дороже ↓</button>
+    </div>
     <div class="inventory-grid" id="inventory-list">
       <div class="inventory-empty">Пока нет выпавших предметов</div>
     </div>
@@ -937,6 +976,7 @@
     let lastWonItemIndex = null;
     let selectedInventoryIndex = null;
     let spinSoundInterval = null;
+    let inventorySortOrder = null; // 'asc' | 'desc' | null
 
     let upgradeMyItem = null;
     let upgradeMyIndex = null;
@@ -1777,8 +1817,29 @@
       }
     }
 
+    function sortInventory(order) {
+      inventorySortOrder = order;
+      if (order === 'asc') {
+        inventory.sort((a, b) => a.price - b.price);
+      } else if (order === 'desc') {
+        inventory.sort((a, b) => b.price - a.price);
+      }
+      renderInventory();
+      syncUserData();
+    }
+
+    function updateSortButtonsUI() {
+      const ascBtn = document.getElementById('sortPriceAsc');
+      const descBtn = document.getElementById('sortPriceDesc');
+      if (!ascBtn || !descBtn) return;
+      ascBtn.classList.toggle('active', inventorySortOrder === 'asc');
+      descBtn.classList.toggle('active', inventorySortOrder === 'desc');
+    }
+
     function renderInventory() {
       const list = document.getElementById('inventory-list');
+      updateSortButtonsUI();
+
       if (inventory.length === 0) {
         list.innerHTML = '<div class="inventory-empty">Пока нет выпавших предметов</div>';
         return;
