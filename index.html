@@ -38,7 +38,16 @@
       background: var(--bg-color);
     }
 
-    .user-info { font-size: 20px; font-weight: bold; }
+    .user-info { 
+      font-size: 18px; 
+      font-weight: bold; 
+      cursor: pointer; 
+      display: flex; 
+      align-items: center; 
+      gap: 6px; 
+      transition: opacity 0.2s;
+    }
+    .user-info:hover { opacity: 0.8; }
 
     .balance-badge {
       background: rgba(30, 41, 59, 0.8);
@@ -397,7 +406,10 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      cursor: pointer;
+      transition: border-color 0.2s;
     }
+    .leader-item:hover { border-color: var(--accent-color); }
 
     .leader-info { display: flex; align-items: center; gap: 12px; }
     .leader-rank { font-weight: bold; font-size: 16px; color: var(--text-muted); width: 24px; }
@@ -417,6 +429,72 @@
       font-weight: bold;
       cursor: pointer;
     }
+
+    /* Профиль и Витрина */
+    .profile-container {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .profile-card {
+      background: var(--card-bg);
+      border: 1px solid #2a2b3d;
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .profile-edit-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .profile-input {
+      flex: 1;
+      background: #12131c;
+      border: 1px solid #2a2b3d;
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 14px;
+      outline: none;
+    }
+    .profile-input:focus { border-color: var(--accent-color); }
+
+    .showcase-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .showcase-title { font-size: 13px; font-weight: bold; color: var(--text-muted); }
+
+    .showcase-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .showcase-slot {
+      height: 110px;
+      background: #12131c;
+      border: 2px dashed #2a2b3d;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      text-align: center;
+      font-size: 11px;
+    }
+    .showcase-slot.filled { border-style: solid; border-color: var(--accent-color); padding: 6px; }
 
     .modal-overlay {
       position: fixed;
@@ -510,7 +588,9 @@
 <body>
 
   <div class="header">
-    <div class="user-info" id="username">Игрок</div>
+    <div class="user-info" id="usernameBtn" onclick="openMyProfile()">
+      <span id="username">Игрок</span> ⚙️
+    </div>
     <div class="balance-badge">
       <span id="balance">1000</span> 💰
     </div>
@@ -616,15 +696,51 @@
     </div>
   </div>
 
+  <!-- Вкладка Профиль -->
+  <div id="tab-profile" class="tab-content">
+    <div class="page-title" id="profileTitleText">Мой профиль</div>
+    <div class="profile-container">
+      <div class="profile-card" id="profileEditSection">
+        <div style="font-size: 13px; color: var(--text-muted); font-weight: bold;">Имя игрока:</div>
+        <div class="profile-edit-row">
+          <input type="text" id="profileNameInput" class="profile-input" placeholder="Введите ник...">
+          <button class="btn-trade-action" onclick="saveProfileName()">Сохранить</button>
+        </div>
+      </div>
+
+      <div class="profile-card">
+        <div class="showcase-section">
+          <div class="showcase-title">Витрина предметов (до 3 шт):</div>
+          <div class="showcase-grid" id="showcaseGrid">
+            <!-- Слоты витрины заполняются динамически -->
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-back" id="profileBackBtn" onclick="switchTab('shop')" style="align-self: center; margin-top: 10px; display: none;">← Назад</button>
+    </div>
+  </div>
+
   <!-- Модальные окна -->
   <div class="modal-overlay" id="itemModal">
     <div class="modal-card">
       <h3 id="modalTitle">Предмет</h3>
       <div class="modal-item-preview" id="modalPreview"></div>
       <div id="modalPrice" style="color: var(--green-color); font-weight: bold;"></div>
-      <div class="modal-actions">
+      <div class="modal-actions" id="modalActions">
         <button class="btn-modal btn-modal-sell" onclick="sellSelectedItem()">Продать</button>
         <button class="btn-modal btn-modal-close" onclick="closeModal()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="showcasePickerModal">
+    <div class="modal-card" style="max-width: 380px;">
+      <h3>Выберите предмет на витрину</h3>
+      <div style="font-size: 12px; color: var(--text-muted);">Нажмите на предмет из инвентаря:</div>
+      <div class="inventory-grid" id="showcase-inventory-picker" style="max-height: 200px; overflow-y: auto;"></div>
+      <div class="modal-actions">
+        <button class="btn-modal btn-modal-close" onclick="closeShowcasePicker()">Закрыть</button>
       </div>
     </div>
   </div>
@@ -696,9 +812,6 @@
       : 'guest_user_' + Math.floor(Math.random()*1000);
 
     let userFirstName = tg.initDataUnsafe?.user?.first_name || 'Игрок';
-    if (tg.initDataUnsafe?.user?.first_name) {
-      document.getElementById('username').innerText = userFirstName;
-    }
 
     const AudioCtx = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
@@ -770,6 +883,7 @@
     let balance = 1000;
     let currentCase = { name: 'Праздничный', price: 200 };
     let inventory = [];
+    let showcase = [null, null, null]; // 3 слота витрины
     let isSpinning = false;
     let lastWonItemIndex = null;
     let selectedInventoryIndex = null;
@@ -786,6 +900,8 @@
     let isReady = false;
     let currentTradeSubscription = null;
 
+    let targetShowcaseSlot = null; // Какой слот витрины сейчас заполняем
+
     const tape = document.getElementById('tape');
     const openBtn = document.getElementById('openBtn');
     const backBtn = document.getElementById('backBtn');
@@ -797,18 +913,21 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('balance, inventory')
+          .select('balance, inventory, username, showcase')
           .eq('user_id', userId)
           .maybeSingle();
 
         if (data) {
           balance = data.balance ?? 1000;
           inventory = data.inventory ?? [];
+          userFirstName = data.username ?? userFirstName;
+          showcase = data.showcase ?? [null, null, null];
         } else {
           await supabaseClient
             .from('users')
-            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName }]);
+            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null] }]);
         }
+        document.getElementById('username').innerText = userFirstName;
         updateBalanceUI();
         syncUserData();
         startHeartbeat();
@@ -822,7 +941,14 @@
       try {
         await supabaseClient
           .from('users')
-          .upsert({ user_id: userId, balance: balance, inventory: inventory, username: userFirstName, last_seen: new Date().toISOString() }, { onConflict: 'user_id' });
+          .upsert({ 
+            user_id: userId, 
+            balance: balance, 
+            inventory: inventory, 
+            username: userFirstName, 
+            showcase: showcase,
+            last_seen: new Date().toISOString() 
+          }, { onConflict: 'user_id' });
       } catch (e) {
         console.error('Ошибка синхронизации данных:', e);
       }
@@ -861,8 +987,9 @@
           item.className = 'leader-item';
           item.innerHTML = `
             <div class="leader-info"><div class="leader-name">${user.username || 'Игрок'}</div></div>
-            <button class="btn-trade-action" onclick="sendTradeInvite('${user.user_id}', '${user.username}')">Обмен</button>
+            <button class="btn-trade-action" onclick="event.stopPropagation(); sendTradeInvite('${user.user_id}', '${user.username}')">Обмен</button>
           `;
+          item.onclick = () => openUserProfile(user.user_id);
           container.appendChild(item);
         });
       } catch (e) {
@@ -1064,7 +1191,7 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('username, balance')
+          .select('user_id, username, balance')
           .order('balance', { ascending: false })
           .limit(10);
 
@@ -1090,12 +1217,152 @@
             </div>
             <div class="leader-balance">${user.balance} 💰</div>
           `;
+          item.onclick = () => openUserProfile(user.user_id);
           listContainer.appendChild(item);
         });
       } catch (e) {
         listContainer.innerHTML = '<div class="inventory-empty">Ошибка соединения</div>';
       }
     }
+
+    // --- УПРАВЛЕНИЕ ПРОФИЛЕМ И ВИТРИНОЙ ---
+    function openMyProfile() {
+      if (isSpinning) return;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      document.getElementById('tab-profile').classList.add('active');
+      document.getElementById('profileTitleText').innerText = 'Мой профиль';
+      document.getElementById('profileEditSection').style.display = 'flex';
+      document.getElementById('profileNameInput').value = userFirstName;
+      document.getElementById('profileBackBtn').style.display = 'none';
+
+      renderShowcase(true);
+    }
+
+    async function openUserProfile(targetUserId) {
+      if (targetUserId === userId) {
+        openMyProfile();
+        return;
+      }
+
+      try {
+        let { data, error } = await supabaseClient
+          .from('users')
+          .select('username, showcase')
+          .eq('user_id', targetUserId)
+          .single();
+
+        if (error || !data) {
+          alert('Не удалось загрузить профиль игрока');
+          return;
+        }
+
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+        document.getElementById('tab-profile').classList.add('active');
+        document.getElementById('profileTitleText').innerText = `Профиль: ${data.username || 'Игрок'}`;
+        document.getElementById('profileEditSection').style.display = 'none';
+        document.getElementById('profileBackBtn').style.display = 'block';
+
+        renderShowcase(false, data.showcase || [null, null, null]);
+      } catch (e) {
+        console.error('Ошибка открытия профиля:', e);
+      }
+    }
+
+    async function saveProfileName() {
+      const newName = document.getElementById('profileNameInput').value.trim();
+      if (!newName) { alert('Имя не может быть пустым'); return; }
+      userFirstName = newName;
+      document.getElementById('username').innerText = userFirstName;
+      await syncUserData();
+      alert('Имя успешно изменено!');
+    }
+
+    function renderShowcase(isEditable, customShowcase = null) {
+      const grid = document.getElementById('showcaseGrid');
+      grid.innerHTML = '';
+      const currentShowcase = customShowcase || showcase;
+
+      for (let i = 0; i < 3; i++) {
+        const slot = document.createElement('div');
+        const item = currentShowcase[i];
+
+        if (item) {
+          slot.className = 'showcase-slot filled ' + item.rarity;
+          slot.innerHTML = `
+            <img src="${item.icon}" style="width:45px; height:45px; object-fit:contain; margin-bottom:4px;">
+            <div style="font-size:10px; font-weight:bold;">${item.name}</div>
+          `;
+          if (isEditable) {
+            slot.title = 'Нажмите, чтобы убрать или заменить';
+            slot.onclick = () => removeOrChangeShowcase(i);
+          }
+        } else {
+          slot.className = 'showcase-slot';
+          slot.innerHTML = `<div style="color: var(--text-muted)">Слот ${i+1}</div><div style="font-size:20px; margin-top:4px;">➕</div>`;
+          if (isEditable) {
+            slot.onclick = () => openShowcasePicker(i);
+          }
+        }
+        grid.appendChild(slot);
+      }
+    }
+
+    function openShowcasePicker(slotIndex) {
+      targetShowcaseSlot = slotIndex;
+      const picker = document.getElementById('showcase-inventory-picker');
+      picker.innerHTML = '';
+
+      if (inventory.length === 0) {
+        picker.innerHTML = '<div class="inventory-empty" style="margin-top:10px;">Инвентарь пуст</div>';
+      } else {
+        inventory.forEach((item, invIdx) => {
+          const card = document.createElement('div');
+          card.className = `item-card ${item.rarity}`;
+          card.style.width = '80px'; card.style.height = '90px';
+          card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:10px;">${item.name}</div>`;
+          card.onclick = () => selectItemForShowcase(invIdx);
+          picker.appendChild(card);
+        });
+      }
+      document.getElementById('showcasePickerModal').classList.add('active');
+    }
+
+    function closeShowcasePicker() {
+      document.getElementById('showcasePickerModal').classList.remove('active');
+      targetShowcaseSlot = null;
+    }
+
+    function selectItemForShowcase(invIdx) {
+      if (targetShowcaseSlot === null) return;
+      const item = inventory.splice(invIdx, 1)[0];
+      
+      // Если в слоте уже что-то было, возвращаем в инвентарь
+      if (showcase[targetShowcaseSlot]) {
+        inventory.push(showcase[targetShowcaseSlot]);
+      }
+
+      showcase[targetShowcaseSlot] = item;
+      closeShowcasePicker();
+      renderShowcase(true);
+      syncUserData();
+    }
+
+    function removeOrChangeShowcase(slotIndex) {
+      if (confirm('Убрать предмет с витрины обратно в инвентарь?')) {
+        const item = showcase[slotIndex];
+        if (item) {
+          inventory.push(item);
+          showcase[slotIndex] = null;
+          renderShowcase(true);
+          syncUserData();
+        }
+      }
+    }
+    // --- КОНЕЦ БЛОКА ПРОФИЛЯ ---
 
     function updateBalanceUI() {
       balanceSpan.innerText = balance;
