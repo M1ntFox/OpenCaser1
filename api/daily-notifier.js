@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+const { createClient } = require('@supabase/supabase-js');
 
 const SUPABASE_URL = 'https://jbywybwncekaoawzqury.supabase.co';
 const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || 'sb_publishable_WAL11ngzElD9llZZKnpJ9g_cWMgT1kz';
@@ -6,16 +6,14 @@ const BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (!BOT_TOKEN) {
-    return res.status(500).json({ error: 'TELEGRAM_BOT_TOKEN не настроен в переменных окружения' });
+    return res.status(500).json({ error: 'TELEGRAM_BOT_TOKEN не настроен в Vercel Environment Variables' });
   }
 
   try {
-    // Вычисляем время 24 часа назад
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 
-    // Получаем пользователей, у которых прошло 24ч с последнего бонуса и уведомление еще не отправлялось
     const { data: users, error } = await supabase
       .from('users')
       .select('user_id, username, last_daily_claim, last_notified_daily')
@@ -33,7 +31,6 @@ export default async function handler(req, res) {
       const lastClaim = new Date(user.last_daily_claim).getTime();
       const lastNotified = user.last_notified_daily ? new Date(user.last_notified_daily).getTime() : 0;
 
-      // Отправляем только если еще не уведомляли за этот цикл (lastNotified < lastClaim)
       if (lastNotified < lastClaim) {
         const text = `🎁 *Ежедневная награда готова!*\n\nПривет, ${user.username || 'Игрок'}! Прошло 24 часа с вашего последнего бонуса. Заходите скорее, чтобы забрать свои ⭐ звёзды и не сбросить стрик!`;
 
@@ -54,7 +51,6 @@ export default async function handler(req, res) {
 
         if (tgRes.ok) {
           notifiedCount++;
-          // Фиксируем время отправки уведомления в базу
           await supabase
             .from('users')
             .update({ last_notified_daily: new Date().toISOString() })
@@ -68,4 +64,4 @@ export default async function handler(req, res) {
     console.error('Ошибка выполнения крона:', err);
     return res.status(500).json({ error: err.message });
   }
-}
+};
