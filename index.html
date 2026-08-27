@@ -632,7 +632,7 @@
 
     .nav-item {
       display: flex; flex-direction: column; align-items: center; gap: 4px;
-      color: var(--text-muted); font-size: 12px; cursor: pointer; width: 20%;
+      color: var(--text-muted); font-size: 12px; cursor: pointer; width: 25%;
     }
 
     .nav-item.active { color: var(--accent-color); font-weight: bold; }
@@ -672,6 +672,23 @@
     </div>
   </div>
 
+  <!-- Вкладка Режимы -->
+  <div id="tab-modes" class="tab-content">
+    <div class="page-title">Режимы игры</div>
+    <div class="cases-grid">
+      <div class="case-card" onclick="switchTab('upgrade')">
+        <img src="/images/logos/upgrade.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Апгрейд</div>
+        <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Улучшить предмет</div>
+      </div>
+      <div class="case-card" onclick="switchTab('trade')">
+        <img src="/images/logos/trade.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Обмен</div>
+        <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Трейд с игроками</div>
+      </div>
+    </div>
+  </div>
+
   <!-- Вкладка Открытие кейса -->
   <div id="tab-spin" class="tab-content">
     <div class="roulette-screen">
@@ -700,6 +717,9 @@
 
   <!-- Вкладка Апгрейд -->
   <div id="tab-upgrade" class="tab-content">
+    <button class="btn-back" onclick="switchTab('modes')" style="align-self: flex-start; margin-bottom: 10px;">
+      <span>←</span> Назад к режимам
+    </button>
     <div class="page-title">Апгрейд предметов (шанс ≤ 70%)</div>
     <div class="upgrade-container">
       <div class="upgrade-top-row">
@@ -751,6 +771,9 @@
 
   <!-- Вкладка Трейд -->
   <div id="tab-trade" class="tab-content">
+    <button class="btn-back" onclick="switchTab('modes')" style="align-self: flex-start; margin-bottom: 10px;">
+      <span>←</span> Назад к режимам
+    </button>
     <div class="page-title">Игроки онлайн для обмена</div>
     <div class="online-list" id="online-list-container">
       <div class="inventory-empty">Поиск игроков онлайн...</div>
@@ -850,17 +873,13 @@
       <span style="font-size: 20px;">📦</span>
       <span>Кейсы</span>
     </div>
-    <div class="nav-item" id="nav-upgrade" onclick="switchTab('upgrade')">
+    <div class="nav-item" id="nav-modes" onclick="switchTab('modes')">
       <span style="font-size: 20px;">⚡</span>
-      <span>Апгрейд</span>
+      <span>Режимы</span>
     </div>
     <div class="nav-item" id="nav-inventory" onclick="switchTab('inventory')">
       <span style="font-size: 20px;">🎒</span>
       <span>Инвентарь</span>
-    </div>
-    <div class="nav-item" id="nav-trade" onclick="switchTab('trade')">
-      <span style="font-size: 20px;">🤝</span>
-      <span>Обмен</span>
     </div>
     <div class="nav-item" id="nav-leaderboard" onclick="switchTab('leaderboard')">
       <span style="font-size: 20px;">🏆</span>
@@ -1679,9 +1698,12 @@
       if (tabName === 'shop') {
         document.getElementById('tab-shop').classList.add('active');
         document.getElementById('nav-shop').classList.add('active');
+      } else if (tabName === 'modes') {
+        document.getElementById('tab-modes').classList.add('active');
+        document.getElementById('nav-modes').classList.add('active');
       } else if (tabName === 'upgrade') {
         document.getElementById('tab-upgrade').classList.add('active');
-        document.getElementById('nav-upgrade').classList.add('active');
+        document.getElementById('nav-modes').classList.add('active');
         resetUpgradeSlots();
       } else if (tabName === 'inventory') {
         document.getElementById('tab-inventory').classList.add('active');
@@ -1689,7 +1711,7 @@
         renderInventory();
       } else if (tabName === 'trade') {
         document.getElementById('tab-trade').classList.add('active');
-        document.getElementById('nav-trade').classList.add('active');
+        document.getElementById('nav-modes').classList.add('active');
         loadOnlineUsers();
       } else if (tabName === 'leaderboard') {
         document.getElementById('tab-leaderboard').classList.add('active');
