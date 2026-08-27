@@ -46,7 +46,7 @@ export default async function handler(req, res) {
             parse_mode: 'Markdown',
             reply_markup: {
               inline_keyboard: [
-                [{ text: '🚀 Забрать бонус', web_app: { url: 'https://open-caser.vercel.app' } }]
+                [{ text: '🚀 Забрать бонус', web_app: { url: 'https://open-caser1.vercel.app' } }]
               ]
             }
           })
