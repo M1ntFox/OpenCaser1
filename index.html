@@ -637,6 +637,50 @@
 
     .nav-item.active { color: var(--accent-color); font-weight: bold; }
     .is-disabled { pointer-events: none !important; opacity: 0.4 !important; }
+
+    /* Ежедневные награды */
+    .daily-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .daily-card {
+      background: #161722;
+      border: 1px solid #2a2b3d;
+      border-radius: 12px;
+      padding: 10px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 11px;
+      position: relative;
+    }
+
+    .daily-card.day-7 {
+      grid-column: span 2;
+      background: linear-gradient(135deg, #7b341e 0%, #44337a 100%);
+      border: 2px solid #f6e05e;
+      box-shadow: 0 0 12px rgba(246, 224, 94, 0.5);
+    }
+
+    .daily-card.claimed {
+      opacity: 0.5;
+      border-color: var(--green-color);
+    }
+
+    .daily-card.active {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 12px var(--accent-color);
+      transform: scale(1.03);
+    }
+
+    .daily-day-title { font-weight: bold; font-size: 10px; color: var(--text-muted); }
+    .daily-reward-val { color: var(--green-color); font-weight: bold; margin-top: 2px; }
   </style>
 </head>
 <body>
@@ -676,6 +720,11 @@
   <div id="tab-modes" class="tab-content">
     <div class="page-title">Режимы игры</div>
     <div class="cases-grid">
+      <div class="case-card" onclick="openDailyModal()">
+        <img src="/images/logos/daily.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Бонус дня</div>
+        <div class="case-price" style="color: var(--green-color); font-weight: 500;">До 25 000 ⭐</div>
+      </div>
       <div class="case-card" onclick="switchTab('upgrade')">
         <img src="/images/logos/upgrade.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Апгрейд</div>
@@ -814,6 +863,21 @@
   </div>
 
   <!-- Модальные окна -->
+  <div class="modal-overlay" id="dailyModal">
+    <div class="modal-card" style="max-width: 380px; width: 92%;">
+      <h3>🎁 Ежедневная награда</h3>
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center;">Заходи каждый день и забирай всё больше звёзд!</div>
+      
+      <div class="daily-grid" id="dailyGrid"></div>
+
+      <button class="btn-spin" id="btnClaimDaily" onclick="claimDailyBonus()" style="width: 100%; margin-top: 10px;">Забрать награду</button>
+
+      <div class="modal-actions" style="margin-top: 5px;">
+        <button class="btn-modal btn-modal-close" onclick="closeDailyModal()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="itemModal">
     <div class="modal-card">
       <h3 id="modalTitle">Предмет</h3>
@@ -1030,6 +1094,11 @@
 
     let targetShowcaseSlot = null; // Какой слот витрины сейчас заполняем
 
+    let lastDailyClaim = null;
+    let dailyStreak = 0;
+    const dailyRewards = [1000, 2000, 3500, 5000, 7500, 10000, 25000];
+    let dailyTimerInterval = null;
+
     const tape = document.getElementById('tape');
     const openBtn = document.getElementById('openBtn');
     const backBtn = document.getElementById('backBtn');
@@ -1041,7 +1110,7 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('balance, inventory, username, showcase')
+          .select('balance, inventory, username, showcase, last_daily_claim, daily_streak')
           .eq('user_id', userId)
           .maybeSingle();
 
@@ -1050,10 +1119,12 @@
           inventory = data.inventory ?? [];
           userFirstName = data.username ?? userFirstName;
           showcase = data.showcase ?? [null, null, null];
+          lastDailyClaim = data.last_daily_claim ?? null;
+          dailyStreak = data.daily_streak ?? 0;
         } else {
           await supabaseClient
             .from('users')
-            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null] }]);
+            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null], last_daily_claim: null, daily_streak: 0 }]);
         }
         document.getElementById('username').innerText = userFirstName;
         updateBalanceUI();
@@ -1075,6 +1146,8 @@
             inventory: inventory, 
             username: userFirstName, 
             showcase: showcase,
+            last_daily_claim: lastDailyClaim,
+            daily_streak: dailyStreak,
             last_seen: new Date().toISOString() 
           }, { onConflict: 'user_id' });
       } catch (e) {
@@ -1491,6 +1564,125 @@
       }
     }
     // --- КОНЕЦ БЛОКА ПРОФИЛЯ ---
+
+    // --- ЕЖЕДНЕВНЫЕ НАГРАДЫ ---
+    function getDailyStatus() {
+      if (!lastDailyClaim) {
+        return { canClaim: true, nextDayIndex: 0 };
+      }
+      const lastClaimTime = new Date(lastDailyClaim).getTime();
+      const now = Date.now();
+      const diffMs = now - lastClaimTime;
+      const hours = diffMs / (1000 * 60 * 60);
+
+      if (hours < 24) {
+        const remainingMs = (24 * 60 * 60 * 1000) - diffMs;
+        return { canClaim: false, remainingMs: remainingMs, currentStreak: dailyStreak };
+      } else if (hours >= 24 && hours < 48) {
+        let nextIndex = dailyStreak;
+        if (nextIndex >= 7) nextIndex = 0;
+        return { canClaim: true, nextDayIndex: nextIndex };
+      } else {
+        return { canClaim: true, nextDayIndex: 0, streakReset: true };
+      }
+    }
+
+    function openDailyModal() {
+      document.getElementById('dailyModal').classList.add('active');
+      renderDailyGrid();
+      startDailyTimer();
+    }
+
+    function closeDailyModal() {
+      document.getElementById('dailyModal').classList.remove('active');
+      if (dailyTimerInterval) clearInterval(dailyTimerInterval);
+    }
+
+    function renderDailyGrid() {
+      const grid = document.getElementById('dailyGrid');
+      grid.innerHTML = '';
+      const status = getDailyStatus();
+
+      dailyRewards.forEach((amount, idx) => {
+        const card = document.createElement('div');
+        let cardClass = 'daily-card';
+        if (idx === 6) cardClass += ' day-7';
+
+        if (status.canClaim && idx === status.nextDayIndex) {
+          cardClass += ' active';
+        } else if (!status.canClaim && idx < (dailyStreak % 7)) {
+          cardClass += ' claimed';
+        }
+
+        card.className = cardClass;
+        card.innerHTML = `
+          <div class="daily-day-title">День ${idx + 1}</div>
+          <div style="font-size:16px; margin: 2px 0;">🎁</div>
+          <div class="daily-reward-val">${amount} ⭐</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      const btn = document.getElementById('btnClaimDaily');
+      if (status.canClaim) {
+        const amt = dailyRewards[status.nextDayIndex];
+        btn.disabled = false;
+        btn.innerText = `Забрать ${amt} ⭐ (День ${status.nextDayIndex + 1})`;
+        btn.style.background = 'var(--accent-color)';
+      } else {
+        btn.disabled = true;
+        btn.style.background = '#3f425a';
+        updateTimerText(status.remainingMs);
+      }
+    }
+
+    function startDailyTimer() {
+      if (dailyTimerInterval) clearInterval(dailyTimerInterval);
+      dailyTimerInterval = setInterval(() => {
+        const status = getDailyStatus();
+        if (status.canClaim) {
+          clearInterval(dailyTimerInterval);
+          renderDailyGrid();
+        } else {
+          updateTimerText(status.remainingMs);
+        }
+      }, 1000);
+    }
+
+    function updateTimerText(remainingMs) {
+      const btn = document.getElementById('btnClaimDaily');
+      if (remainingMs <= 0) {
+        renderDailyGrid();
+        return;
+      }
+      const totalSec = Math.floor(remainingMs / 1000);
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      const pad = n => String(n).padStart(2, '0');
+      btn.innerText = `До следующей: ${pad(h)}ч ${pad(m)}м ${pad(s)}с`;
+    }
+
+    async function claimDailyBonus() {
+      const status = getDailyStatus();
+      if (!status.canClaim) return;
+
+      initAudio();
+      const claimIndex = status.nextDayIndex;
+      const reward = dailyRewards[claimIndex];
+
+      balance += reward;
+      lastDailyClaim = new Date().toISOString();
+      dailyStreak = status.streakReset ? 1 : (claimIndex + 1);
+
+      updateBalanceUI();
+      playWinSound();
+      await syncUserData();
+
+      if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      alert(`Вы забрали бонус Дня ${claimIndex + 1}: +${reward} ⭐!`);
+      renderDailyGrid();
+    }
 
     function updateBalanceUI() {
       balanceSpan.innerText = balance;
