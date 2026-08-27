@@ -424,6 +424,60 @@
       border-color: var(--accent-color);
     }
 
+    .daily-container {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .daily-streak-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid #2a2b3d;
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+
+    .daily-streak-label { font-size: 13px; color: var(--text-muted); }
+    .daily-streak-value { font-weight: bold; color: var(--accent-color); font-size: 14px; }
+
+    .daily-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+    }
+
+    .daily-day-card {
+      background: var(--card-bg);
+      border: 2px solid #2a2b3d;
+      border-radius: 12px;
+      padding: 10px 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 11px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .daily-day-label { color: var(--text-muted); font-weight: bold; }
+    .daily-day-reward { color: var(--green-color); font-weight: bold; font-size: 12px; }
+
+    .daily-day-card.claimed { border-color: var(--green-color); opacity: 0.55; }
+    .daily-day-card.current {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 14px rgba(88, 101, 242, 0.45);
+    }
+
     .leaderboard-list, .online-list {
       width: 100%;
       max-width: 400px;
@@ -612,7 +666,7 @@
 
     .nav-item {
       display: flex; flex-direction: column; align-items: center; gap: 4px;
-      color: var(--text-muted); font-size: 12px; cursor: pointer; width: 20%;
+      color: var(--text-muted); font-size: 11px; cursor: pointer; flex: 1;
     }
 
     .nav-item.active { color: var(--accent-color); font-weight: bold; }
@@ -626,7 +680,7 @@
       <span id="username">Игрок</span> ⚙️
     </div>
     <div class="balance-badge">
-      <span id="balance">1000</span> 💰
+      <span id="balance">1000</span> ⭐
     </div>
   </div>
 
@@ -636,18 +690,18 @@
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('standart')">
         <img src="/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
-        <div class="case-title">Праздничный</div>
-        <div class="case-price">200 💰</div>
+        <div class="case-title">Бедняк</div>
+        <div class="case-price">200 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('romance')">
         <img src="/images/case_romance/case_romance.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Романтика</div>
-        <div class="case-price">420 💰</div>
+        <div class="case-price">420 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('manager')">
         <img src="/images/case_manager/case_manager.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Менеджер</div>
-        <div class="case-price">830 💰</div>
+        <div class="case-price">830 ⭐</div>
       </div>
     </div>
   </div>
@@ -664,7 +718,7 @@
         <div class="roulette-tape" id="tape"></div>
       </div>
 
-      <button id="openBtn" class="btn-spin" onclick="openCase()">Открыть кейс (200 💰)</button>
+      <button id="openBtn" class="btn-spin" onclick="openCase()">Открыть кейс (200 ⭐)</button>
       
       <div class="result-container">
         <div id="result-text"></div>
@@ -726,6 +780,20 @@
     </div>
     <div class="inventory-grid" id="inventory-list">
       <div class="inventory-empty">Пока нет выпавших предметов</div>
+    </div>
+  </div>
+
+  <!-- Вкладка Ежедневные награды -->
+  <div id="tab-daily" class="tab-content">
+    <div class="page-title">Ежедневные награды</div>
+    <div class="daily-container">
+      <div class="daily-streak-info">
+        <div class="daily-streak-label">Серия входов:</div>
+        <div class="daily-streak-value" id="dailyStreakValue">0 дней</div>
+      </div>
+      <div class="daily-grid" id="dailyGrid"></div>
+      <button class="btn-spin" id="btnClaimDaily" onclick="claimDailyReward()">Забрать награду</button>
+      <div id="dailyStatusText" style="font-weight: bold; text-align: center; min-height: 20px;"></div>
     </div>
   </div>
 
@@ -838,6 +906,10 @@
       <span style="font-size: 20px;">🎒</span>
       <span>Инвентарь</span>
     </div>
+    <div class="nav-item" id="nav-daily" onclick="switchTab('daily')">
+      <span style="font-size: 20px;">🎁</span>
+      <span>Награды</span>
+    </div>
     <div class="nav-item" id="nav-trade" onclick="switchTab('trade')">
       <span style="font-size: 20px;">🤝</span>
       <span>Обмен</span>
@@ -919,7 +991,7 @@
 
     const casesData = {
       standart: {
-        name: 'Праздничный',
+        name: 'Бедняк',
         price: 200,
         pool: [
           { name: 'Снуп Дог', rarity: 'legendary', price: 2075, chance: 0.5, icon: '/images/case_standart/item3.png' },
@@ -968,6 +1040,8 @@
       }
     };
 
+    const dailyRewards = [50, 75, 100, 150, 200, 300, 500];
+
     let balance = 1000;
     let currentCase = casesData.standart;
     let inventory = [];
@@ -991,6 +1065,9 @@
 
     let targetShowcaseSlot = null; // Какой слот витрины сейчас заполняем
 
+    let dailyStreak = 0;
+    let lastDailyClaim = null; // ISO-строка времени последнего клейма
+
     const tape = document.getElementById('tape');
     const openBtn = document.getElementById('openBtn');
     const backBtn = document.getElementById('backBtn');
@@ -1002,7 +1079,7 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('balance, inventory, username, showcase')
+          .select('balance, inventory, username, showcase, daily_streak, last_daily_claim')
           .eq('user_id', userId)
           .maybeSingle();
 
@@ -1011,10 +1088,12 @@
           inventory = data.inventory ?? [];
           userFirstName = data.username ?? userFirstName;
           showcase = data.showcase ?? [null, null, null];
+          dailyStreak = data.daily_streak ?? 0;
+          lastDailyClaim = data.last_daily_claim ?? null;
         } else {
           await supabaseClient
             .from('users')
-            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null] }]);
+            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null], daily_streak: 0, last_daily_claim: null }]);
         }
         document.getElementById('username').innerText = userFirstName;
         updateBalanceUI();
@@ -1036,6 +1115,8 @@
             inventory: inventory, 
             username: userFirstName, 
             showcase: showcase,
+            daily_streak: dailyStreak,
+            last_daily_claim: lastDailyClaim,
             last_seen: new Date().toISOString() 
           }, { onConflict: 'user_id' });
       } catch (e) {
@@ -1304,7 +1385,7 @@
               <div class="leader-rank ${rankClass}">#${rank}</div>
               <div class="leader-name">${user.username || 'Игрок'}</div>
             </div>
-            <div class="leader-balance">${user.balance} 💰</div>
+            <div class="leader-balance">${user.balance} ⭐</div>
           `;
           item.onclick = () => openUserProfile(user.user_id);
           listContainer.appendChild(item);
@@ -1453,6 +1534,100 @@
     }
     // --- КОНЕЦ БЛОКА ПРОФИЛЯ ---
 
+    // --- ЕЖЕДНЕВНЫЕ НАГРАДЫ ---
+    function getDateStr(d) {
+      return d.toISOString().slice(0, 10);
+    }
+
+    function getYesterdayStr() {
+      const d = new Date();
+      d.setDate(d.getDate() - 1);
+      return getDateStr(d);
+    }
+
+    function pluralizeDays(n) {
+      const mod10 = n % 10;
+      const mod100 = n % 100;
+      if (mod100 >= 11 && mod100 <= 14) return 'дней';
+      if (mod10 === 1) return 'день';
+      if (mod10 >= 2 && mod10 <= 4) return 'дня';
+      return 'дней';
+    }
+
+    function renderDailyTab() {
+      const grid = document.getElementById('dailyGrid');
+      const streakValue = document.getElementById('dailyStreakValue');
+      const claimBtn = document.getElementById('btnClaimDaily');
+      const statusText = document.getElementById('dailyStatusText');
+
+      const todayStr = getDateStr(new Date());
+      const lastClaimStr = lastDailyClaim ? getDateStr(new Date(lastDailyClaim)) : null;
+      const alreadyClaimedToday = lastClaimStr === todayStr;
+
+      let nextDayIndex;
+      if (alreadyClaimedToday) {
+        nextDayIndex = (dailyStreak - 1 + 7) % 7;
+      } else if (lastClaimStr === getYesterdayStr()) {
+        nextDayIndex = dailyStreak % 7;
+      } else {
+        nextDayIndex = 0;
+      }
+
+      streakValue.innerText = `${dailyStreak} ${pluralizeDays(dailyStreak)}`;
+
+      grid.innerHTML = '';
+      dailyRewards.forEach((reward, idx) => {
+        const card = document.createElement('div');
+        let cls = 'daily-day-card';
+        if (alreadyClaimedToday && idx < nextDayIndex) cls += ' claimed';
+        if (idx === nextDayIndex) cls += alreadyClaimedToday ? ' claimed current' : ' current';
+        card.className = cls;
+        card.innerHTML = `
+          <div class="daily-day-label">День ${idx + 1}</div>
+          <div class="daily-day-reward">${reward} ⭐</div>
+        `;
+        grid.appendChild(card);
+      });
+
+      if (alreadyClaimedToday) {
+        claimBtn.disabled = true;
+        claimBtn.innerText = 'Уже получено сегодня';
+        const tomorrowDay = (dailyStreak % 7) + 1;
+        statusText.innerHTML = `<span style="color: var(--text-muted);">Возвращайтесь завтра за наградой дня ${tomorrowDay}!</span>`;
+      } else {
+        claimBtn.disabled = false;
+        claimBtn.innerText = `Забрать ${dailyRewards[nextDayIndex]} ⭐ (День ${nextDayIndex + 1})`;
+        statusText.innerText = '';
+      }
+    }
+
+    async function claimDailyReward() {
+      const todayStr = getDateStr(new Date());
+      const lastClaimStr = lastDailyClaim ? getDateStr(new Date(lastDailyClaim)) : null;
+
+      if (lastClaimStr === todayStr) return;
+
+      if (lastClaimStr === getYesterdayStr()) {
+        dailyStreak += 1;
+      } else {
+        dailyStreak = 1;
+      }
+
+      const rewardIndex = (dailyStreak - 1) % 7;
+      const reward = dailyRewards[rewardIndex];
+
+      balance += reward;
+      lastDailyClaim = new Date().toISOString();
+
+      updateBalanceUI();
+      playWinSound();
+      if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+      await syncUserData();
+      renderDailyTab();
+    }
+    // --- КОНЕЦ БЛОКА ЕЖЕДНЕВНЫХ НАГРАД ---
+
     function updateBalanceUI() {
       balanceSpan.innerText = balance;
     }
@@ -1462,7 +1637,7 @@
       return `
         <img src="${item.icon}" class="item-img" onerror="this.onerror=null; this.src='${fallback}';">
         <div>${item.name}</div>
-        <div class="item-price-tag">${item.price} 💰</div>
+        <div class="item-price-tag">${item.price} ⭐</div>
       `;
     }
 
@@ -1475,7 +1650,7 @@
         div.innerHTML = `
           <img src="${item.icon}">
           <div style="font-weight: bold; font-size: 10px;">${item.name}</div>
-          <div style="color: var(--green-color);">${item.price} 💰</div>
+          <div style="color: var(--green-color);">${item.price} ⭐</div>
           <div class="content-item-chance">${item.chance}%</div>
         `;
         grid.appendChild(div);
@@ -1667,6 +1842,10 @@
         document.getElementById('tab-inventory').classList.add('active');
         document.getElementById('nav-inventory').classList.add('active');
         renderInventory();
+      } else if (tabName === 'daily') {
+        document.getElementById('tab-daily').classList.add('active');
+        document.getElementById('nav-daily').classList.add('active');
+        renderDailyTab();
       } else if (tabName === 'trade') {
         document.getElementById('tab-trade').classList.add('active');
         document.getElementById('nav-trade').classList.add('active');
@@ -1684,7 +1863,7 @@
       if (!caseInfo) return;
 
       currentCase = caseInfo;
-      openBtn.innerText = `Открыть кейс (${caseInfo.price} 💰)`;
+      openBtn.innerText = `Открыть кейс (${caseInfo.price} ⭐)`;
       resultText.innerText = '';
       quickSellBtn.style.display = 'none';
       
@@ -1796,7 +1975,7 @@
         if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
 
         resultText.innerText = `Выбито: ${wonItem.name}!`;
-        quickSellBtn.innerText = `Продать за ${wonItem.price} 💰`;
+        quickSellBtn.innerText = `Продать за ${wonItem.price} ⭐`;
         quickSellBtn.style.display = 'block';
 
         setLockState(false);
@@ -1811,7 +1990,7 @@
         updateBalanceUI();
         syncUserData();
 
-        resultText.innerText = `Продано за +${soldItem.price} 💰`;
+        resultText.innerText = `Продано за +${soldItem.price} ⭐`;
         quickSellBtn.style.display = 'none';
         lastWonItemIndex = null;
       }
@@ -1860,7 +2039,7 @@
       const item = inventory[index];
 
       document.getElementById('modalTitle').innerText = item.name;
-      document.getElementById('modalPrice').innerText = `Цена продажи: ${item.price} 💰`;
+      document.getElementById('modalPrice').innerText = `Цена продажи: ${item.price} ⭐`;
 
       const preview = document.getElementById('modalPreview');
       preview.className = `modal-item-preview ${item.rarity}`;
