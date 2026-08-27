@@ -599,11 +599,11 @@
     .btn-modal-decline { background: var(--red-color); color: #fff; }
 
     .trade-container {
-      width: 100%; max-width: 400px;
-      display: flex; flex-direction: column; gap: 15px;
+      width: 100%; max-width: 440px;
+      display: flex; flex-direction: column; gap: 12px;
     }
 
-    .trade-grid-row { display: flex; gap: 10px; justify-content: space-between; }
+    .trade-grid-row { display: flex; gap: 10px; justify-content: space-between; width: 100%; }
 
     .trade-box {
       flex: 1;
@@ -611,12 +611,87 @@
       border: 1px solid #2a2b3d;
       border-radius: 12px;
       padding: 10px;
-      min-height: 150px; max-height: 200px;
+      min-height: 170px; max-height: 220px;
       overflow-y: auto;
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
     }
 
-    .trade-box-title { font-size: 12px; color: var(--text-muted); font-weight: bold; text-align: center; }
+    .trade-box-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--text-muted);
+      border-bottom: 1px solid #2a2b3d;
+      padding-bottom: 6px;
+      margin-bottom: 4px;
+    }
+
+    .readiness-badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+
+    .readiness-badge.ready {
+      background: rgba(72, 187, 120, 0.2);
+      color: var(--green-color);
+      border: 1px solid var(--green-color);
+    }
+
+    .readiness-badge.not-ready {
+      background: rgba(142, 146, 151, 0.15);
+      color: var(--text-muted);
+      border: 1px solid rgba(142, 146, 151, 0.3);
+    }
+
+    .trade-offer-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      width: 100%;
+    }
+
+    .trade-offer-card {
+      width: 100%;
+      height: 85px;
+      border-radius: 10px;
+      padding: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 10px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .trade-offer-card .trade-offer-img {
+      width: 34px;
+      height: 34px;
+      object-fit: contain;
+      margin-bottom: 2px;
+    }
+
+    .trade-offer-card .trade-offer-name {
+      font-weight: bold;
+      font-size: 9px;
+      width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .trade-offer-card .trade-offer-price {
+      color: var(--green-color);
+      font-size: 9px;
+      font-weight: bold;
+    }
 
     .nav-bar {
       position: fixed;
@@ -913,16 +988,16 @@
   </div>
 
   <div class="modal-overlay" id="activeTradeModal">
-    <div class="modal-card" style="max-width: 380px;">
+    <div class="modal-card" style="max-width: 460px; width: 95%;">
       <h3 id="activeTradeTitle">Обмен с игроком</h3>
       <div class="trade-container">
         <div class="trade-grid-row">
-          <div class="trade-box" id="my-offer-box"><div class="trade-box-title">Ваш вклад</div></div>
-          <div class="trade-box" id="peer-offer-box"><div class="trade-box-title">Вклад оппонента</div></div>
+          <div class="trade-box" id="my-offer-box"></div>
+          <div class="trade-box" id="peer-offer-box"></div>
         </div>
         <div style="font-size: 13px; font-weight: bold; text-align: center;" id="tradeStatusText">Выберите предмет из инвентаря для обмена</div>
         <div style="font-size: 12px; color: var(--text-muted);">Ваш инвентарь (нажмите, чтобы добавить):</div>
-        <div class="inventory-grid" id="trade-inventory-picker" style="max-height: 120px; overflow-y: auto;"></div>
+        <div class="inventory-grid" id="trade-inventory-picker" style="max-height: 130px; overflow-y: auto;"></div>
         <div class="modal-actions">
           <button class="btn-modal btn-modal-accept" id="btnReadyTrade" onclick="toggleReadyTrade()">Готов</button>
           <button class="btn-modal btn-modal-decline" onclick="cancelActiveTrade()">Отмена</button>
@@ -1090,6 +1165,7 @@
     let myTradeItems = [];
     let peerTradeItems = [];
     let isReady = false;
+    let peerReady = false;
     let currentTradeSubscription = null;
 
     let targetShowcaseSlot = null; // Какой слот витрины сейчас заполняем
@@ -1227,6 +1303,7 @@
         myTradeItems = [];
         peerTradeItems = [];
         isReady = false;
+        peerReady = false;
 
         openActiveTradeWindow(`Обмен с ${peerName}`);
         subscribeToTradeChannel(activeTradeId);
@@ -1241,6 +1318,7 @@
       myTradeItems = [];
       peerTradeItems = [];
       isReady = false;
+      peerReady = false;
 
       await supabaseClient.from('trades').update({ status: 'active' }).eq('id', activeTradeId);
       openActiveTradeWindow('Обмен предметами');
@@ -1268,6 +1346,7 @@
             return;
           }
           peerTradeItems = isSender ? (updated.receiver_items || []) : (updated.sender_items || []);
+          peerReady = isSender ? (updated.receiver_ready || false) : (updated.sender_ready || false);
           renderTradeOffers();
 
           if (updated.sender_ready && updated.receiver_ready && updated.status === 'active') {
@@ -1280,6 +1359,13 @@
     function openActiveTradeWindow(title) {
       document.getElementById('activeTradeTitle').innerText = title;
       document.getElementById('activeTradeModal').classList.add('active');
+
+      const btn = document.getElementById('btnReadyTrade');
+      if (btn) {
+        btn.style.background = 'var(--green-color)';
+        btn.innerText = 'Готов';
+      }
+
       renderTradePicker();
       renderTradeOffers();
     }
@@ -1290,6 +1376,14 @@
       myTradeItems = [];
       peerTradeItems = [];
       isReady = false;
+      peerReady = false;
+
+      const btn = document.getElementById('btnReadyTrade');
+      if (btn) {
+        btn.style.background = 'var(--green-color)';
+        btn.innerText = 'Готов';
+      }
+
       if (currentTradeSubscription) {
         supabaseClient.removeChannel(currentTradeSubscription);
         currentTradeSubscription = null;
@@ -1323,25 +1417,62 @@
       pushTradeStateToSupabase();
     }
 
+    function removeTradeItem(tradeIndex) {
+      if (isReady) return;
+      const item = myTradeItems.splice(tradeIndex, 1)[0];
+      inventory.push(item);
+      renderTradePicker();
+      renderTradeOffers();
+      pushTradeStateToSupabase();
+    }
+
     function renderTradeOffers() {
       const myBox = document.getElementById('my-offer-box');
       const peerBox = document.getElementById('peer-offer-box');
 
-      myBox.innerHTML = '<div class="trade-box-title">Ваш вклад</div>';
-      myTradeItems.forEach((item) => {
-        const div = document.createElement('div');
-        div.style.fontSize = '11px'; div.style.color = 'var(--green-color)';
-        div.innerText = `• ${item.name}`;
-        myBox.appendChild(div);
-      });
+      myBox.innerHTML = `
+        <div class="trade-box-header">
+          <span>Ваш вклад</span>
+          <span class="readiness-badge ${isReady ? 'ready' : 'not-ready'}">${isReady ? '✅ Готов' : '⏳ Не готов'}</span>
+        </div>
+      `;
+      const myGrid = document.createElement('div');
+      myGrid.className = 'trade-offer-grid';
 
-      peerBox.innerHTML = '<div class="trade-box-title">Вклад оппонента</div>';
-      peerTradeItems.forEach((item) => {
-        const div = document.createElement('div');
-        div.style.fontSize = '11px'; div.style.color = 'var(--green-color)';
-        div.innerText = `• ${item.name}`;
-        peerBox.appendChild(div);
+      myTradeItems.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = `trade-offer-card ${item.rarity}`;
+        card.title = 'Нажмите, чтобы убрать из обмена';
+        card.onclick = () => removeTradeItem(idx);
+        card.innerHTML = `
+          <img src="${item.icon}" class="trade-offer-img">
+          <div class="trade-offer-name">${item.name}</div>
+          <div class="trade-offer-price">${item.price} ⭐</div>
+        `;
+        myGrid.appendChild(card);
       });
+      myBox.appendChild(myGrid);
+
+      peerBox.innerHTML = `
+        <div class="trade-box-header">
+          <span>Вклад оппонента</span>
+          <span class="readiness-badge ${peerReady ? 'ready' : 'not-ready'}">${peerReady ? '✅ Готов' : '⏳ Не готов'}</span>
+        </div>
+      `;
+      const peerGrid = document.createElement('div');
+      peerGrid.className = 'trade-offer-grid';
+
+      peerTradeItems.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = `trade-offer-card ${item.rarity}`;
+        card.innerHTML = `
+          <img src="${item.icon}" class="trade-offer-img">
+          <div class="trade-offer-name">${item.name}</div>
+          <div class="trade-offer-price">${item.price} ⭐</div>
+        `;
+        peerGrid.appendChild(card);
+      });
+      peerBox.appendChild(peerGrid);
     }
 
     async function pushTradeStateToSupabase() {
