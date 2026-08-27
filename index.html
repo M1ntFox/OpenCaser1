@@ -610,6 +610,11 @@
         <div class="case-title">Романтика</div>
         <div class="case-price">420 💰</div>
       </div>
+      <div class="case-card" onclick="openSpinScreen('manager')">
+        <img src="/images/case_manager/case_manager.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Менеджер</div>
+        <div class="case-price">830 💰</div>
+      </div>
     </div>
   </div>
 
@@ -904,6 +909,22 @@
           { name: 'Шляпа Ведьмы', rarity: 'rare', price: 350, chance: 12.0, icon: '/images/case_romance/item3.png' },
           { name: 'Новогодняя Змея 2025', rarity: 'common', price: 325, chance: 15.0, icon: '/images/case_romance/item5.png' },
           { name: 'Шапка Санта Клауса', rarity: 'common', price: 100, chance: 36.3, icon: '/images/case_romance/item4.png' }
+        ]
+      },
+      manager: {
+        name: 'Менеджер',
+        price: 830,
+        pool: [
+          { name: 'Подвесная Звезда (This Is Fine)', rarity: 'legendary', price: 19250, chance: 0.3, icon: '/images/case_manager/item10.png' },
+          { name: 'Кольцо (Пиксель)', rarity: 'legendary', price: 14825, chance: 0.7, icon: '/images/case_manager/item9.png' },
+          { name: 'Джингл Беллс (Золотые игральные кости)', rarity: 'epic', price: 8150, chance: 1.5, icon: '/images/case_manager/item6.png' },
+          { name: 'Домашний Торт (Шаловливый)', rarity: 'epic', price: 3025, chance: 2.5, icon: '/images/case_manager/item8.png' },
+          { name: 'Имбирьное Печенье (Санта)', rarity: 'epic', price: 2350, chance: 4.0, icon: '/images/case_manager/item3.png' },
+          { name: 'Пасхальное Яйцо (Крипер)', rarity: 'rare', price: 1425, chance: 7.0, icon: '/images/case_manager/item4.png' },
+          { name: 'Кристальный Шар (Череп)', rarity: 'rare', price: 1150, chance: 9.0, icon: '/images/case_manager/item5.png' },
+          { name: 'Конфета (Вишневый шарп)', rarity: 'common', price: 675, chance: 20.0, icon: '/images/case_manager/item2.png' },
+          { name: 'Джек в Коробке (Иннопланеятни)', rarity: 'common', price: 475, chance: 25.0, icon: '/images/case_manager/item1.png' },
+          { name: 'Лоли-Поп', rarity: 'common', price: 325, chance: 30.0, icon: '/images/case_manager/item7.png' }
         ]
       }
     };
