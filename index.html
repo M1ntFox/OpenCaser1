@@ -600,10 +600,15 @@
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
     <div class="cases-grid">
-      <div class="case-card" onclick="openSpinScreen('Праздничный', 200)">
+      <div class="case-card" onclick="openSpinScreen('standart')">
         <img src="/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Праздничный</div>
         <div class="case-price">200 💰</div>
+      </div>
+      <div class="case-card" onclick="openSpinScreen('romance')">
+        <img src="/images/case_romance/case_romance.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Романтика</div>
+        <div class="case-price">420 💰</div>
       </div>
     </div>
   </div>
@@ -868,20 +873,43 @@
       osc.stop(audioCtx.currentTime + 0.1);
     }
 
-    const casePool = [
-      { name: 'Снуп Дог', rarity: 'legendary', price: 2075, chance: 0.5, icon: '/images/case_standart/item3.png' },
-      { name: 'Плюшевый Пепе', rarity: 'epic', price: 925, chance: 2.0, icon: '/images/case_standart/item1.png' },
-      { name: 'Медведь Террорист', rarity: 'epic', price: 725, chance: 5.0, icon: '/images/case_standart/item4.png' },
-      { name: 'Надувной Фламинго', rarity: 'rare', price: 450, chance: 10.0, icon: '/images/case_standart/item9.png' },
-      { name: 'Золотые Polex', rarity: 'rare', price: 450, chance: 12.0, icon: '/images/case_standart/item7.png' },
-      { name: 'Шляпа Шута', rarity: 'rare', price: 350, chance: 15.0, icon: '/images/case_standart/item5.png' },
-      { name: 'Шляпа', rarity: 'common', price: 325, chance: 16.0, icon: '/images/case_standart/item6.png' },
-      { name: 'Лепесток Сакуры', rarity: 'common', price: 100, chance: 18.5, icon: '/images/case_standart/item8.png' },
-      { name: 'Злой Глаз', rarity: 'common', price: 100, chance: 21.0, icon: '/images/case_standart/item2.png' }
-    ];
+    const casesData = {
+      standart: {
+        name: 'Праздничный',
+        price: 200,
+        pool: [
+          { name: 'Снуп Дог', rarity: 'legendary', price: 2075, chance: 0.5, icon: '/images/case_standart/item3.png' },
+          { name: 'Плюшевый Пепе', rarity: 'epic', price: 925, chance: 2.0, icon: '/images/case_standart/item1.png' },
+          { name: 'Медведь Террорист', rarity: 'epic', price: 725, chance: 5.0, icon: '/images/case_standart/item4.png' },
+          { name: 'Надувной Фламинго', rarity: 'rare', price: 450, chance: 10.0, icon: '/images/case_standart/item9.png' },
+          { name: 'Золотые Polex', rarity: 'rare', price: 450, chance: 12.0, icon: '/images/case_standart/item7.png' },
+          { name: 'Шляпа Шута', rarity: 'rare', price: 350, chance: 15.0, icon: '/images/case_standart/item5.png' },
+          { name: 'Шляпа', rarity: 'common', price: 325, chance: 16.0, icon: '/images/case_standart/item6.png' },
+          { name: 'Лепесток Сакуры', rarity: 'common', price: 100, chance: 18.5, icon: '/images/case_standart/item8.png' },
+          { name: 'Злой Глаз', rarity: 'common', price: 100, chance: 21.0, icon: '/images/case_standart/item2.png' }
+        ]
+      },
+      romance: {
+        name: 'Романтика',
+        price: 420,
+        pool: [
+          { name: 'Духи №5', rarity: 'legendary', price: 17350, chance: 0.1, icon: '/images/case_romance/item1.png' },
+          { name: 'Поцелованная Лягушка', rarity: 'legendary', price: 8625, chance: 0.6, icon: '/images/case_romance/item2.png' },
+          { name: 'Вечная Роза', rarity: 'epic', price: 3325, chance: 3.0, icon: '/images/case_romance/item3.png' },
+          { name: 'Подвесная Звезда', rarity: 'epic', price: 1225, chance: 4.0, icon: '/images/case_romance/item4.png' },
+          { name: 'Цветок Сакуры', rarity: 'epic', price: 1075, chance: 6.0, icon: '/images/case_romance/item5.png' },
+          { name: 'Ведьмин Котёл', rarity: 'rare', price: 700, chance: 7.0, icon: '/images/case_romance/item6.png' },
+          { name: 'Пряничный Человечек', rarity: 'rare', price: 450, chance: 8.0, icon: '/images/case_romance/item7.png' },
+          { name: 'Питомец Змейка', rarity: 'rare', price: 450, chance: 8.0, icon: '/images/case_romance/item8.png' },
+          { name: 'Рождественский Носок', rarity: 'rare', price: 350, chance: 12.0, icon: '/images/case_romance/item9.png' },
+          { name: 'Коробка со Змейкой', rarity: 'common', price: 325, chance: 15.0, icon: '/images/case_romance/item10.png' },
+          { name: 'Кольцо', rarity: 'common', price: 100, chance: 36.3, icon: '/images/case_romance/item11.png' }
+        ]
+      }
+    };
 
     let balance = 1000;
-    let currentCase = { name: 'Праздничный', price: 200 };
+    let currentCase = casesData.standart;
     let inventory = [];
     let showcase = [null, null, null]; // 3 слота витрины
     let isSpinning = false;
@@ -1380,7 +1408,7 @@
     function renderCaseContents() {
       const grid = document.getElementById('contentsGrid');
       grid.innerHTML = '';
-      casePool.forEach((item) => {
+      currentCase.pool.forEach((item) => {
         const div = document.createElement('div');
         div.className = `content-item-card ${item.rarity}`;
         div.innerHTML = `
@@ -1427,9 +1455,16 @@
         });
       } else {
         title.innerText = 'Выберите желаемый предмет (шанс ≤ 70%):';
-        
+
+        // Апгрейд ищет по всем предметам из всех кейсов
+        const allItems = Object.values(casesData).flatMap(c => c.pool);
+        const seenNames = new Set();
+
         let availableCount = 0;
-        casePool.forEach((item) => {
+        allItems.forEach((item) => {
+          if (seenNames.has(item.name)) return;
+          seenNames.add(item.name);
+
           let chance = upgradeMyItem ? Math.round((upgradeMyItem.price / item.price) * 100) : 100;
           
           if (upgradeMyItem && chance > 70) {
@@ -1582,16 +1617,19 @@
       }
     }
 
-    function openSpinScreen(name, price) {
+    function openSpinScreen(caseKey) {
       if (isSpinning) return;
-      currentCase = { name, price };
-      openBtn.innerText = `Открыть кейс (${price} 💰)`;
+      const caseInfo = casesData[caseKey];
+      if (!caseInfo) return;
+
+      currentCase = caseInfo;
+      openBtn.innerText = `Открыть кейс (${caseInfo.price} 💰)`;
       resultText.innerText = '';
       quickSellBtn.style.display = 'none';
       
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById('tab-spin').classList.add('active');
-      generateTape(casePool[0]);
+      generateTape(currentCase.pool[0]);
       renderCaseContents();
     }
 
@@ -1619,11 +1657,11 @@
     function getRandomItem() {
       const rand = Math.random() * 100;
       let sum = 0;
-      for (const item of casePool) {
+      for (const item of currentCase.pool) {
         sum += item.chance;
         if (rand <= sum) return item;
       }
-      return casePool[casePool.length - 1];
+      return currentCase.pool[currentCase.pool.length - 1];
     }
 
     function setLockState(locked) {
