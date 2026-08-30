@@ -1330,12 +1330,6 @@
           .eq('user_id', userId)
           .maybeSingle();
 
-        if (error) {
-          console.error('Ошибка загрузки пользователя:', error);
-          showToast('❌ Supabase: ' + error.message, 'error');
-          return;
-        }
-
         if (data) {
           balance = data.balance ?? 1000;
           inventory = data.inventory ?? [];
@@ -1344,14 +1338,9 @@
           lastDailyClaim = data.last_daily_claim ?? null;
           dailyStreak = data.daily_streak ?? 0;
         } else {
-          const { error: insertError } = await supabaseClient
+          await supabaseClient
             .from('users')
             .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null], last_daily_claim: null, daily_streak: 0 }]);
-          if (insertError) {
-            console.error('Ошибка создания пользователя:', insertError);
-            showToast('❌ Не удалось создать профиль: ' + insertError.message, 'error');
-            return;
-          }
         }
         document.getElementById('username').innerText = userFirstName;
         updateBalanceUI();
@@ -1365,7 +1354,7 @@
 
     async function syncUserData() {
       try {
-        const { data, error } = await supabaseClient
+        await supabaseClient
           .from('users')
           .upsert({ 
             user_id: userId, 
@@ -1376,20 +1365,9 @@
             last_daily_claim: lastDailyClaim,
             daily_streak: dailyStreak,
             last_seen: new Date().toISOString() 
-          }, { onConflict: 'user_id' })
-          .select()
-          .single();
-
-        if (error) {
-          console.error('Ошибка синхронизации данных:', error);
-          showToast('❌ Ошибка сохранения: ' + error.message, 'error');
-          return false;
-        }
-        return true;
+          }, { onConflict: 'user_id' });
       } catch (e) {
         console.error('Ошибка синхронизации данных:', e);
-        showToast('❌ Ошибка сохранения данных', 'error');
-        return false;
       }
     }
 
