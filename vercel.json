@@ -1,12 +1,5 @@
 {
-  "cleanUrls": true,
   "rewrites": [
-    { "source": "/api/daily-notifier", "destination": "/api/daily-notifier.js" }
-  ],
-  "crons": [
-    {
-      "path": "/api/daily-notifier.js",
-      "schedule": "0 * * * *"
-    }
+    { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
