@@ -39,15 +39,20 @@
     }
 
     .user-info { 
-      font-size: 18px; 
+      font-size: 15px; 
       font-weight: bold; 
       cursor: pointer; 
       display: flex; 
       align-items: center; 
       gap: 6px; 
-      transition: opacity 0.2s;
+      padding: 8px 14px;
+      border-radius: 30px;
+      background: rgba(88, 101, 242, 0.14);
+      border: 1px solid rgba(88, 101, 242, 0.35);
+      transition: all 0.2s;
     }
-    .user-info:hover { opacity: 0.8; }
+    .user-info:hover { background: rgba(88, 101, 242, 0.22); }
+    .user-info:active { transform: scale(0.96); }
 
     .balance-badge {
       background: rgba(30, 41, 59, 0.8);
@@ -182,29 +187,9 @@
 
     .item-price-tag { font-size: 11px; opacity: 0.85; }
 
-    .common { background: #2d3748; border: 2px solid #4a5568; }
-    .rare { background: #1a365d; border: 2px solid #2b6cb0; }
-    .epic { 
-      background: #44337a; 
-      border: 2px solid #9f7aea; 
-      box-shadow: 0 0 12px rgba(159, 122, 234, 0.7);
-      animation: epicGlow 2.5s infinite ease-in-out;
-    }
-    .legendary { 
-      background: #7b341e; 
-      border: 2px solid #f6e05e; 
-      box-shadow: 0 0 16px rgba(246, 224, 94, 0.85);
-      animation: legendaryGlow 2s infinite ease-in-out;
-    }
-
-    @keyframes epicGlow {
-      0%, 100% { box-shadow: 0 0 10px rgba(159, 122, 234, 0.6), 0 0 20px rgba(159, 122, 234, 0.3); }
-      50% { box-shadow: 0 0 18px rgba(159, 122, 234, 0.9), 0 0 28px rgba(159, 122, 234, 0.6); }
-    }
-
-    @keyframes legendaryGlow {
-      0%, 100% { box-shadow: 0 0 12px rgba(237, 137, 54, 0.7), 0 0 24px rgba(237, 137, 54, 0.4); }
-      50% { box-shadow: 0 0 22px rgba(246, 224, 94, 0.95), 0 0 34px rgba(237, 137, 54, 0.8); }
+    .common, .rare, .epic, .legendary {
+      background: #262b3d;
+      border: 2px solid #3a4358;
     }
 
     /* Уменьшенные карточки только для сетки инвентаря */
@@ -798,9 +783,73 @@
 
     .daily-day-title { font-weight: bold; font-size: 10px; color: var(--text-muted); }
     .daily-reward-val { color: var(--green-color); font-weight: bold; margin-top: 2px; }
+
+    .case-card-full { grid-column: 1 / -1; }
+
+    /* Экран загрузки */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--bg-color);
+      z-index: 20000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 22px;
+      padding: 20px;
+      transition: opacity 0.4s ease;
+    }
+
+    .loading-screen.hidden { opacity: 0; pointer-events: none; }
+
+    .loading-spinner {
+      width: 52px;
+      height: 52px;
+      border: 4px solid #2a2b3d;
+      border-top-color: var(--accent-color);
+      border-radius: 50%;
+      animation: loadingSpin 1s linear infinite;
+    }
+
+    @keyframes loadingSpin { to { transform: rotate(360deg); } }
+
+    .loading-title {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      max-width: 280px;
+      line-height: 1.4;
+    }
+
+    .loading-subscribe-btn {
+      width: auto;
+      padding: 12px 34px;
+    }
+
+    /* Оверлей, блокирующий все нажатия во время открытия кейса / апгрейда */
+    .global-lock-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 5000;
+      display: none;
+      background: transparent;
+    }
+
+    .global-lock-overlay.active { display: block; }
   </style>
 </head>
 <body>
+
+  <!-- Экран загрузки -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-spinner"></div>
+    <div class="loading-title">Подписывайтесь на нас в Telegram</div>
+    <button class="btn-spin loading-subscribe-btn" onclick="window.open('https://t.me/your_channel', '_blank')">Подписаться</button>
+  </div>
+
+  <!-- Оверлей блокировки нажатий -->
+  <div id="globalLockOverlay" class="global-lock-overlay"></div>
 
   <div class="header">
     <div class="user-info" id="usernameBtn" onclick="openMyProfile()">
@@ -817,7 +866,7 @@
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('standart')">
         <img src="/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
-        <div class="case-title">Праздничный</div>
+        <div class="case-title">Бедняк</div>
         <div class="case-price">200 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('romance')">
@@ -842,7 +891,7 @@
   <div id="tab-modes" class="tab-content">
     <div class="page-title">Режимы игры</div>
     <div class="cases-grid">
-      <div class="case-card" onclick="openDailyModal()">
+      <div class="case-card case-card-full" onclick="openDailyModal()">
         <img src="/images/logos/daily.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бонус дня</div>
         <div class="case-price" style="color: var(--green-color); font-weight: 500;">До 25 000 ⭐</div>
@@ -1212,6 +1261,7 @@
     let inventory = [];
     let showcase = [null, null, null]; // 3 слота витрины
     let isSpinning = false;
+    let isUpgrading = false;
     let lastWonItemIndex = null;
     let selectedInventoryIndex = null;
     let spinSoundInterval = null;
@@ -1251,6 +1301,18 @@
       setTimeout(() => {
         if (toast && toast.parentNode) toast.parentNode.removeChild(toast);
       }, 3000);
+    }
+
+    // --- Блокировка всех нажатий во время открытия кейса / апгрейда ---
+    function setActionLock(locked) {
+      const overlay = document.getElementById('globalLockOverlay');
+      if (overlay) overlay.classList.toggle('active', locked);
+
+      const usernameBtn = document.getElementById('usernameBtn');
+      if (usernameBtn) usernameBtn.classList.toggle('is-disabled', locked);
+
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('is-disabled', locked));
+      if (backBtn) backBtn.classList.toggle('is-disabled', locked);
     }
 
     const tape = document.getElementById('tape');
@@ -1651,7 +1713,7 @@
 
     // --- УПРАВЛЕНИЕ ПРОФИЛЕМ И ВИТРИНОЙ ---
     function openMyProfile() {
-      if (isSpinning) return;
+      if (isSpinning || isUpgrading) return;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
@@ -2040,6 +2102,8 @@
       const resText = document.getElementById('upgradeResultText');
       const wheelArrow = document.getElementById('upgradeWheelArrow');
       btn.disabled = true;
+      isUpgrading = true;
+      setActionLock(true);
       resText.innerText = 'Вращается стрелочка...';
 
       inventory.splice(upgradeMyIndex, 1);
@@ -2084,6 +2148,8 @@
         syncUserData();
         resetUpgradeSlots();
         btn.disabled = false;
+        isUpgrading = false;
+        setActionLock(false);
       }, 3000);
     }
 
@@ -2106,7 +2172,7 @@
     }
 
     function switchTab(tabName) {
-      if (isSpinning) return;
+      if (isSpinning || isUpgrading) return;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
@@ -2136,7 +2202,7 @@
     }
 
     function openSpinScreen(caseKey) {
-      if (isSpinning) return;
+      if (isSpinning || isUpgrading) return;
       const caseInfo = casesData[caseKey];
       if (!caseInfo) return;
 
@@ -2152,7 +2218,7 @@
     }
 
     function backToShop() {
-      if (isSpinning) return;
+      if (isSpinning || isUpgrading) return;
       switchTab('shop');
     }
 
@@ -2185,8 +2251,7 @@
     function setLockState(locked) {
       isSpinning = locked;
       openBtn.disabled = locked;
-      backBtn.classList.toggle('is-disabled', locked);
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.toggle('is-disabled', locked));
+      setActionLock(locked);
     }
 
     function startSpinAudio() {
@@ -2345,7 +2410,29 @@
       }
     }
 
-    loadUserData();
+    // --- Звук нажатия на любую кнопку/карточку в приложении ---
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('button, .case-card, .nav-item, .daily-card, .leader-item');
+      if (target && !target.classList.contains('is-disabled')) {
+        initAudio();
+        playClickSound();
+      }
+    }, true);
+
+    // --- Инициализация приложения с экраном загрузки (мин. 5 сек либо до полной загрузки данных) ---
+    async function initApp() {
+      const minDelay = new Promise(resolve => setTimeout(resolve, 5000));
+      const dataLoad = loadUserData();
+      await Promise.all([minDelay, dataLoad]);
+
+      const loadingScreen = document.getElementById('loadingScreen');
+      if (loadingScreen) {
+        loadingScreen.classList.add('hidden');
+        setTimeout(() => { loadingScreen.style.display = 'none'; }, 400);
+      }
+    }
+
+    initApp();
   </script>
 </body>
 </html>
