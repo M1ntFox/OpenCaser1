@@ -467,13 +467,77 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
-      max-height: 160px;
+      max-height: 220px;
       overflow-y: auto;
       width: 100%;
       background: #161722;
       padding: 10px;
       border-radius: 12px;
       border: 1px solid #2a2b3d;
+    }
+
+    .upgrade-selector-grid .item-card {
+      width: 100%;
+      height: 100px;
+      margin-right: 0;
+      padding: 6px 4px;
+      font-size: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 10px;
+      cursor: pointer;
+      box-sizing: border-box;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+
+    .upgrade-selector-grid .item-card:hover {
+      border-color: var(--accent-color);
+      transform: translateY(-2px);
+    }
+
+    .upgrade-selector-grid .item-card:active {
+      transform: scale(0.95);
+    }
+
+    /* Разделитель категорий кейсов */
+    .case-section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 400px;
+      margin: 10px 0 20px 0;
+      gap: 14px;
+    }
+
+    .case-divider-line {
+      flex: 1;
+      height: 2px;
+      position: relative;
+    }
+
+    .case-divider-line.left {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.95) 100%);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+      border-radius: 2px;
+    }
+
+    .case-divider-line.right {
+      background: linear-gradient(90deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.4) 60%, rgba(255, 255, 255, 0) 100%);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+      border-radius: 2px;
+    }
+
+    .case-divider-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      white-space: nowrap;
+      text-shadow: 0 0 12px rgba(255, 255, 255, 0.6), 0 0 2px rgba(255, 255, 255, 0.8);
     }
 
     .inventory-grid {
@@ -518,6 +582,31 @@
     .btn-sort.active {
       background: var(--accent-color);
       border-color: var(--accent-color);
+    }
+
+    .btn-sell-all {
+      margin-left: auto;
+      background: rgba(255, 71, 87, 0.15);
+      border: 1px solid rgba(255, 71, 87, 0.4);
+      color: #ff4757;
+      padding: 7px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-sell-all:hover {
+      background: rgba(255, 71, 87, 0.28);
+      border-color: #ff4757;
+    }
+
+    .btn-sell-all:active {
+      transform: scale(0.95);
     }
 
     .leaderboard-list, .online-list {
@@ -954,6 +1043,13 @@
   <!-- Вкладка Магазин Кейсов -->
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
+    
+    <div class="case-section-divider">
+      <div class="case-divider-line left"></div>
+      <div class="case-divider-title">ОБЫЧНЫЕ</div>
+      <div class="case-divider-line right"></div>
+    </div>
+
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('bomj')">
         <img src="/images/case_bomj/case_bomj.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
@@ -999,6 +1095,20 @@
         <img src="/images/case_lux/case_lux.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Люкс</div>
         <div class="case-price">120000 ⭐</div>
+      </div>
+    </div>
+
+    <div class="case-section-divider" style="margin-top: 25px;">
+      <div class="case-divider-line left"></div>
+      <div class="case-divider-title">NFT</div>
+      <div class="case-divider-line right"></div>
+    </div>
+
+    <div class="cases-grid">
+      <div class="case-card" onclick="openSpinScreen('frosty')">
+        <img src="/images/case_frosty/case_frosty.png" class="case-img" onerror="this.onerror=null; this.src='/images/case_frosty/item4.png';">
+        <div class="case-title">Морозный</div>
+        <div class="case-price">4500 ⭐</div>
       </div>
     </div>
   </div>
@@ -1114,6 +1224,7 @@
       <span class="inventory-sort-label">Сортировка по цене:</span>
       <button class="btn-sort" id="sortPriceAsc" onclick="sortInventory('asc')">Дешевле ↑</button>
       <button class="btn-sort" id="sortPriceDesc" onclick="sortInventory('desc')">Дороже ↓</button>
+      <button class="btn-sell-all" id="btnSellAllInventory" onclick="sellAllInventory()">Продать все</button>
     </div>
     <div class="inventory-grid" id="inventory-list">
       <div class="inventory-empty">Пока нет выпавших предметов</div>
@@ -1490,6 +1601,19 @@
           { name: 'Мини Оскар (Огненно-Жаркий)', rarity: 'common', price: 87550, chance: 18.0, icon: '/images/case_lux/item7.png' },
           { name: 'Электрический Череп (Терминатор)', rarity: 'common', price: 70225, chance: 25.0, icon: '/images/case_lux/item8.png' },
           { name: 'Перстень-Кольцо (Звезда Смерти)', rarity: 'common', price: 49575, chance: 32.0, icon: '/images/case_lux/item9.png' }
+        ]
+      },
+      frosty: {
+        name: 'Морозный',
+        price: 4500,
+        pool: [
+          { name: 'Precious Peach (Bubbling Blue)', rarity: 'legendary', price: 202750, chance: 0.6, icon: '/images/case_frosty/item2.png' },
+          { name: 'Astral Shard (Aquarium)', rarity: 'legendary', price: 28950, chance: 1.6, icon: '/images/case_frosty/item4.png' },
+          { name: 'Kissed Frog (Ectofrog)', rarity: 'epic', price: 10500, chance: 4.0, icon: '/images/case_frosty/item7.png' },
+          { name: 'Mad Pumpkin (Frostbite)', rarity: 'rare', price: 6025, chance: 10.0, icon: '/images/case_frosty/item3.png' },
+          { name: 'Cupid Charm (Crystal Clear)', rarity: 'rare', price: 3375, chance: 23.0, icon: '/images/case_frosty/item1.png' },
+          { name: 'Love Potion (Ice Queen)', rarity: 'rare', price: 2550, chance: 15.0, icon: '/images/case_frosty/item5.png' },
+          { name: 'Eternal Candle (Bubble Bath)', rarity: 'common', price: 1775, chance: 45.8, icon: '/images/case_frosty/item6.png' }
         ]
       }
     };
@@ -2305,14 +2429,23 @@
           grid.innerHTML = '<div class="inventory-empty" style="grid-column:1/-1;">Инвентарь пуст</div>';
           return;
         }
-        inventory.forEach((item, idx) => {
+
+        // Создаем копию предметов инвентаря с сохранением их оригинального индекса
+        const myItems = inventory.map((item, originalIndex) => ({ item, originalIndex }));
+        // Сортировка: вверху дешевые, внизу дорогие
+        myItems.sort((a, b) => a.item.price - b.item.price);
+
+        myItems.forEach(({ item, originalIndex }) => {
           const card = document.createElement('div');
           card.className = `item-card ${item.rarity}`;
-          card.style.width = '70px'; card.style.height = '80px';
-          card.innerHTML = `<img src="${item.icon}" style="width:30px;height:30px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
+          card.innerHTML = `
+            <img src="${item.icon}" style="width:34px;height:34px;object-fit:contain;margin-bottom:2px;" onerror="this.onerror=null; this.src='https://via.placeholder.com/34';">
+            <div style="font-size:10px; font-weight:600; line-height:1.2; max-height:24px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${item.name}</div>
+            <div style="font-size:10px; font-weight:bold; color:var(--green-color); margin-top:2px;">${item.price} ⭐</div>
+          `;
           card.onclick = () => {
             upgradeMyItem = item;
-            upgradeMyIndex = idx;
+            upgradeMyIndex = originalIndex;
             document.getElementById('upgrade-my-slot').classList.add('filled');
             document.getElementById('upgrade-my-slot').innerHTML = getItemHTML(item);
             container.style.display = 'none';
@@ -2330,8 +2463,8 @@
         // Апгрейд ищет по всем предметам из всех кейсов
         const allItems = Object.values(casesData).flatMap(c => c.pool);
         const seenNames = new Set();
+        const availableItems = [];
 
-        let availableCount = 0;
         allItems.forEach((item) => {
           if (seenNames.has(item.name)) return;
           seenNames.add(item.name);
@@ -2341,11 +2474,23 @@
           if (upgradeMyItem && chance > 70) {
             return;
           }
+          if (chance > 70) chance = 70;
+          if (chance < 1) chance = 1;
 
-          availableCount++;
+          availableItems.push({ item, chance });
+        });
+
+        // Сортировка: вверху дешевые, внизу дорогие
+        availableItems.sort((a, b) => a.item.price - b.item.price);
+
+        if (availableItems.length === 0) {
+          grid.innerHTML = '<div class="inventory-empty" style="grid-column:1/-1; font-size:11px;">Нет доступных предметов (выберите более дешевый свой предмет)</div>';
+          return;
+        }
+
+        availableItems.forEach(({ item, chance }) => {
           const card = document.createElement('div');
           card.className = `item-card ${item.rarity}`;
-          card.style.width = '70px'; card.style.height = '80px';
           
           card.onclick = () => {
             upgradeTargetItem = item;
@@ -2355,13 +2500,16 @@
             updateUpgradeChance();
           };
 
-          card.innerHTML = `<img src="${item.icon}" style="width:30px;height:30px;object-fit:contain;"><div style="font-size:9px;">${item.name}</div>`;
+          card.innerHTML = `
+            <img src="${item.icon}" style="width:34px;height:34px;object-fit:contain;margin-bottom:2px;" onerror="this.onerror=null; this.src='https://via.placeholder.com/34';">
+            <div style="font-size:10px; font-weight:600; line-height:1.2; max-height:24px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${item.name}</div>
+            <div style="display:flex; justify-content:space-between; width:100%; padding:0 2px; font-size:9px; margin-top:2px;">
+              <span style="color:var(--green-color); font-weight:bold;">${item.price} ⭐</span>
+              <span style="color:var(--accent-color); font-weight:bold;">${chance}%</span>
+            </div>
+          `;
           grid.appendChild(card);
         });
-
-        if (availableCount === 0) {
-          grid.innerHTML = '<div class="inventory-empty" style="grid-column:1/-1; font-size:11px;">Нет доступных предметов (выберите более дешевый свой предмет)</div>';
-        }
       }
     }
 
@@ -2810,6 +2958,44 @@
         quickSellBtn.style.display = 'none';
         lastWonItemIndex = null;
       }
+    }
+
+    function sellAllInventory() {
+      if (inventory.length === 0) {
+        showToast('Инвентарь пуст!', 'error');
+        return;
+      }
+
+      let total = 0;
+      inventory.forEach(item => {
+        total += item.price;
+      });
+
+      inventory = [];
+      balance += total;
+
+      // Сброс слота апгрейда, если там был предмет
+      upgradeMyItem = null;
+      upgradeMyIndex = null;
+      upgradeTargetItem = null;
+      const mySlot = document.getElementById('upgrade-my-slot');
+      if (mySlot) {
+        mySlot.classList.remove('filled');
+        mySlot.innerHTML = `<div style="color: var(--text-muted)">Ваш предмет</div><div id="upgrade-my-placeholder" style="font-size: 24px; margin-top: 10px;">➕</div>`;
+      }
+      const targetSlot = document.getElementById('upgrade-target-slot');
+      if (targetSlot) {
+        targetSlot.classList.remove('filled');
+        targetSlot.innerHTML = `<div style="color: var(--text-muted)">Желаемый</div><div id="upgrade-target-placeholder" style="font-size: 24px; margin-top: 10px;">➕</div>`;
+      }
+      if (typeof updateUpgradeChance === 'function') updateUpgradeChance();
+
+      updateBalanceUI();
+      syncUserData();
+      playSellSound();
+      if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      showToast(`Весь инвентарь продан за +${total} ⭐!`, 'success');
+      renderInventory();
     }
 
     function sortInventory(order) {
