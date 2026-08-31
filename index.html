@@ -864,6 +864,11 @@
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
     <div class="cases-grid">
+      <div class="case-card" onclick="openSpinScreen('bomj')">
+        <img src="/images/case_bomj/case_bomj.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Бомж</div>
+        <div class="case-price">Бесплатно</div>
+      </div>
       <div class="case-card" onclick="openSpinScreen('standart')">
         <img src="/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бедняк</div>
@@ -905,6 +910,11 @@
         <img src="/images/logos/trade.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Обмен</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Трейд с игроками</div>
+      </div>
+      <div class="case-card" onclick="openPromoModal()">
+        <img src="/images/logos/promo.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Промокод</div>
+        <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Ввести код</div>
       </div>
     </div>
   </div>
@@ -1045,6 +1055,25 @@
 
       <div class="modal-actions" style="margin-top: 5px;">
         <button class="btn-modal btn-modal-close" onclick="closeDailyModal()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="promoModal">
+    <div class="modal-card" style="max-width: 380px; width: 92%;">
+      <h3>🎟️ Промокод</h3>
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center;">Введите промокод, чтобы получить награду</div>
+
+      <div class="profile-edit-row" style="width: 100%;">
+        <input type="text" id="promoCodeInput" class="profile-input" placeholder="Введите промокод...">
+      </div>
+
+      <div id="promoResultText" style="font-weight: bold; text-align: center; min-height: 20px;"></div>
+
+      <button class="btn-spin" id="btnActivatePromo" onclick="activatePromoCode()" style="width: 100%;">Активировать</button>
+
+      <div class="modal-actions" style="margin-top: 5px;">
+        <button class="btn-modal btn-modal-close" onclick="closePromoModal()">Закрыть</button>
       </div>
     </div>
   </div>
@@ -1192,6 +1221,18 @@
     }
 
     const casesData = {
+      bomj: {
+        name: 'Бомж',
+        price: 0,
+        pool: [
+          { name: 'Шапка шута', rarity: 'legendary', price: 500, chance: 0.5, icon: '/images/case_bomj/item6.png' },
+          { name: 'Лол-поп', rarity: 'epic', price: 325, chance: 6.5, icon: '/images/case_bomj/item5.png' },
+          { name: 'Кольцо', rarity: 'rare', price: 100, chance: 3.0, icon: '/images/case_bomj/item3.png' },
+          { name: 'Алмаз', rarity: 'rare', price: 100, chance: 8.0, icon: '/images/case_bomj/item2.png' },
+          { name: 'Роза', rarity: 'common', price: 25, chance: 17.0, icon: '/images/case_bomj/item4.png' },
+          { name: 'Сердце', rarity: 'common', price: 15, chance: 65.0, icon: '/images/case_bomj/item1.png' }
+        ]
+      },
       standart: {
         name: 'Бедняк',
         price: 200,
@@ -1286,6 +1327,13 @@
     const dailyRewards = [1000, 2000, 3500, 5000, 7500, 10000, 25000];
     let dailyTimerInterval = null;
 
+    // --- Промокоды ---
+    const promoCodes = {
+      'CASEBATTLE': 500,
+      'BACKTOSCHOOL': 750
+    };
+    let redeemedPromoCodes = [];
+
     function showToast(msg, type = 'info') {
       let container = document.getElementById('toastContainer');
       if (!container) {
@@ -1326,7 +1374,7 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('balance, inventory, username, showcase, last_daily_claim, daily_streak')
+          .select('balance, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes')
           .eq('user_id', userId)
           .maybeSingle();
 
@@ -1337,10 +1385,11 @@
           showcase = data.showcase ?? [null, null, null];
           lastDailyClaim = data.last_daily_claim ?? null;
           dailyStreak = data.daily_streak ?? 0;
+          redeemedPromoCodes = data.redeemed_promo_codes ?? [];
         } else {
           await supabaseClient
             .from('users')
-            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null], last_daily_claim: null, daily_streak: 0 }]);
+            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null], last_daily_claim: null, daily_streak: 0, redeemed_promo_codes: [] }]);
         }
         document.getElementById('username').innerText = userFirstName;
         updateBalanceUI();
@@ -1364,6 +1413,7 @@
             showcase: showcase,
             last_daily_claim: lastDailyClaim,
             daily_streak: dailyStreak,
+            redeemed_promo_codes: redeemedPromoCodes,
             last_seen: new Date().toISOString() 
           }, { onConflict: 'user_id' });
       } catch (e) {
@@ -1969,6 +2019,49 @@
       renderDailyGrid();
     }
 
+    function openPromoModal() {
+      document.getElementById('promoCodeInput').value = '';
+      document.getElementById('promoResultText').innerText = '';
+      document.getElementById('promoModal').classList.add('active');
+    }
+
+    function closePromoModal() {
+      document.getElementById('promoModal').classList.remove('active');
+    }
+
+    async function activatePromoCode() {
+      const input = document.getElementById('promoCodeInput');
+      const resultEl = document.getElementById('promoResultText');
+      const code = input.value.trim().toUpperCase();
+
+      if (!code) {
+        resultEl.innerHTML = '<span style="color: var(--red-color);">Введите промокод</span>';
+        return;
+      }
+
+      if (!(code in promoCodes)) {
+        resultEl.innerHTML = '<span style="color: var(--red-color);">Промокод не найден</span>';
+        return;
+      }
+
+      if (redeemedPromoCodes.includes(code)) {
+        resultEl.innerHTML = '<span style="color: var(--red-color);">Промокод уже был использован</span>';
+        return;
+      }
+
+      const reward = promoCodes[code];
+      balance += reward;
+      redeemedPromoCodes.push(code);
+
+      updateBalanceUI();
+      playWinSound();
+      await syncUserData();
+
+      if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      resultEl.innerHTML = `<span style="color: var(--green-color);">Успешно! +${reward} ⭐</span>`;
+      showToast(`🎟️ Промокод активирован: +${reward} ⭐`, 'success');
+    }
+
     function updateBalanceUI() {
       balanceSpan.innerText = balance;
     }
@@ -2207,7 +2300,7 @@
       if (!caseInfo) return;
 
       currentCase = caseInfo;
-      openBtn.innerText = `Открыть кейс (${caseInfo.price} ⭐)`;
+      openBtn.innerText = caseInfo.price > 0 ? `Открыть кейс (${caseInfo.price} ⭐)` : 'Открыть кейс (Бесплатно)';
       resultText.innerText = '';
       quickSellBtn.style.display = 'none';
       
