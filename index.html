@@ -222,6 +222,97 @@
 
     .btn-spin:disabled { background: #3f425a; opacity: 0.6; cursor: not-allowed; box-shadow: none; }
 
+    .quantity-selector {
+      display: flex;
+      width: 100%;
+      background: #0b0c12;
+      border: 1px solid #2a2b3d;
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .qty-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      border-right: 1px solid #2a2b3d;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 14px 0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .qty-btn:last-child { border-right: none; }
+    .qty-btn:active { transform: scale(0.95); }
+
+    .qty-btn.active {
+      background: rgba(88, 101, 242, 0.16);
+      box-shadow: inset 0 0 0 2px var(--accent-color);
+      border-radius: 10px;
+    }
+
+    .multi-open-total {
+      font-weight: bold;
+      color: var(--green-color);
+      font-size: 14px;
+    }
+
+    #multiRouletteContainer {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .multi-roulette-merged {
+      position: relative;
+      width: 100%;
+      border: 2px solid #33334d;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #0b0c12;
+      margin-bottom: 20px;
+    }
+
+    .multi-roulette-merged .pointer {
+      position: absolute;
+      top: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 3px; height: 100%;
+      background: var(--red-color);
+      z-index: 10;
+      box-shadow: 0 0 10px var(--red-color);
+    }
+
+    .multi-roulette-row {
+      position: relative;
+      height: 110px;
+      overflow: hidden;
+      border-bottom: 1px solid #21222f;
+    }
+
+    .multi-roulette-row:last-child { border-bottom: none; }
+
+    .item-card.mini-card {
+      width: 74px;
+      height: 84px;
+      margin-right: 10px;
+      padding: 5px;
+      font-size: 10px;
+    }
+
+    .item-card.mini-card .item-img {
+      width: 34px;
+      height: 34px;
+      margin-bottom: 4px;
+    }
+
+    .item-card.mini-card .item-price-tag {
+      font-size: 9px;
+    }
+
     .result-container {
       margin-top: 15px;
       display: flex;
@@ -926,9 +1017,19 @@
         <span>←</span> Назад к кейсам
       </button>
 
-      <div class="roulette-wrapper">
+      <div class="roulette-wrapper" id="singleRouletteWrapper">
         <div class="pointer"></div>
         <div class="roulette-tape" id="tape"></div>
+      </div>
+
+      <div id="multiRouletteContainer"></div>
+
+      <div class="quantity-selector" id="quantitySelector">
+        <button class="qty-btn active" data-qty="1" onclick="selectQuantity(1)">1</button>
+        <button class="qty-btn" data-qty="2" onclick="selectQuantity(2)">2</button>
+        <button class="qty-btn" data-qty="3" onclick="selectQuantity(3)">3</button>
+        <button class="qty-btn" data-qty="4" onclick="selectQuantity(4)">4</button>
+        <button class="qty-btn" data-qty="5" onclick="selectQuantity(5)">5</button>
       </div>
 
       <button id="openBtn" class="btn-spin" onclick="openCase()">Открыть кейс (200 ⭐)</button>
@@ -1044,6 +1145,18 @@
   </div>
 
   <!-- Модальные окна -->
+  <div class="modal-overlay" id="multiOpenModal">
+    <div class="modal-card" style="max-width: 420px; width: 94%;">
+      <h3 id="multiOpenTitle">Результаты открытия</h3>
+      <div class="contents-grid" id="multiOpenGrid" style="max-height: 320px; overflow-y: auto; width: 100%;"></div>
+      <div class="multi-open-total" id="multiOpenTotalText"></div>
+      <div class="modal-actions">
+        <button class="btn-modal btn-modal-sell" onclick="sellAllMultiOpenItems()">Продать всё</button>
+        <button class="btn-modal btn-modal-close" onclick="closeMultiOpenModal()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="dailyModal">
     <div class="modal-card" style="max-width: 380px; width: 92%;">
       <h3>🎁 Ежедневная награда</h3>
@@ -1333,6 +1446,10 @@
       'BACKTOSCHOOL': 750
     };
     let redeemedPromoCodes = [];
+
+    // --- Массовое открытие кейсов ---
+    let selectedQuantity = 1;
+    let lastMultiOpenIds = [];
 
     function showToast(msg, type = 'info') {
       let container = document.getElementById('toastContainer');
@@ -2300,9 +2417,18 @@
       if (!caseInfo) return;
 
       currentCase = caseInfo;
-      openBtn.innerText = caseInfo.price > 0 ? `Открыть кейс (${caseInfo.price} ⭐)` : 'Открыть кейс (Бесплатно)';
+      selectedQuantity = 1;
+      document.querySelectorAll('.qty-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.qty === '1');
+      });
+      updateOpenButtonText();
       resultText.innerText = '';
       quickSellBtn.style.display = 'none';
+
+      const multiContainer = document.getElementById('multiRouletteContainer');
+      multiContainer.style.display = 'none';
+      multiContainer.innerHTML = '';
+      document.getElementById('singleRouletteWrapper').style.display = '';
       
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById('tab-spin').classList.add('active');
@@ -2315,20 +2441,24 @@
       switchTab('shop');
     }
 
-    function generateTape(winningItem) {
-      tape.innerHTML = '';
-      tape.style.transition = 'none';
-      tape.style.transform = 'translateX(0px)';
+    function buildTapeCards(tapeEl, winningItem, small) {
+      tapeEl.innerHTML = '';
+      tapeEl.style.transition = 'none';
+      tapeEl.style.transform = 'translateX(0px)';
 
       for (let i = 0; i < 50; i++) {
         let item = getRandomItem();
         if (i === 44) item = winningItem;
 
         const card = document.createElement('div');
-        card.className = `item-card ${item.rarity}`;
+        card.className = `item-card ${item.rarity}${small ? ' mini-card' : ''}`;
         card.innerHTML = getItemHTML(item);
-        tape.appendChild(card);
+        tapeEl.appendChild(card);
       }
+    }
+
+    function generateTape(winningItem) {
+      buildTapeCards(tape, winningItem, false);
     }
 
     function getRandomItem() {
@@ -2370,14 +2500,38 @@
       }, 20);
     }
 
+    function selectQuantity(qty) {
+      if (isSpinning || isUpgrading) return;
+      selectedQuantity = qty;
+      document.querySelectorAll('.qty-btn').forEach(btn => {
+        btn.classList.toggle('active', parseInt(btn.dataset.qty, 10) === qty);
+      });
+      updateOpenButtonText();
+    }
+
+    function updateOpenButtonText() {
+      const totalPrice = currentCase.price * selectedQuantity;
+      const qtySuffix = selectedQuantity > 1 ? ` x${selectedQuantity}` : '';
+      openBtn.innerText = totalPrice > 0 ? `Открыть кейс${qtySuffix} (${totalPrice} ⭐)` : `Открыть кейс${qtySuffix} (Бесплатно)`;
+    }
+
     function openCase() {
       initAudio();
 
-      if (balance < currentCase.price) {
+      const totalPrice = currentCase.price * selectedQuantity;
+      if (balance < totalPrice) {
         resultText.innerText = 'Недостаточно средств!';
         return;
       }
 
+      if (selectedQuantity === 1) {
+        openSingleCase();
+      } else {
+        openMultipleCases(selectedQuantity);
+      }
+    }
+
+    function openSingleCase() {
       setLockState(true);
       quickSellBtn.style.display = 'none';
       resultText.innerText = '';
@@ -2416,6 +2570,148 @@
 
         setLockState(false);
       }, 5000);
+    }
+
+    let multiTapeRefs = [];
+
+    function generateMultiRoulettes(qty) {
+      const container = document.getElementById('multiRouletteContainer');
+      container.innerHTML = '';
+      multiTapeRefs = [];
+
+      const merged = document.createElement('div');
+      merged.className = 'multi-roulette-merged';
+
+      const pointer = document.createElement('div');
+      pointer.className = 'pointer';
+      merged.appendChild(pointer);
+
+      for (let i = 0; i < qty; i++) {
+        const row = document.createElement('div');
+        row.className = 'multi-roulette-row';
+
+        const miniTape = document.createElement('div');
+        miniTape.className = 'roulette-tape';
+
+        row.appendChild(miniTape);
+        merged.appendChild(row);
+
+        multiTapeRefs.push({ tape: miniTape, wrapper: row });
+      }
+
+      container.appendChild(merged);
+    }
+
+    function animateMiniTape(tapeEl, wrapperEl, cardWidth) {
+      tapeEl.offsetHeight;
+      const targetIndex = 44;
+      const visibleWidth = wrapperEl.clientWidth || 380;
+      const randomOffset = Math.floor(Math.random() * (cardWidth * 0.5)) - (cardWidth * 0.25);
+      const targetPosition = (targetIndex * cardWidth) - (visibleWidth / 2 - cardWidth / 2) + randomOffset;
+
+      tapeEl.style.transition = 'transform 5s cubic-bezier(0.15, 0.9, 0.15, 1)';
+      tapeEl.style.transform = `translateX(-${targetPosition}px)`;
+    }
+
+    function openMultipleCases(qty) {
+      setLockState(true);
+      quickSellBtn.style.display = 'none';
+      resultText.innerText = '';
+
+      const totalPrice = currentCase.price * qty;
+      balance -= totalPrice;
+      updateBalanceUI();
+      syncUserData();
+
+      document.getElementById('singleRouletteWrapper').style.display = 'none';
+      const multiContainer = document.getElementById('multiRouletteContainer');
+      multiContainer.style.display = 'flex';
+      generateMultiRoulettes(qty);
+
+      const MINI_CARD_WIDTH = 84; // 74px card + 10px margin-right, matches .item-card.mini-card CSS
+      const wonItems = [];
+
+      multiTapeRefs.forEach((ref, i) => {
+        const winningItem = getRandomItem();
+        wonItems.push({ ...winningItem, id: Date.now() + i });
+        buildTapeCards(ref.tape, winningItem, true);
+      });
+
+      // Trigger all tapes together so every case spins simultaneously
+      requestAnimationFrame(() => {
+        multiTapeRefs.forEach((ref) => {
+          animateMiniTape(ref.tape, ref.wrapper, MINI_CARD_WIDTH);
+        });
+      });
+
+      startSpinAudio();
+
+      setTimeout(() => {
+        wonItems.forEach((wonItem) => inventory.unshift(wonItem));
+
+        playWinSound();
+        syncUserData();
+        if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+        multiContainer.style.display = 'none';
+        multiContainer.innerHTML = '';
+        document.getElementById('singleRouletteWrapper').style.display = '';
+
+        showMultiOpenResults(wonItems);
+        setLockState(false);
+      }, 5000);
+    }
+
+    function showMultiOpenResults(items) {
+      document.getElementById('multiOpenTitle').innerText = `${currentCase.name}: результаты (${items.length} шт.)`;
+
+      const grid = document.getElementById('multiOpenGrid');
+      grid.innerHTML = '';
+      lastMultiOpenIds = [];
+      let total = 0;
+
+      items.forEach((item) => {
+        total += item.price;
+        lastMultiOpenIds.push(item.id);
+
+        const div = document.createElement('div');
+        div.className = `content-item-card ${item.rarity}`;
+        div.innerHTML = `
+          <img src="${item.icon}">
+          <div style="font-weight: bold; font-size: 10px;">${item.name}</div>
+          <div style="color: var(--green-color);">${item.price} ⭐</div>
+        `;
+        grid.appendChild(div);
+      });
+
+      document.getElementById('multiOpenTotalText').innerText = `Общая стоимость: ${total} ⭐`;
+      document.getElementById('multiOpenModal').classList.add('active');
+    }
+
+    function closeMultiOpenModal() {
+      document.getElementById('multiOpenModal').classList.remove('active');
+      lastMultiOpenIds = [];
+    }
+
+    function sellAllMultiOpenItems() {
+      if (lastMultiOpenIds.length === 0) { closeMultiOpenModal(); return; }
+
+      let total = 0;
+      lastMultiOpenIds.forEach((id) => {
+        const idx = inventory.findIndex((it) => it.id === id);
+        if (idx !== -1) {
+          total += inventory[idx].price;
+          inventory.splice(idx, 1);
+        }
+      });
+
+      balance += total;
+      updateBalanceUI();
+      syncUserData();
+      playSellSound();
+      if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      showToast(`Продано за +${total} ⭐`, 'success');
+      closeMultiOpenModal();
     }
 
     function sellLatestItem() {
