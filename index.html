@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -18,7 +19,12 @@
       --red-color: #ff4757;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
 
     body {
       background-color: var(--bg-color);
@@ -38,21 +44,27 @@
       background: var(--bg-color);
     }
 
-    .user-info { 
-      font-size: 15px; 
-      font-weight: bold; 
-      cursor: pointer; 
-      display: flex; 
-      align-items: center; 
-      gap: 6px; 
+    .user-info {
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       padding: 8px 14px;
       border-radius: 30px;
       background: rgba(88, 101, 242, 0.14);
       border: 1px solid rgba(88, 101, 242, 0.35);
       transition: all 0.2s;
     }
-    .user-info:hover { background: rgba(88, 101, 242, 0.22); }
-    .user-info:active { transform: scale(0.96); }
+
+    .user-info:hover {
+      background: rgba(88, 101, 242, 0.22);
+    }
+
+    .user-info:active {
+      transform: scale(0.96);
+    }
 
     .balance-badge {
       background: rgba(30, 41, 59, 0.8);
@@ -66,10 +78,25 @@
       gap: 8px;
     }
 
-    .tab-content { display: none; padding: 20px; flex-direction: column; align-items: center; width: 100%; }
-    .tab-content.active { display: flex; }
+    .tab-content {
+      display: none;
+      padding: 20px;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
 
-    .page-title { margin-top: 10px; margin-bottom: 25px; font-size: 16px; font-weight: 600; text-align: center; }
+    .tab-content.active {
+      display: flex;
+    }
+
+    .page-title {
+      margin-top: 10px;
+      margin-bottom: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+    }
 
     .cases-grid {
       display: grid;
@@ -92,12 +119,30 @@
       transition: transform 0.15s, border-color 0.2s;
     }
 
-    .case-card:active { transform: scale(0.96); }
-    .case-card:hover { border-color: var(--accent-color); }
-    
-    .case-img { width: 110px; height: 110px; object-fit: contain; }
-    .case-title { font-weight: bold; font-size: 15px; }
-    .case-price { color: var(--green-color); font-weight: bold; font-size: 13px; }
+    .case-card:active {
+      transform: scale(0.96);
+    }
+
+    .case-card:hover {
+      border-color: var(--accent-color);
+    }
+
+    .case-img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+    }
+
+    .case-title {
+      font-weight: bold;
+      font-size: 15px;
+    }
+
+    .case-price {
+      color: var(--green-color);
+      font-weight: bold;
+      font-size: 13px;
+    }
 
     .roulette-screen {
       width: 100%;
@@ -125,7 +170,10 @@
       transition: all 0.2s;
     }
 
-    .btn-back:active { transform: scale(0.95); background: #252738; }
+    .btn-back:active {
+      transform: scale(0.95);
+      background: #252738;
+    }
 
     .roulette-wrapper {
       position: relative;
@@ -140,9 +188,11 @@
 
     .pointer {
       position: absolute;
-      top: 0; left: 50%;
+      top: 0;
+      left: 50%;
       transform: translateX(-50%);
-      width: 3px; height: 100%;
+      width: 3px;
+      height: 100%;
       background: var(--red-color);
       z-index: 10;
       box-shadow: 0 0 10px var(--red-color);
@@ -151,7 +201,8 @@
     .roulette-tape {
       display: flex;
       position: absolute;
-      left: 0; top: 15px;
+      left: 0;
+      top: 15px;
       transition: transform 5s cubic-bezier(0.15, 0.9, 0.15, 1);
     }
 
@@ -178,16 +229,22 @@
       margin-right: 12px;
     }
 
-    .item-img { 
-      width: 60px; 
-      height: 60px; 
-      object-fit: contain; 
-      margin-bottom: 8px; 
+    .item-img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 8px;
     }
 
-    .item-price-tag { font-size: 11px; opacity: 0.85; }
+    .item-price-tag {
+      font-size: 11px;
+      opacity: 0.85;
+    }
 
-    .common, .rare, .epic, .legendary {
+    .common,
+    .rare,
+    .epic,
+    .legendary {
       background: #262b3d;
       border: 2px solid #3a4358;
     }
@@ -220,7 +277,12 @@
       box-shadow: 0 4px 15px rgba(88, 101, 242, 0.3);
     }
 
-    .btn-spin:disabled { background: #3f425a; opacity: 0.6; cursor: not-allowed; box-shadow: none; }
+    .btn-spin:disabled {
+      background: #3f425a;
+      opacity: 0.6;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
 
     .quantity-selector {
       display: flex;
@@ -245,8 +307,13 @@
       transition: all 0.15s;
     }
 
-    .qty-btn:last-child { border-right: none; }
-    .qty-btn:active { transform: scale(0.95); }
+    .qty-btn:last-child {
+      border-right: none;
+    }
+
+    .qty-btn:active {
+      transform: scale(0.95);
+    }
 
     .qty-btn.active {
       background: rgba(88, 101, 242, 0.16);
@@ -278,9 +345,11 @@
 
     .multi-roulette-merged .pointer {
       position: absolute;
-      top: 0; left: 50%;
+      top: 0;
+      left: 50%;
       transform: translateX(-50%);
-      width: 3px; height: 100%;
+      width: 3px;
+      height: 100%;
       background: var(--red-color);
       z-index: 10;
       box-shadow: 0 0 10px var(--red-color);
@@ -293,7 +362,9 @@
       border-bottom: 1px solid #21222f;
     }
 
-    .multi-roulette-row:last-child { border-bottom: none; }
+    .multi-roulette-row:last-child {
+      border-bottom: none;
+    }
 
     .item-card.mini-card {
       width: 74px;
@@ -322,7 +393,12 @@
       width: 100%;
     }
 
-    #result-text { font-weight: bold; font-size: 16px; text-align: center; min-height: 24px; }
+    #result-text {
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+      min-height: 24px;
+    }
 
     .btn-sell-quick {
       background: rgba(72, 187, 120, 0.2);
@@ -343,7 +419,11 @@
       gap: 10px;
     }
 
-    .case-contents-title { font-size: 13px; font-weight: bold; color: var(--text-muted); }
+    .case-contents-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--text-muted);
+    }
 
     .contents-grid {
       display: grid;
@@ -365,8 +445,16 @@
       gap: 4px;
     }
 
-    .content-item-card img { width: 45px; height: 45px; object-fit: contain; }
-    .content-item-chance { font-size: 10px; color: var(--text-muted); }
+    .content-item-card img {
+      width: 45px;
+      height: 45px;
+      object-fit: contain;
+    }
+
+    .content-item-chance {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
 
     /* Стили для Апгрейда */
     .upgrade-container {
@@ -403,7 +491,9 @@
       font-size: 12px;
     }
 
-    .upgrade-slot.filled { border-style: solid; }
+    .upgrade-slot.filled {
+      border-style: solid;
+    }
 
     .upgrade-wheel-box {
       width: 110px;
@@ -548,7 +638,12 @@
       max-width: 400px;
     }
 
-    .inventory-empty { color: var(--text-muted); text-align: center; grid-column: 1 / -1; margin-top: 40px; }
+    .inventory-empty {
+      color: var(--text-muted);
+      text-align: center;
+      grid-column: 1 / -1;
+      margin-top: 40px;
+    }
 
     .inventory-sort-row {
       display: flex;
@@ -578,7 +673,10 @@
       transition: all 0.2s;
     }
 
-    .btn-sort:active { transform: scale(0.95); }
+    .btn-sort:active {
+      transform: scale(0.95);
+    }
+
     .btn-sort.active {
       background: var(--accent-color);
       border-color: var(--accent-color);
@@ -609,7 +707,8 @@
       transform: scale(0.95);
     }
 
-    .leaderboard-list, .online-list {
+    .leaderboard-list,
+    .online-list {
       width: 100%;
       max-width: 400px;
       display: flex;
@@ -628,15 +727,46 @@
       cursor: pointer;
       transition: border-color 0.2s;
     }
-    .leader-item:hover { border-color: var(--accent-color); }
 
-    .leader-info { display: flex; align-items: center; gap: 12px; }
-    .leader-rank { font-weight: bold; font-size: 16px; color: var(--text-muted); width: 24px; }
-    .leader-rank-1 { color: #f6e05e; }
-    .leader-rank-2 { color: #cbd5e0; }
-    .leader-rank-3 { color: #ed8936; }
-    .leader-name { font-weight: 600; font-size: 14px; }
-    .leader-balance { color: var(--green-color); font-weight: bold; font-size: 14px; }
+    .leader-item:hover {
+      border-color: var(--accent-color);
+    }
+
+    .leader-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .leader-rank {
+      font-weight: bold;
+      font-size: 16px;
+      color: var(--text-muted);
+      width: 24px;
+    }
+
+    .leader-rank-1 {
+      color: #f6e05e;
+    }
+
+    .leader-rank-2 {
+      color: #cbd5e0;
+    }
+
+    .leader-rank-3 {
+      color: #ed8936;
+    }
+
+    .leader-name {
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .leader-balance {
+      color: var(--green-color);
+      font-weight: bold;
+      font-size: 14px;
+    }
 
     .btn-trade-action {
       background: var(--accent-color);
@@ -683,7 +813,10 @@
       font-size: 14px;
       outline: none;
     }
-    .profile-input:focus { border-color: var(--accent-color); }
+
+    .profile-input:focus {
+      border-color: var(--accent-color);
+    }
 
     .showcase-section {
       display: flex;
@@ -691,7 +824,11 @@
       gap: 10px;
     }
 
-    .showcase-title { font-size: 13px; font-weight: bold; color: var(--text-muted); }
+    .showcase-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: var(--text-muted);
+    }
 
     .showcase-grid {
       display: grid;
@@ -713,11 +850,19 @@
       text-align: center;
       font-size: 11px;
     }
-    .showcase-slot.filled { border-style: solid; border-color: var(--accent-color); padding: 6px; }
+
+    .showcase-slot.filled {
+      border-style: solid;
+      border-color: var(--accent-color);
+      padding: 6px;
+    }
 
     .modal-overlay {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(4px);
       display: none;
@@ -726,7 +871,9 @@
       z-index: 1000;
     }
 
-    .modal-overlay.active { display: flex; }
+    .modal-overlay.active {
+      display: flex;
+    }
 
     .modal-card {
       background: var(--card-bg);
@@ -743,7 +890,8 @@
     }
 
     .modal-item-preview {
-      width: 140px; height: 150px;
+      width: 140px;
+      height: 150px;
       border-radius: 16px;
       display: flex;
       flex-direction: column;
@@ -752,23 +900,63 @@
       font-weight: bold;
       font-size: 13px;
     }
-    
-    .modal-item-preview .item-img { width: 75px; height: 75px; margin-bottom: 8px; }
 
-    .modal-actions { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
-    .btn-modal { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-
-    .btn-modal-sell { background: var(--green-color); color: #fff; }
-    .btn-modal-close { background: #3a3d54; color: #fff; }
-    .btn-modal-accept { background: var(--green-color); color: #fff; }
-    .btn-modal-decline { background: var(--red-color); color: #fff; }
-
-    .trade-container {
-      width: 100%; max-width: 480px;
-      display: flex; flex-direction: column; gap: 12px;
+    .modal-item-preview .item-img {
+      width: 75px;
+      height: 75px;
+      margin-bottom: 8px;
     }
 
-    .trade-grid-row { display: flex; gap: 10px; justify-content: space-between; width: 100%; }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn-modal {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-modal-sell {
+      background: var(--green-color);
+      color: #fff;
+    }
+
+    .btn-modal-close {
+      background: #3a3d54;
+      color: #fff;
+    }
+
+    .btn-modal-accept {
+      background: var(--green-color);
+      color: #fff;
+    }
+
+    .btn-modal-decline {
+      background: var(--red-color);
+      color: #fff;
+    }
+
+    .trade-container {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .trade-grid-row {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      width: 100%;
+    }
 
     .trade-box {
       flex: 1;
@@ -776,9 +964,13 @@
       border: 1px solid #2a2b3d;
       border-radius: 12px;
       padding: 10px;
-      min-height: 200px; max-height: 250px;
+      min-height: 200px;
+      max-height: 250px;
       overflow-y: auto;
-      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
     }
 
     .trade-box-header {
@@ -887,22 +1079,45 @@
       pointer-events: auto;
     }
 
-    .toast.success { border-color: var(--green-color); box-shadow: 0 0 15px rgba(72, 187, 120, 0.4); }
-    .toast.error { border-color: var(--red-color); box-shadow: 0 0 15px rgba(255, 71, 87, 0.4); }
+    .toast.success {
+      border-color: var(--green-color);
+      box-shadow: 0 0 15px rgba(72, 187, 120, 0.4);
+    }
+
+    .toast.error {
+      border-color: var(--red-color);
+      box-shadow: 0 0 15px rgba(255, 71, 87, 0.4);
+    }
 
     @keyframes toastIn {
-      from { opacity: 0; transform: translateY(-20px) scale(0.9); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
+      from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
 
     @keyframes toastOut {
-      from { opacity: 1; transform: translateY(0) scale(1); }
-      to { opacity: 0; transform: translateY(-20px) scale(0.9); }
+      from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+
+      to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+      }
     }
 
     .nav-bar {
       position: fixed;
-      bottom: 0; left: 0; right: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
       height: 65px;
       background: #161722;
       border-top: 1px solid #2a2b3d;
@@ -913,12 +1128,25 @@
     }
 
     .nav-item {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      color: var(--text-muted); font-size: 12px; cursor: pointer; width: 25%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      width: 25%;
     }
 
-    .nav-item.active { color: var(--accent-color); font-weight: bold; }
-    .is-disabled { pointer-events: none !important; opacity: 0.4 !important; }
+    .nav-item.active {
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    .is-disabled {
+      pointer-events: none !important;
+      opacity: 0.4 !important;
+    }
 
     /* Ежедневные награды */
     .daily-grid {
@@ -961,10 +1189,21 @@
       transform: scale(1.03);
     }
 
-    .daily-day-title { font-weight: bold; font-size: 10px; color: var(--text-muted); }
-    .daily-reward-val { color: var(--green-color); font-weight: bold; margin-top: 2px; }
+    .daily-day-title {
+      font-weight: bold;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
 
-    .case-card-full { grid-column: 1 / -1; }
+    .daily-reward-val {
+      color: var(--green-color);
+      font-weight: bold;
+      margin-top: 2px;
+    }
+
+    .case-card-full {
+      grid-column: 1 / -1;
+    }
 
     /* Экран загрузки */
     .loading-screen {
@@ -981,7 +1220,10 @@
       transition: opacity 0.4s ease;
     }
 
-    .loading-screen.hidden { opacity: 0; pointer-events: none; }
+    .loading-screen.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
 
     .loading-spinner {
       width: 52px;
@@ -992,7 +1234,11 @@
       animation: loadingSpin 1s linear infinite;
     }
 
-    @keyframes loadingSpin { to { transform: rotate(360deg); } }
+    @keyframes loadingSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
 
     .loading-title {
       font-size: 16px;
@@ -1016,16 +1262,20 @@
       background: transparent;
     }
 
-    .global-lock-overlay.active { display: block; }
+    .global-lock-overlay.active {
+      display: block;
+    }
   </style>
 </head>
+
 <body>
 
   <!-- Экран загрузки -->
   <div id="loadingScreen" class="loading-screen">
     <div class="loading-spinner"></div>
     <div class="loading-title">Подписывайтесь на нас в Telegram</div>
-    <button class="btn-spin loading-subscribe-btn" onclick="window.open('https://t.me/BattleCaser', '_blank')">Подписаться</button>
+    <button class="btn-spin loading-subscribe-btn"
+      onclick="window.open('https://t.me/BattleCaser', '_blank')">Подписаться</button>
   </div>
 
   <!-- Оверлей блокировки нажатий -->
@@ -1043,7 +1293,7 @@
   <!-- Вкладка Магазин Кейсов -->
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
-    
+
     <div class="case-section-divider">
       <div class="case-divider-line left"></div>
       <div class="case-divider-title">ОБЫЧНЫЕ</div>
@@ -1052,47 +1302,56 @@
 
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('bomj')">
-        <img src="/images/case_bomj/case_bomj.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_bomj/case_bomj.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бомж</div>
         <div class="case-price">Бесплатно</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('standart')">
-        <img src="/images/case_standart/case_standart.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_standart/case_standart.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бедняк</div>
         <div class="case-price">200 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('romance')">
-        <img src="/images/case_romance/case_romance.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_romance/case_romance.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Романтика</div>
         <div class="case-price">420 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('manager')">
-        <img src="/images/case_manager/case_manager.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_manager/case_manager.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Менеджер</div>
         <div class="case-price">830 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('rich')">
-        <img src="/images/case_/case_rich.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_/case_rich.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">На богатом</div>
         <div class="case-price">1365 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('night')">
-        <img src="/images/case_night/case_night.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_night/case_night.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Ночь</div>
         <div class="case-price">5000 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('summer')">
-        <img src="/images/case_summer/case_summer.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_summer/case_summer.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Лето</div>
         <div class="case-price">13999 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('bourgeois')">
-        <img src="/images/case_bourgeois/case_bourgeois.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_bourgeois/case_bourgeois.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Буржуй</div>
         <div class="case-price">37999 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('lux')">
-        <img src="/images/case_lux/case_lux.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/case_lux/case_lux.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Люкс</div>
         <div class="case-price">120000 ⭐</div>
       </div>
@@ -1106,9 +1365,16 @@
 
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('frosty')">
-        <img src="/images/case_frosty/case_frosty.png" class="case-img" onerror="this.onerror=null; this.src='/images/case_frosty/item4.png';">
+        <img src="/images/case_frosty/case_frosty.png" class="case-img"
+          onerror="this.onerror=null; this.src='/images/case_frosty/item4.png';">
         <div class="case-title">Морозный</div>
         <div class="case-price">4500 ⭐</div>
+      </div>
+      <div class="case-card" onclick="openSpinScreen('pink')">
+        <img src="/images/case_pink/case_pink.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Розовый Взрыв</div>
+        <div class="case-price">12000 ⭐</div>
       </div>
     </div>
   </div>
@@ -1118,22 +1384,26 @@
     <div class="page-title">Режимы игры</div>
     <div class="cases-grid">
       <div class="case-card case-card-full" onclick="openDailyModal()">
-        <img src="/images/logos/daily.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/logos/daily.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бонус дня</div>
         <div class="case-price" style="color: var(--green-color); font-weight: 500;">До 25 000 ⭐</div>
       </div>
       <div class="case-card" onclick="switchTab('upgrade')">
-        <img src="/images/logos/upgrade.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/logos/upgrade.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Апгрейд</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Улучшить предмет</div>
       </div>
       <div class="case-card" onclick="switchTab('trade')">
-        <img src="/images/logos/trade.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/logos/trade.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Обмен</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Трейд с игроками</div>
       </div>
       <div class="case-card" onclick="openPromoModal()">
-        <img src="/images/logos/promo.png" class="case-img" onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <img src="/images/logos/promo.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Промокод</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Ввести код</div>
       </div>
@@ -1163,7 +1433,7 @@
       </div>
 
       <button id="openBtn" class="btn-spin" onclick="openCase()">Открыть кейс (200 ⭐)</button>
-      
+
       <div class="result-container">
         <div id="result-text"></div>
         <button id="quickSellBtn" class="btn-sell-quick" onclick="sellLatestItem()">Продать предмет</button>
@@ -1208,7 +1478,8 @@
 
       <!-- Селектор предметов -->
       <div id="upgradePickerContainer" style="display: none; width: 100%;">
-        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;" id="pickerTitle">Выберите предмет:</div>
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 6px;" id="pickerTitle">Выберите предмет:
+        </div>
         <div class="upgrade-selector-grid" id="upgradeSelectorGrid"></div>
       </div>
 
@@ -1271,7 +1542,8 @@
         </div>
       </div>
 
-      <button class="btn-back" id="profileBackBtn" onclick="switchTab('shop')" style="align-self: center; margin-top: 10px; display: none;">← Назад</button>
+      <button class="btn-back" id="profileBackBtn" onclick="switchTab('shop')"
+        style="align-self: center; margin-top: 10px; display: none;">← Назад</button>
     </div>
   </div>
 
@@ -1291,11 +1563,13 @@
   <div class="modal-overlay" id="dailyModal">
     <div class="modal-card" style="max-width: 380px; width: 92%;">
       <h3>🎁 Ежедневная награда</h3>
-      <div style="font-size: 12px; color: var(--text-muted); text-align: center;">Заходи каждый день и забирай всё больше звёзд!</div>
-      
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center;">Заходи каждый день и забирай всё
+        больше звёзд!</div>
+
       <div class="daily-grid" id="dailyGrid"></div>
 
-      <button class="btn-spin" id="btnClaimDaily" onclick="claimDailyBonus()" style="width: 100%; margin-top: 10px;">Забрать награду</button>
+      <button class="btn-spin" id="btnClaimDaily" onclick="claimDailyBonus()"
+        style="width: 100%; margin-top: 10px;">Забрать награду</button>
 
       <div class="modal-actions" style="margin-top: 5px;">
         <button class="btn-modal btn-modal-close" onclick="closeDailyModal()">Закрыть</button>
@@ -1306,7 +1580,8 @@
   <div class="modal-overlay" id="promoModal">
     <div class="modal-card" style="max-width: 380px; width: 92%;">
       <h3>🎟️ Промокод</h3>
-      <div style="font-size: 12px; color: var(--text-muted); text-align: center;">Введите промокод, чтобы получить награду</div>
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center;">Введите промокод, чтобы получить
+        награду</div>
 
       <div class="profile-edit-row" style="width: 100%;">
         <input type="text" id="promoCodeInput" class="profile-input" placeholder="Введите промокод...">
@@ -1314,7 +1589,8 @@
 
       <div id="promoResultText" style="font-weight: bold; text-align: center; min-height: 20px;"></div>
 
-      <button class="btn-spin" id="btnActivatePromo" onclick="activatePromoCode()" style="width: 100%;">Активировать</button>
+      <button class="btn-spin" id="btnActivatePromo" onclick="activatePromoCode()"
+        style="width: 100%;">Активировать</button>
 
       <div class="modal-actions" style="margin-top: 5px;">
         <button class="btn-modal btn-modal-close" onclick="closePromoModal()">Закрыть</button>
@@ -1348,7 +1624,8 @@
   <div class="modal-overlay" id="tradeInviteModal">
     <div class="modal-card">
       <h3>Запрос на обмен</h3>
-      <div id="inviteText" style="text-align: center; color: var(--text-muted);">Игрок хочет обменяться с вами предметами</div>
+      <div id="inviteText" style="text-align: center; color: var(--text-muted);">Игрок хочет обменяться с вами
+        предметами</div>
       <div class="modal-actions">
         <button class="btn-modal btn-modal-accept" onclick="acceptTradeInvite()">Принять</button>
         <button class="btn-modal btn-modal-decline" onclick="declineTradeInvite()">Отклонить</button>
@@ -1364,7 +1641,8 @@
           <div class="trade-box" id="my-offer-box"></div>
           <div class="trade-box" id="peer-offer-box"></div>
         </div>
-        <div style="font-size: 13px; font-weight: bold; text-align: center;" id="tradeStatusText">Выберите предмет из инвентаря для обмена</div>
+        <div style="font-size: 13px; font-weight: bold; text-align: center;" id="tradeStatusText">Выберите предмет из
+          инвентаря для обмена</div>
         <div style="font-size: 12px; color: var(--text-muted);">Ваш инвентарь (нажмите, чтобы добавить):</div>
         <div class="inventory-grid" id="trade-inventory-picker" style="max-height: 150px; overflow-y: auto;"></div>
         <div class="modal-actions">
@@ -1403,9 +1681,9 @@
     const tg = window.Telegram.WebApp;
     tg.expand();
 
-    let userId = tg.initDataUnsafe?.user?.id 
-      ? String(tg.initDataUnsafe.user.id) 
-      : 'guest_user_' + Math.floor(Math.random()*1000);
+    let userId = tg.initDataUnsafe?.user?.id
+      ? String(tg.initDataUnsafe.user.id)
+      : 'guest_user_' + Math.floor(Math.random() * 1000);
 
     let userFirstName = tg.initDataUnsafe?.user?.first_name || 'Игрок';
 
@@ -1615,6 +1893,22 @@
           { name: 'Любовное Зелье (Снежная Королева)', rarity: 'rare', price: 2550, chance: 15.0, icon: '/images/case_frosty/item5.png' },
           { name: 'Вечная Свеча (Айсберг)', rarity: 'common', price: 1775, chance: 45.8, icon: '/images/case_frosty/item6.png' }
         ]
+      },
+      pink: {
+        name: 'Розовый Взрыв',
+        price: 12000,
+        pool: [
+          { name: "Кепка Дурова (Розовая Кепка)", rarity: 'legendary', price: 374025, chance: 0.25, icon: '/images/case_pink/item1.png' },
+          { name: 'Плюшевый Медведь (Фазбер)', rarity: 'legendary', price: 261750, chance: 0.35, icon: '/images/case_pink/item4.png' },
+          { name: 'Лягушка (Прудовая Фея)', rarity: 'legendary', price: 105275, chance: 1.0, icon: '/images/case_pink/item8.png' },
+          { name: 'Кирпич (Свитч)', rarity: 'epic', price: 74750, chance: 1.5, icon: '/images/case_pink/item9.png' },
+          { name: 'Астральный Осколок (Нектарин)', rarity: 'epic', price: 37050, chance: 3.0, icon: '/images/case_pink/item5.png' },
+          { name: 'Перстень-Кольцо (Радуга)', rarity: 'rare', price: 21075, chance: 5.0, icon: '/images/case_pink/item6.png' },
+          { name: 'Факел Свободы (Хватит-огонь)', rarity: 'rare', price: 13750, chance: 8.0, icon: '/images/case_pink/item10.png' },
+          { name: 'Злой Глаз (Розовый Глаз)', rarity: 'rare', price: 8350, chance: 17.0, icon: '/images/case_pink/item2.png' },
+          { name: 'Лоу Райдер (Фламинго)', rarity: 'common', price: 6025, chance: 25.9, icon: '/images/case_pink/item3.png' },
+          { name: 'Носки (Страсть)', rarity: 'common', price: 4465, chance: 38.0, icon: '/images/case_pink/item7.png' }
+        ]
       }
     };
 
@@ -1730,16 +2024,16 @@
       try {
         await supabaseClient
           .from('users')
-          .upsert({ 
-            user_id: userId, 
-            balance: balance, 
-            inventory: inventory, 
-            username: userFirstName, 
+          .upsert({
+            user_id: userId,
+            balance: balance,
+            inventory: inventory,
+            username: userFirstName,
             showcase: showcase,
             last_daily_claim: lastDailyClaim,
             daily_streak: dailyStreak,
             redeemed_promo_codes: redeemedPromoCodes,
-            last_seen: new Date().toISOString() 
+            last_seen: new Date().toISOString()
           }, { onConflict: 'user_id' });
       } catch (e) {
         console.error('Ошибка синхронизации данных:', e);
@@ -1752,7 +2046,7 @@
           .from('users')
           .update({ last_seen: new Date().toISOString() })
           .eq('user_id', userId)
-          .then(() => {});
+          .then(() => { });
       }, 15000);
     }
 
@@ -2006,7 +2300,7 @@
 
     async function pushTradeStateToSupabase() {
       if (!activeTradeId) return;
-      const updateData = isSender 
+      const updateData = isSender
         ? { sender_items: myTradeItems, sender_ready: isReady }
         : { receiver_items: myTradeItems, receiver_ready: isReady };
       await supabaseClient.from('trades').update(updateData).eq('id', activeTradeId);
@@ -2163,7 +2457,7 @@
           }
         } else {
           slot.className = 'showcase-slot';
-          slot.innerHTML = `<div style="color: var(--text-muted)">Слот ${i+1}</div><div style="font-size:20px; margin-top:4px;">➕</div>`;
+          slot.innerHTML = `<div style="color: var(--text-muted)">Слот ${i + 1}</div><div style="font-size:20px; margin-top:4px;">➕</div>`;
           if (isEditable) {
             slot.onclick = () => openShowcasePicker(i);
           }
@@ -2200,7 +2494,7 @@
     function selectItemForShowcase(invIdx) {
       if (targetShowcaseSlot === null) return;
       const item = inventory.splice(invIdx, 1)[0];
-      
+
       // Если в слоте уже что-то было, возвращаем в инвентарь
       if (showcase[targetShowcaseSlot]) {
         inventory.push(showcase[targetShowcaseSlot]);
@@ -2449,7 +2743,7 @@
             document.getElementById('upgrade-my-slot').classList.add('filled');
             document.getElementById('upgrade-my-slot').innerHTML = getItemHTML(item);
             container.style.display = 'none';
-            
+
             upgradeTargetItem = null;
             document.getElementById('upgrade-target-slot').classList.remove('filled');
             document.getElementById('upgrade-target-slot').innerHTML = `<div style="color: var(--text-muted)">Желаемый</div><div style="font-size: 24px; margin-top: 10px;">➕</div>`;
@@ -2470,7 +2764,7 @@
           seenNames.add(item.name);
 
           let chance = upgradeMyItem ? Math.round((upgradeMyItem.price / item.price) * 100) : 100;
-          
+
           if (upgradeMyItem && chance > 70) {
             return;
           }
@@ -2491,7 +2785,7 @@
         availableItems.forEach(({ item, chance }) => {
           const card = document.createElement('div');
           card.className = `item-card ${item.rarity}`;
-          
+
           card.onclick = () => {
             upgradeTargetItem = item;
             document.getElementById('upgrade-target-slot').classList.add('filled');
@@ -2661,7 +2955,7 @@
       multiContainer.style.display = 'none';
       multiContainer.innerHTML = '';
       document.getElementById('singleRouletteWrapper').style.display = '';
-      
+
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById('tab-spin').classList.add('active');
       generateTape(currentCase.pool[0]);
@@ -2767,7 +3061,7 @@
       setLockState(true);
       quickSellBtn.style.display = 'none';
       resultText.innerText = '';
-      
+
       balance -= currentCase.price;
       updateBalanceUI();
       syncUserData();
@@ -3061,7 +3355,7 @@
         const item = inventory[selectedInventoryIndex];
         balance += item.price;
         inventory.splice(selectedInventoryIndex, 1);
-        
+
         updateBalanceUI();
         syncUserData();
         closeModal();
@@ -3094,4 +3388,5 @@
     initApp();
   </script>
 </body>
+
 </html>
