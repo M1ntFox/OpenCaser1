@@ -1409,6 +1409,12 @@
         <div class="case-title">Снуп Дог</div>
         <div class="case-price">1,000,000 ⭐</div>
       </div>
+      <div class="case-card" onclick="openSpinScreen('gta6')">
+        <img src="/images/case_gta6/case_gta6.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">GTA VI</div>
+        <div class="case-price">999,999,999 ⭐</div>
+      </div>
     </div>
   </div>
 
@@ -2004,7 +2010,18 @@
           { name: 'Сигара Снупа (Фанк Данк)', rarity: 'common', price: 45000, chance: 10.0, icon: '/images/case_snoop/item4.png' },
           { name: 'Lowrider', rarity: 'common', price: 35000, chance: 10.3, icon: '/images/case_snoop/item1.png' }
         ]
-      }
+      },
+            gta6: {
+        name: 'GTA VI',
+        price: 999999999,
+        pool: [
+          { name: 'Фигурка Дурова (Джейсон)', rarity: 'legendary', price: 150000000000, chance: 0.05, icon: '/images/case_gta6/item1.png' },
+          { name: 'Фигурка Дурова (Люсия)', rarity: 'legendary', price: 35000000000, chance: 0.5, icon: '/images/case_gta6/item2.png' },
+          { name: 'Кофта Дурова (Вайс-Сити)', rarity: 'epic', price: 6000000000, chance: 4.5, icon: '/images/case_gta6/item3.png' },
+          { name: 'Кепка Дурова (GTA VI)', rarity: 'rare', price: 1800000000, chance: 20.0, icon: '/images/case_gta6/item4.png' },
+          { name: 'Очки Дурова (GTA VI)', rarity: 'common', price: 120000000, chance: 74.95, icon: '/images/case_gta6/item5.png' }
+        ]
+      },
     };
 
     let balance = 1000;
