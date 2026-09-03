@@ -5459,6 +5459,7 @@
     }
 
     // --- СИСТЕМА АВТООБНАРУЖЕНИЯ ОБНОВЛЕНИЙ НА VERCEL ---
+    const CURRENT_APP_VERSION = '1.0.1';
     let currentAppETag = null;
     let isUpdatePromptShown = false;
 
@@ -5466,13 +5467,29 @@
       if (isUpdatePromptShown) return;
 
       try {
-        // Отправляем легкий HEAD-запрос без кэширования для проверки ETag/Last-Modified на Vercel
+        // 1. Проверяем version.json / api/version
+        try {
+          const vRes = await fetch('/version.json?_t=' + Date.now(), { cache: 'no-store' });
+          if (vRes.ok) {
+            const vData = await vRes.json();
+            if (vData && vData.version && vData.version !== CURRENT_APP_VERSION) {
+              if (isSpinning || isUpgrading || isSigningContract) {
+                setTimeout(checkAppVersion, 4000);
+                return;
+              }
+              showUpdateAvailableModal();
+              return;
+            }
+          }
+        } catch (_) {}
+
+        // 2. Проверяем ETag на Vercel через HEAD-запрос
         const response = await fetch('/?_upd=' + Date.now(), {
           method: 'HEAD',
           cache: 'no-store'
         });
 
-        const newETag = response.headers.get('etag') || response.headers.get('last-modified') || response.headers.get('x-vercel-id');
+        const newETag = response.headers.get('etag') || response.headers.get('last-modified');
         if (!newETag) return;
 
         if (!currentAppETag) {
@@ -5480,9 +5497,8 @@
           return;
         }
 
-        // Если ETag изменился - на Vercel был загружен новый билд
+        // Если ETag изменился - на Vercel выкатили новый билд
         if (newETag !== currentAppETag) {
-          // Если игрок прямо сейчас крутит кейс, апгрейдит или подписывает контракт - не прерываем
           if (isSpinning || isUpgrading || isSigningContract) {
             setTimeout(checkAppVersion, 4000);
             return;
@@ -5512,18 +5528,21 @@
     }
 
     function applyAppUpdate() {
-      // Перезагрузка с обходом кэша браузера и Telegram WebApp
+      // Сброс кэша и перезапуск
       const cleanUrl = window.location.origin + window.location.pathname;
-      window.location.href = cleanUrl + '?t=' + Date.now();
+      window.location.href = cleanUrl + '?v=' + Date.now();
     }
 
-    // Первичная проверка после старта
-    setTimeout(checkAppVersion, 3000);
+    // Для быстрого теста в консоли: window.testUpdateModal()
+    window.testUpdateModal = showUpdateAvailableModal;
 
-    // Периодическая проверка каждые 45 секунд
-    setInterval(checkAppVersion, 45000);
+    // Первичная проверка через 2 секунды после старта
+    setTimeout(checkAppVersion, 2000);
 
-    // Проверка при возвращении игрока во вкладку
+    // Периодическая проверка каждые 20 секунд
+    setInterval(checkAppVersion, 20000);
+
+    // Проверка при возвращении игрока в Telegram WebApp
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         checkAppVersion();
