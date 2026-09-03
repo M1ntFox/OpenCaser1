@@ -1265,6 +1265,440 @@
     .global-lock-overlay.active {
       display: block;
     }
+
+    /* Контракты (Contracts) */
+    .contracts-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      gap: 16px;
+    }
+
+    .contracts-board {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 24px;
+      width: 100%;
+      background: rgba(22, 23, 34, 0.75);
+      border: 1px solid #282a3d;
+      border-radius: 20px;
+      padding: 22px 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .contracts-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .contracts-col-left {
+      min-width: 220px;
+      flex: 1 1 220px;
+      max-width: 260px;
+    }
+
+    .contracts-col-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 230px;
+      flex: 1 1 230px;
+    }
+
+    .contracts-col-right {
+      min-width: 220px;
+      flex: 1 1 220px;
+      max-width: 260px;
+    }
+
+    .contract-heading {
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+      text-align: center;
+      letter-spacing: 0.3px;
+    }
+
+    .contracts-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 240px;
+    }
+
+    .contract-slot {
+      aspect-ratio: 1;
+      background: #202231;
+      border: 1.5px solid #2d3148;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      transition: all 0.2s;
+      overflow: hidden;
+      padding: 4px;
+      user-select: none;
+    }
+
+    .contract-slot:hover {
+      border-color: #5865f2;
+      background: #25283c;
+    }
+
+    .contract-slot.filled {
+      border-color: #7c3aed;
+      background: #1b192e;
+      box-shadow: 0 0 10px rgba(124, 58, 237, 0.2);
+    }
+
+    .contract-slot .slot-del-btn {
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(239, 68, 68, 0.9);
+      color: #fff;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s;
+      pointer-events: none;
+    }
+
+    .contract-slot:hover .slot-del-btn {
+      opacity: 1;
+    }
+
+    .contract-amount-row {
+      margin-top: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Central Wheel in Contracts */
+    .contract-wheel-wrapper {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 8px 0 16px 0;
+    }
+
+    .contract-wheel-arrow {
+      width: 0;
+      height: 0;
+      border-left: 11px solid transparent;
+      border-right: 11px solid transparent;
+      border-top: 15px solid #22c55e;
+      z-index: 10;
+      margin-bottom: -5px;
+      filter: drop-shadow(0 2px 5px rgba(34, 197, 94, 0.7));
+    }
+
+    .contract-wheel-disk {
+      width: 196px;
+      height: 196px;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: conic-gradient(
+        #2a2e40 0deg 219.6deg,
+        #5832a8 219.6deg 295.2deg,
+        #7c3aed 295.2deg 342deg,
+        #c084fc 342deg 360deg
+      );
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.55), inset 0 0 10px rgba(0,0,0,0.5);
+      border: 3.5px solid #161724;
+      transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
+    }
+
+    .contract-wheel-inner {
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      background: #181926;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 2px 12px rgba(0, 0, 0, 0.65);
+      border: 2px solid #2b2e44;
+      position: relative;
+      pointer-events: none;
+    }
+
+    .contract-center-icon {
+      width: 64px;
+      height: 64px;
+      opacity: 0.5;
+    }
+
+    .btn-contract-spin {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: #fff;
+      font-size: 15px;
+      font-weight: bold;
+      padding: 12px 26px;
+      border-radius: 28px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(99, 102, 241, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-contract-spin:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(99, 102, 241, 0.6);
+    }
+
+    .btn-contract-spin:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    /* Right rewards list */
+    .rewards-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      width: 100%;
+      max-width: 220px;
+    }
+
+    .reward-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(30, 32, 48, 0.65);
+      padding: 7px 12px;
+      border-radius: 10px;
+      border: 1px solid #2a2e45;
+    }
+
+    .reward-badge {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      min-width: 46px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .reward-badge.x0 {
+      background: #3a3e52;
+    }
+
+    .reward-badge.x15 {
+      background: #5832a8;
+    }
+
+    .reward-badge.x25 {
+      background: #7c3aed;
+    }
+
+    .reward-badge.x5 {
+      background: #a855f7;
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+
+    .reward-percent {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .reward-percent.red {
+      color: #ef4444;
+    }
+
+    .reward-percent.green {
+      color: #48bb78;
+    }
+
+    .reward-icon {
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .contract-note {
+      margin-top: 10px;
+      font-size: 11.5px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .ton-badge {
+      border: 1px solid rgba(0, 152, 234, 0.4) !important;
+      color: #38bdf8 !important;
+    }
+
+    /* Реферальная программа */
+    .referrals-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      max-width: 480px;
+      gap: 16px;
+    }
+
+    .ref-banner {
+      background: linear-gradient(135deg, rgba(88, 101, 242, 0.22) 0%, rgba(168, 85, 247, 0.22) 100%);
+      border: 1px solid rgba(88, 101, 242, 0.4);
+      border-radius: 18px;
+      padding: 20px 16px;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    }
+
+    .ref-rewards-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .ref-reward-card {
+      background: rgba(28, 29, 42, 0.85);
+      border: 1px solid #2e3146;
+      border-radius: 14px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 3px;
+    }
+
+    .ref-stats-box {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      background: #181926;
+      border: 1px solid #2b2d40;
+      border-radius: 14px;
+      padding: 14px 10px;
+    }
+
+    .ref-stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .ref-stat-val {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .ref-stat-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .ref-actions-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .btn-ref-share {
+      background: linear-gradient(135deg, #0088cc 0%, #00a3ff 100%);
+      color: #fff;
+      font-weight: bold;
+      font-size: 15px;
+      padding: 14px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 18px rgba(0, 136, 204, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-ref-share:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 22px rgba(0, 136, 204, 0.5);
+    }
+
+    .btn-ref-copy {
+      background: #25283c;
+      border: 1px solid #3b3f5c;
+      color: #fff;
+      font-weight: 600;
+      font-size: 14px;
+      padding: 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-ref-copy:hover {
+      background: #2e324b;
+    }
+
+    .ref-list-section {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ref-list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1a1b28;
+      border: 1px solid #282a3c;
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
   </style>
 </head>
 
@@ -1285,8 +1719,14 @@
     <div class="user-info" id="usernameBtn" onclick="openMyProfile()">
       <span id="username">Игрок</span> ⚙️
     </div>
-    <div class="balance-badge">
-      <span id="balance">1,000</span> ⭐
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div class="balance-badge ton-badge" id="tonBalanceBadge" style="display: none;">
+        <span id="tonBalance">0</span>
+        <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON" style="width: 18px; height: 18px; vertical-align: middle; margin-left: 2px;">
+      </div>
+      <div class="balance-badge">
+        <span id="balance">1,000</span> ⭐
+      </div>
     </div>
   </div>
 
@@ -1426,7 +1866,13 @@
         <img src="/images/logos/daily.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бонус дня</div>
-        <div class="case-price" style="color: var(--green-color); font-weight: 500;">До 25,000 ⭐</div>
+        <div class="case-price" style="color: var(--green-color); font-weight: 500;">До 500,000 ⭐</div>
+      </div>
+      <div class="case-card" onclick="switchTab('contracts')">
+        <img src="/images/logos/contract.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Контракты</div>
+        <div class="case-price" style="color: #38bdf8; font-weight: 500;">1 до 9 шт • 50 TON</div>
       </div>
       <div class="case-card" onclick="switchTab('upgrade')">
         <img src="/images/logos/upgrade.png" class="case-img"
@@ -1445,6 +1891,12 @@
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Промокод</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Ввести код</div>
+      </div>
+      <div class="case-card" onclick="switchTab('referrals')">
+        <img src="/images/logos/friends.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/1256/1256650.png';">
+        <div class="case-title">Друзья</div>
+        <div class="case-price" style="color: var(--green-color); font-weight: 500;">+500,000 ⭐ за друга</div>
       </div>
     </div>
   </div>
@@ -1524,6 +1976,151 @@
 
       <button class="btn-spin" id="btnUpgrade" onclick="startUpgrade()" disabled>АПГРЕЙД</button>
       <div id="upgradeResultText" style="font-weight: bold; text-align: center; min-height: 20px;"></div>
+    </div>
+  </div>
+
+  <!-- Вкладка Контракты -->
+  <div id="tab-contracts" class="tab-content">
+    <button class="btn-back" onclick="switchTab('modes')" style="align-self: flex-start; margin-bottom: 12px;">
+      <span>←</span> Назад к режимам
+    </button>
+    <div class="page-title" style="margin-bottom: 15px;">Контракты обмена</div>
+
+    <div class="contracts-screen">
+      <div class="contracts-board">
+        <!-- Слева: 3x3 сетка предметов -->
+        <div class="contracts-col contracts-col-left">
+          <div class="contract-heading">Select 1 to 9 gifts</div>
+          <div class="contracts-grid" id="contractSlotsGrid"></div>
+          <div class="contract-amount-row">
+            <span>Amount:</span> <span>⭐</span> <span id="contractTotalAmount">0</span>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%; max-width: 240px;">
+            <button class="btn-sort" style="flex: 1; font-size: 11px; padding: 6px 8px;" onclick="openContractPicker()">+ Добавить</button>
+            <button class="btn-sort" style="flex: 1; font-size: 11px; padding: 6px 8px;" onclick="clearContractSlots()">Очистить</button>
+          </div>
+        </div>
+
+        <!-- По центру: Колесо рулетки со стрелочкой и кнопка -->
+        <div class="contracts-col contracts-col-center">
+          <div class="contract-wheel-wrapper">
+            <div class="contract-wheel-arrow"></div>
+            <div class="contract-wheel-disk" id="contractWheelDisk">
+              <div class="contract-wheel-inner">
+                <svg class="contract-center-icon" viewBox="0 0 48 48" fill="none" stroke="#606684" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 6H34C36.2 6 38 7.8 38 10V38C38 40.2 36.2 42 34 42H14C11.8 42 10 40.2 10 38V10C10 7.8 11.8 6 14 6Z"/>
+                  <line x1="16" y1="16" x2="32" y2="16"/>
+                  <line x1="16" y1="22" x2="32" y2="22"/>
+                  <line x1="16" y1="28" x2="24" y2="28"/>
+                  <path d="M22 36 C25 34, 28 38, 32 35"/>
+                  <line x1="30" y1="36" x2="37" y2="29" stroke-width="3"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-contract-spin" id="btnSignContract" onclick="startSignContract()">
+            SIGN UP (<img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON" style="width: 17px; height: 17px; vertical-align: middle;"> 50)
+          </button>
+          <div id="contractResultText" style="font-weight: bold; font-size: 13px; text-align: center; min-height: 24px; margin-top: 8px;"></div>
+        </div>
+
+        <!-- Справа: Possible rewards -->
+        <div class="contracts-col contracts-col-right">
+          <div class="contract-heading">Possible rewards</div>
+          <div class="rewards-list">
+            <div class="reward-row">
+              <div class="reward-badge x0">x0</div>
+              <div class="reward-percent red">61%</div>
+              <div class="reward-icon">😵</div>
+            </div>
+            <div class="reward-row">
+              <div class="reward-badge x15">x1.5</div>
+              <div class="reward-percent green">21%</div>
+              <div class="reward-icon">❓</div>
+            </div>
+            <div class="reward-row">
+              <div class="reward-badge x25">x2.5</div>
+              <div class="reward-percent green">13%</div>
+              <div class="reward-icon">❓</div>
+            </div>
+            <div class="reward-row">
+              <div class="reward-badge x5">x5</div>
+              <div class="reward-percent green">5%</div>
+              <div class="reward-icon">❓</div>
+            </div>
+          </div>
+          <div class="contract-note">From 1 to 9 gifts + ⭐ Cashback</div>
+        </div>
+      </div>
+
+      <!-- Селектор предметов для контракта -->
+      <div id="contractPickerContainer" style="display: none; width: 100%; max-width: 620px; background: #1c1d2a; border: 1px solid #2e3146; border-radius: 14px; padding: 14px; margin-top: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <div style="font-size: 13px; font-weight: bold;">Выберите предмет для контракта:</div>
+          <button class="btn-sort" onclick="closeContractPicker()" style="font-size: 11px; padding: 2px 8px;">Закрыть</button>
+        </div>
+        <div class="upgrade-selector-grid" id="contractSelectorGrid" style="max-height: 220px; overflow-y: auto;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Вкладка Рефералы / Друзья -->
+  <div id="tab-referrals" class="tab-content">
+    <button class="btn-back" onclick="switchTab('modes')" style="align-self: flex-start; margin-bottom: 12px;">
+      <span>←</span> Назад к режимам
+    </button>
+    <div class="page-title" style="margin-bottom: 15px;">Реферальная программа</div>
+
+    <div class="referrals-container">
+      <div class="ref-banner">
+        <div style="font-size: 38px;">🎁</div>
+        <div style="font-size: 16px; font-weight: bold; color: #fff;">Приглашай друзей и получай звёзды!</div>
+        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">Делись персональной ссылкой с друзьями — получай 500,000 ⭐ за каждого игрока!</div>
+      </div>
+
+      <div class="ref-rewards-grid">
+        <div class="ref-reward-card">
+          <div style="font-size: 24px;">👤</div>
+          <div style="font-size: 11px; color: var(--text-muted);">Вы получаете</div>
+          <div style="font-size: 15px; font-weight: 800; color: var(--green-color); margin-top: 2px;">+500,000 ⭐</div>
+          <div style="font-size: 9.5px; color: var(--text-muted);">за каждого друга</div>
+        </div>
+        <div class="ref-reward-card">
+          <div style="font-size: 24px;">🤝</div>
+          <div style="font-size: 11px; color: var(--text-muted);">Друг получает</div>
+          <div style="font-size: 15px; font-weight: 800; color: #38bdf8; margin-top: 2px;">+250,000 ⭐</div>
+          <div style="font-size: 9.5px; color: var(--text-muted);">на старт в игре</div>
+        </div>
+      </div>
+
+      <div class="ref-stats-box">
+        <div class="ref-stat-item">
+          <div class="ref-stat-val" id="refCount">0</div>
+          <div class="ref-stat-label">Друзей приглашено</div>
+        </div>
+        <div style="width: 1px; background: #2d3044;"></div>
+        <div class="ref-stat-item">
+          <div class="ref-stat-val" id="refEarned" style="color: var(--green-color);">0 ⭐</div>
+          <div class="ref-stat-label">Всего заработано</div>
+        </div>
+      </div>
+
+      <div class="ref-actions-row">
+        <button class="btn-ref-share" onclick="shareReferralLink()">
+          <span>🚀</span> Пригласить друга
+        </button>
+        <button class="btn-ref-copy" onclick="copyReferralLink()">
+          <span>📋</span> Скопировать ссылку
+        </button>
+      </div>
+
+      <div class="ref-list-section">
+        <div style="font-size: 13px; font-weight: 700; margin-top: 6px;">Приглашённые друзья:</div>
+        <div id="referralsListContainer" style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="inventory-empty" style="padding: 16px;">Пока нет приглашённых друзей. Нажмите кнопку выше, чтобы пригласить!</div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1621,6 +2218,9 @@
       <h3>🎟️ Промокод</h3>
       <div style="font-size: 12px; color: var(--text-muted); text-align: center;">Введите промокод, чтобы получить
         награду</div>
+      <div style="font-size: 13px; text-align: center; margin: 8px 0 4px 0;">
+        Промокоды в нашем <span onclick="openTelegramLink('https://t.me/BattleCaser')" style="color: #0098ea; text-decoration: underline; font-weight: bold; cursor: pointer;">ТГ канале</span>
+      </div>
 
       <div class="profile-edit-row" style="width: 100%;">
         <input type="text" id="promoCodeInput" class="profile-input" placeholder="Введите промокод...">
@@ -2025,11 +2625,15 @@
     };
 
     let balance = 1000;
+    let tonBalance = 0;
     let currentCase = casesData.standart;
     let inventory = [];
     let showcase = [null, null, null]; // 3 слота витрины
     let isSpinning = false;
     let isUpgrading = false;
+    let isSigningContract = false;
+    let contractSlots = [null, null, null, null, null, null, null, null, null]; // 9 слотов для контракта
+    let contractWheelRotation = 0;
     let lastWonItemIndex = null;
     let selectedInventoryIndex = null;
     let spinSoundInterval = null;
@@ -2051,15 +2655,33 @@
 
     let lastDailyClaim = null;
     let dailyStreak = 0;
-    const dailyRewards = [1000, 2000, 3500, 5000, 7500, 10000, 25000];
+    const dailyRewards = [
+      { day: 1, type: 'stars', amount: 50000, label: '50,000 ⭐' },
+      { day: 2, type: 'stars', amount: 100000, label: '100,000 ⭐' },
+      { day: 3, type: 'stars', amount: 75000, label: '75,000 ⭐' },
+      { day: 4, type: 'stars', amount: 200000, label: '200,000 ⭐' },
+      { day: 5, type: 'gift', label: 'Подарок 🎁' },
+      { day: 6, type: 'ton', amount: 500, label: '500 TON' },
+      { day: 7, type: 'stars', amount: 500000, label: '500,000 ⭐' }
+    ];
     let dailyTimerInterval = null;
 
     // --- Промокоды ---
     const promoCodes = {
-      'CASEBATTLE': 5000,
-      'BACKTOSCHOOL': 10000
+      'GTAVI': { type: 'stars', amount: 250000 },
+      'AUTUMNI': { type: 'stars', amount: 100000 },
+      'NURALI': { type: 'stars', amount: 1488 },
+      'PEPE': { type: 'gift', giftCase: 'pepe' }
     };
     let redeemedPromoCodes = [];
+
+    function openTelegramLink(url) {
+      if (window.Telegram?.WebApp?.openTelegramLink) {
+        window.Telegram.WebApp.openTelegramLink(url);
+      } else {
+        window.open(url, '_blank');
+      }
+    }
 
     // --- Массовое открытие кейсов ---
     let selectedQuantity = 1;
@@ -2082,7 +2704,7 @@
       }, 3000);
     }
 
-    // --- Блокировка всех нажатий во время открытия кейса / апгрейда ---
+    // --- Блокировка всех нажатий во время открытия кейса / апгрейда / контракта ---
     function setActionLock(locked) {
       const overlay = document.getElementById('globalLockOverlay');
       if (overlay) overlay.classList.toggle('active', locked);
@@ -2105,12 +2727,24 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('balance, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes')
+          .select('balance, ton_balance, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes')
           .eq('user_id', userId)
           .maybeSingle();
 
+        if (error && error.message && error.message.includes('ton_balance')) {
+          const res = await supabaseClient
+            .from('users')
+            .select('balance, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes')
+            .eq('user_id', userId)
+            .maybeSingle();
+          data = res.data;
+        }
+
+        const localTon = parseInt(localStorage.getItem('opencaser_ton_balance_' + userId)) || 0;
+
         if (data) {
           balance = data.balance ?? 1000;
+          tonBalance = (data.ton_balance !== undefined && data.ton_balance !== null) ? data.ton_balance : localTon;
           inventory = data.inventory ?? [];
           userFirstName = data.username ?? userFirstName;
           showcase = data.showcase ?? [null, null, null];
@@ -2118,10 +2752,56 @@
           dailyStreak = data.daily_streak ?? 0;
           redeemedPromoCodes = data.redeemed_promo_codes ?? [];
         } else {
-          await supabaseClient
+          // Проверяем, пришел ли пользователь по реферальной ссылке
+          let startParam = tg.initDataUnsafe?.start_param || '';
+          if (!startParam) {
+            const urlParams = new URLSearchParams(window.location.search);
+            startParam = urlParams.get('startapp') || urlParams.get('ref') || '';
+          }
+
+          let initialBalance = 1000;
+          let referredBy = null;
+
+          if (startParam) {
+            const refCandidate = startParam.replace(/^ref_/, '').trim();
+            if (refCandidate && refCandidate !== userId) {
+              referredBy = refCandidate;
+              initialBalance = 251000; // 1,000 базовых + 250,000 бонус за друга!
+              setTimeout(() => {
+                showToast('🎉 Добро пожаловать! Вам начислено +250,000 ⭐ по ссылке друга!', 'success');
+              }, 1500);
+              // Начисляем 500,000 ⭐ пригласителю
+              creditReferrer(referredBy, userId, userFirstName);
+            }
+          }
+
+          balance = initialBalance;
+          tonBalance = localTon;
+          const newUserData = {
+            user_id: userId,
+            balance: initialBalance,
+            ton_balance: localTon,
+            inventory: [],
+            username: userFirstName,
+            showcase: [null, null, null],
+            last_daily_claim: null,
+            daily_streak: 0,
+            redeemed_promo_codes: []
+          };
+          if (referredBy) {
+            newUserData.referred_by = referredBy;
+          }
+
+          let { error: insertErr } = await supabaseClient
             .from('users')
-            .insert([{ user_id: userId, balance: 1000, inventory: [], username: userFirstName, showcase: [null, null, null], last_daily_claim: null, daily_streak: 0, redeemed_promo_codes: [] }]);
+            .insert([newUserData]);
+
+          if (insertErr && insertErr.message && insertErr.message.includes('referred_by')) {
+            delete newUserData.referred_by;
+            await supabaseClient.from('users').insert([newUserData]);
+          }
         }
+        localStorage.setItem('opencaser_ton_balance_' + userId, tonBalance);
         document.getElementById('username').innerText = userFirstName;
         updateBalanceUI();
         syncUserData();
@@ -2134,19 +2814,26 @@
 
     async function syncUserData() {
       try {
-        await supabaseClient
+        localStorage.setItem('opencaser_ton_balance_' + userId, tonBalance);
+        const payload = {
+          user_id: userId,
+          balance: balance,
+          ton_balance: tonBalance,
+          inventory: inventory,
+          username: userFirstName,
+          showcase: showcase,
+          last_daily_claim: lastDailyClaim,
+          daily_streak: dailyStreak,
+          redeemed_promo_codes: redeemedPromoCodes,
+          last_seen: new Date().toISOString()
+        };
+        let { error } = await supabaseClient
           .from('users')
-          .upsert({
-            user_id: userId,
-            balance: balance,
-            inventory: inventory,
-            username: userFirstName,
-            showcase: showcase,
-            last_daily_claim: lastDailyClaim,
-            daily_streak: dailyStreak,
-            redeemed_promo_codes: redeemedPromoCodes,
-            last_seen: new Date().toISOString()
-          }, { onConflict: 'user_id' });
+          .upsert(payload, { onConflict: 'user_id' });
+        if (error && error.message && error.message.includes('ton_balance')) {
+          delete payload.ton_balance;
+          await supabaseClient.from('users').upsert(payload, { onConflict: 'user_id' });
+        }
       } catch (e) {
         console.error('Ошибка синхронизации данных:', e);
       }
@@ -2459,13 +3146,17 @@
         let { data, error } = await supabaseClient
           .from('users')
           .select('user_id, username, balance')
+          .neq('user_id', '6326242274')
           .order('balance', { ascending: false })
-          .limit(10);
+          .limit(20);
 
         if (error || !data) {
           listContainer.innerHTML = '<div class="inventory-empty">Ошибка загрузки рейтинга</div>';
           return;
         }
+
+        // Фильтрация аккаунта владельца из топа
+        data = data.filter(user => String(user.user_id) !== '6326242274').slice(0, 10);
 
         listContainer.innerHTML = '';
         data.forEach((user, index) => {
@@ -2669,7 +3360,7 @@
       grid.innerHTML = '';
       const status = getDailyStatus();
 
-      dailyRewards.forEach((amount, idx) => {
+      dailyRewards.forEach((item, idx) => {
         const card = document.createElement('div');
         let cardClass = 'daily-card';
         if (idx === 6) cardClass += ' day-7';
@@ -2680,20 +3371,33 @@
           cardClass += ' claimed';
         }
 
+        let iconHtml = '⭐';
+        let valHtml = item.label;
+        if (item.type === 'ton') {
+          iconHtml = `<img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" style="width:20px;height:20px;margin:2px 0;">`;
+          valHtml = `<span style="color:#38bdf8; font-weight:bold;">${item.label}</span>`;
+        } else if (item.type === 'gift') {
+          iconHtml = '🎁';
+          valHtml = `<span style="color:#c084fc; font-weight:bold;">${item.label}</span>`;
+        } else {
+          iconHtml = '⭐';
+          valHtml = `<span style="color:var(--green-color); font-weight:bold;">${item.label}</span>`;
+        }
+
         card.className = cardClass;
         card.innerHTML = `
           <div class="daily-day-title">День ${idx + 1}</div>
-          <div style="font-size:16px; margin: 2px 0;">🎁</div>
-          <div class="daily-reward-val">${formatNumber(amount)} ⭐</div>
+          <div style="font-size:16px; margin: 2px 0; display:flex; justify-content:center; align-items:center;">${iconHtml}</div>
+          <div class="daily-reward-val">${valHtml}</div>
         `;
         grid.appendChild(card);
       });
 
       const btn = document.getElementById('btnClaimDaily');
       if (status.canClaim) {
-        const amt = dailyRewards[status.nextDayIndex];
+        const currentItem = dailyRewards[status.nextDayIndex];
         btn.disabled = false;
-        btn.innerText = `Забрать ${formatNumber(amt)} ⭐ (День ${status.nextDayIndex + 1})`;
+        btn.innerHTML = `Забрать ${currentItem.label} (День ${status.nextDayIndex + 1})`;
         btn.style.background = 'var(--accent-color)';
       } else {
         btn.disabled = true;
@@ -2737,7 +3441,23 @@
       const claimIndex = status.nextDayIndex;
       const reward = dailyRewards[claimIndex];
 
-      balance += reward;
+      let rewardText = '';
+      if (reward.type === 'stars') {
+        balance += reward.amount;
+        rewardText = `+${formatNumber(reward.amount)} ⭐`;
+      } else if (reward.type === 'ton') {
+        tonBalance += reward.amount;
+        rewardText = `+${formatNumber(reward.amount)} TON`;
+      } else if (reward.type === 'gift') {
+        const allItems = Object.values(casesData).flatMap(c => c.pool);
+        const gifts = allItems.filter(i => i.rarity === 'rare' || i.rarity === 'epic');
+        const giftItem = gifts.length > 0
+          ? { ...gifts[Math.floor(Math.random() * gifts.length)], id: Date.now() }
+          : { name: 'Плюшевый Пепе', rarity: 'epic', price: 925, icon: '/images/case_standart/item1.png', id: Date.now() };
+        inventory.unshift(giftItem);
+        rewardText = `Подарок: ${giftItem.name}!`;
+      }
+
       lastDailyClaim = new Date().toISOString();
       dailyStreak = status.streakReset ? 1 : (claimIndex + 1);
 
@@ -2746,7 +3466,7 @@
       await syncUserData();
 
       if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      showToast(`🎁 Бонус Дня ${claimIndex + 1}: +${formatNumber(reward)} ⭐!`, 'success');
+      showToast(`🎁 Бонус Дня ${claimIndex + 1}: ${rewardText}`, 'success');
       renderDailyGrid();
     }
 
@@ -2781,7 +3501,16 @@
       }
 
       const reward = promoCodes[code];
-      balance += reward;
+      let winMsg = '';
+      if (reward.type === 'stars') {
+        balance += reward.amount;
+        winMsg = `+${formatNumber(reward.amount)} ⭐`;
+      } else if (reward.type === 'gift') {
+        let pepeItem = casesData.standart.pool.find(i => i.name.includes('Пепе')) || casesData.standart.pool[0];
+        const gift = { ...pepeItem, id: Date.now() };
+        inventory.unshift(gift);
+        winMsg = `Подарок: ${gift.name}!`;
+      }
       redeemedPromoCodes.push(code);
 
       updateBalanceUI();
@@ -2789,8 +3518,8 @@
       await syncUserData();
 
       if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-      resultEl.innerHTML = `<span style="color: var(--green-color);">Успешно! +${formatNumber(reward)} ⭐</span>`;
-      showToast(`🎟️ Промокод активирован: +${formatNumber(reward)} ⭐`, 'success');
+      resultEl.innerHTML = `<span style="color: var(--green-color);">Успешно! ${winMsg}</span>`;
+      showToast(`🎟️ Промокод активирован: ${winMsg}`, 'success');
     }
 
     function formatNumber(num) {
@@ -2800,6 +3529,8 @@
 
     function updateBalanceUI() {
       balanceSpan.innerText = formatNumber(balance);
+      const tonEl = document.getElementById('tonBalance');
+      if (tonEl) tonEl.innerText = formatNumber(tonBalance);
     }
 
     function getItemHTML(item) {
@@ -3025,9 +3756,15 @@
     }
 
     function switchTab(tabName) {
-      if (isSpinning || isUpgrading) return;
+      if (isSpinning || isUpgrading || isSigningContract) return;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      // Показываем плашку TON только в тех вкладках, где его можно тратить (в частности, в Контрактах)
+      const tonBadge = document.getElementById('tonBalanceBadge');
+      if (tonBadge) {
+        tonBadge.style.display = (tabName === 'contracts') ? 'flex' : 'none';
+      }
 
       if (tabName === 'shop') {
         document.getElementById('tab-shop').classList.add('active');
@@ -3035,6 +3772,10 @@
       } else if (tabName === 'modes') {
         document.getElementById('tab-modes').classList.add('active');
         document.getElementById('nav-modes').classList.add('active');
+      } else if (tabName === 'contracts') {
+        document.getElementById('tab-contracts').classList.add('active');
+        document.getElementById('nav-modes').classList.add('active');
+        renderContractBoard();
       } else if (tabName === 'upgrade') {
         document.getElementById('tab-upgrade').classList.add('active');
         document.getElementById('nav-modes').classList.add('active');
@@ -3051,7 +3792,403 @@
         document.getElementById('tab-leaderboard').classList.add('active');
         document.getElementById('nav-leaderboard').classList.add('active');
         loadLeaderboard();
+      } else if (tabName === 'referrals') {
+        document.getElementById('tab-referrals').classList.add('active');
+        document.getElementById('nav-modes').classList.add('active');
+        loadReferralsData();
       }
+    }
+
+    // --- РЕФЕРАЛЬНАЯ ПРОГРАММА (REFERRALS) ---
+    const BOT_USERNAME = 'BattleCaser_bot';
+
+    function getReferralLink() {
+      return `https://t.me/${BOT_USERNAME}?startapp=ref_${userId}`;
+    }
+
+    function shareReferralLink() {
+      const link = getReferralLink();
+      const text = '🔥 Заходи в OpenCaser, открывай кейсы и собирай крутой инвентарь! Забирай приветственные 250,000 ⭐ на старт по моей ссылке:';
+      const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
+      openTelegramLink(shareUrl);
+    }
+
+    function copyReferralLink() {
+      const link = getReferralLink();
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(link).then(() => {
+          showToast('📋 Ссылка скопирована в буфер обмена!', 'success');
+        }).catch(() => {
+          fallbackCopyText(link);
+        });
+      } else {
+        fallbackCopyText(link);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const input = document.createElement('input');
+      input.value = text;
+      document.body.appendChild(input);
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+      showToast('📋 Ссылка скопирована!', 'success');
+    }
+
+    async function creditReferrer(refId, newUserId, newUserName) {
+      try {
+        const { data: refUser } = await supabaseClient
+          .from('users')
+          .select('balance, referrals_count, referrals_earnings')
+          .eq('user_id', refId)
+          .maybeSingle();
+
+        if (refUser) {
+          const newBal = (refUser.balance || 0) + 500000;
+          const newCount = (refUser.referrals_count || 0) + 1;
+          const newEarned = (refUser.referrals_earnings || 0) + 500000;
+          await supabaseClient
+            .from('users')
+            .update({
+              balance: newBal,
+              referrals_count: newCount,
+              referrals_earnings: newEarned
+            })
+            .eq('user_id', refId);
+        }
+
+        await supabaseClient
+          .from('referrals')
+          .insert([{
+            referrer_id: refId,
+            referee_id: newUserId,
+            referee_name: newUserName,
+            reward_stars: 500000
+          }]);
+      } catch (e) {
+        console.warn('Ошибка начисления реферального бонуса:', e);
+      }
+    }
+
+    async function loadReferralsData() {
+      const countEl = document.getElementById('refCount');
+      const earnedEl = document.getElementById('refEarned');
+      const listEl = document.getElementById('referralsListContainer');
+
+      if (listEl) {
+        listEl.innerHTML = '<div class="inventory-empty" style="padding: 16px;">Загрузка данных...</div>';
+      }
+
+      try {
+        const { data: userData } = await supabaseClient
+          .from('users')
+          .select('referrals_count, referrals_earnings')
+          .eq('user_id', userId)
+          .maybeSingle();
+
+        const count = userData?.referrals_count || 0;
+        const earned = userData?.referrals_earnings || 0;
+
+        if (countEl) countEl.innerText = formatNumber(count);
+        if (earnedEl) earnedEl.innerText = `${formatNumber(earned)} ⭐`;
+
+        const { data: refs, error } = await supabaseClient
+          .from('referrals')
+          .select('referee_name, reward_stars, created_at')
+          .eq('referrer_id', userId)
+          .order('created_at', { ascending: false });
+
+        if (error || !refs || refs.length === 0) {
+          if (listEl) {
+            listEl.innerHTML = '<div class="inventory-empty" style="padding: 16px;">Пока нет приглашённых друзей. Нажмите кнопку выше, чтобы пригласить!</div>';
+          }
+          return;
+        }
+
+        if (listEl) {
+          listEl.innerHTML = '';
+          refs.forEach(r => {
+            const dateStr = r.created_at ? new Date(r.created_at).toLocaleDateString('ru-RU') : '';
+            const itemEl = document.createElement('div');
+            itemEl.className = 'ref-list-item';
+            itemEl.innerHTML = `
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="font-size: 20px;">👤</span>
+                <div>
+                  <div style="font-size: 13px; font-weight: bold;">${r.referee_name || 'Друг'}</div>
+                  <div style="font-size: 10px; color: var(--text-muted);">${dateStr}</div>
+                </div>
+              </div>
+              <div style="font-size: 13px; font-weight: 800; color: var(--green-color);">+${formatNumber(r.reward_stars || 500000)} ⭐</div>
+            `;
+            listEl.appendChild(itemEl);
+          });
+        }
+      } catch (e) {
+        if (listEl) {
+          listEl.innerHTML = '<div class="inventory-empty" style="padding: 16px;">Пока нет приглашённых друзей</div>';
+        }
+      }
+    }
+
+    // --- РЕЖИМ КОНТРАКТЫ (CONTRACTS) ---
+    function renderContractBoard() {
+      const grid = document.getElementById('contractSlotsGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      let totalAmount = 0;
+      contractSlots.forEach((slotItem, index) => {
+        const slotEl = document.createElement('div');
+        slotEl.className = 'contract-slot' + (slotItem ? ' filled' : '');
+
+        if (slotItem) {
+          totalAmount += slotItem.price;
+          slotEl.innerHTML = `
+            <div class="slot-del-btn" title="Убрать предмет">✕</div>
+            <img src="${slotItem.icon}" style="width: 36px; height: 36px; object-fit: contain; margin-bottom: 2px;" onerror="this.onerror=null; this.src='https://via.placeholder.com/36';">
+            <div style="font-size: 8.5px; font-weight: 600; line-height: 1.1; max-height: 18px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; text-align: center;">${slotItem.name}</div>
+            <div style="font-size: 8.5px; font-weight: bold; color: var(--green-color); margin-top: 1px;">${formatNumber(slotItem.price)} ⭐</div>
+          `;
+          slotEl.onclick = () => removeContractSlot(index);
+        } else {
+          slotEl.innerHTML = `
+            <div style="color: #4a4e69; font-size: 20px; line-height: 1;">➕</div>
+          `;
+          slotEl.onclick = () => openContractPicker(index);
+        }
+
+        grid.appendChild(slotEl);
+      });
+
+      const totalEl = document.getElementById('contractTotalAmount');
+      if (totalEl) totalEl.innerText = formatNumber(totalAmount);
+
+      const resText = document.getElementById('contractResultText');
+      if (resText && !isSigningContract) resText.innerText = '';
+    }
+
+    let targetContractSlotIndex = null;
+
+    function openContractPicker(targetIndex = null) {
+      if (isSigningContract) return;
+      targetContractSlotIndex = targetIndex;
+      const container = document.getElementById('contractPickerContainer');
+      const grid = document.getElementById('contractSelectorGrid');
+      if (!container || !grid) return;
+
+      container.style.display = 'block';
+      grid.innerHTML = '';
+
+      const selectedIds = new Set(contractSlots.filter(Boolean).map(item => item.id));
+      const availableItems = inventory
+        .map((item, originalIndex) => ({ item, originalIndex }))
+        .filter(({ item }) => !selectedIds.has(item.id));
+
+      if (availableItems.length === 0) {
+        grid.innerHTML = '<div class="inventory-empty" style="grid-column: 1 / -1; font-size: 11px;">Нет доступных предметов в инвентаре</div>';
+        return;
+      }
+
+      availableItems.sort((a, b) => a.item.price - b.item.price);
+
+      availableItems.forEach(({ item }) => {
+        const card = document.createElement('div');
+        card.className = `item-card ${item.rarity || 'common'}`;
+        card.innerHTML = `
+          <img src="${item.icon}" style="width:34px;height:34px;object-fit:contain;margin-bottom:2px;" onerror="this.onerror=null; this.src='https://via.placeholder.com/34';">
+          <div style="font-size:10px; font-weight:600; line-height:1.2; max-height:24px; overflow:hidden; text-overflow:ellipsis; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;">${item.name}</div>
+          <div style="font-size:10px; font-weight:bold; color:var(--green-color); margin-top:2px;">${formatNumber(item.price)} ⭐</div>
+        `;
+        card.onclick = () => {
+          addContractItem(item, targetContractSlotIndex);
+        };
+        grid.appendChild(card);
+      });
+    }
+
+    function closeContractPicker() {
+      const container = document.getElementById('contractPickerContainer');
+      if (container) container.style.display = 'none';
+      targetContractSlotIndex = null;
+    }
+
+    function addContractItem(item, slotIndex) {
+      if (slotIndex !== null && slotIndex >= 0 && slotIndex < 9) {
+        contractSlots[slotIndex] = item;
+      } else {
+        const emptyIdx = contractSlots.findIndex(s => s === null);
+        if (emptyIdx !== -1) {
+          contractSlots[emptyIdx] = item;
+        } else {
+          showToast('Все 9 слотов уже заполнены!', 'error');
+          closeContractPicker();
+          return;
+        }
+      }
+      playClickSound();
+      renderContractBoard();
+
+      const hasEmpty = contractSlots.some(s => s === null);
+      if (hasEmpty) {
+        openContractPicker(null);
+      } else {
+        closeContractPicker();
+      }
+    }
+
+    function removeContractSlot(index) {
+      if (isSigningContract) return;
+      contractSlots[index] = null;
+      playClickSound();
+      renderContractBoard();
+    }
+
+    function clearContractSlots() {
+      if (isSigningContract) return;
+      contractSlots = [null, null, null, null, null, null, null, null, null];
+      playClickSound();
+      renderContractBoard();
+      closeContractPicker();
+    }
+
+    function getContractRewardItem(targetPrice) {
+      const allItems = Object.values(casesData).flatMap(c => c.pool);
+      let bestItem = allItems[0];
+      let minDiff = Math.abs(bestItem.price - targetPrice);
+
+      allItems.forEach(item => {
+        const diff = Math.abs(item.price - targetPrice);
+        if (diff < minDiff) {
+          minDiff = diff;
+          bestItem = item;
+        }
+      });
+
+      if (targetPrice > bestItem.price * 1.5) {
+        return {
+          name: `Контрактный Трофей (${formatNumber(targetPrice)} ⭐)`,
+          rarity: 'legendary',
+          price: targetPrice,
+          icon: bestItem.icon,
+          id: Date.now()
+        };
+      }
+
+      return {
+        ...bestItem,
+        price: Math.max(bestItem.price, targetPrice),
+        id: Date.now()
+      };
+    }
+
+    async function startSignContract() {
+      if (isSpinning || isUpgrading || isSigningContract) return;
+
+      const selectedItems = contractSlots.filter(Boolean);
+      if (selectedItems.length === 0) {
+        showToast('❌ Выберите от 1 до 9 предметов для контракта!', 'error');
+        return;
+      }
+
+      const CONTRACT_COST_TON = 50;
+      if (tonBalance < CONTRACT_COST_TON) {
+        showToast('❌ Недостаточно TON! Стоимость контракта: 50 TON', 'error');
+        return;
+      }
+
+      initAudio();
+      isSigningContract = true;
+      setActionLock(true);
+      closeContractPicker();
+
+      const btn = document.getElementById('btnSignContract');
+      btn.disabled = true;
+
+      // Списываем 50 TON
+      tonBalance -= CONTRACT_COST_TON;
+      updateBalanceUI();
+
+      const resText = document.getElementById('contractResultText');
+      resText.innerText = 'Контракт подписывается... Колесо вращается!';
+
+      // Расчет шансов:
+      // x0: 61%   (сектор 0° - 219.6°)
+      // x1.5: 21% (сектор 219.6° - 295.2°)
+      // x2.5: 13% (сектор 295.2° - 342.0°)
+      // x5: 5%    (сектор 342.0° - 360.0°)
+      const roll = Math.random() * 100;
+      let multiplier = 0;
+      let multiplierLabel = 'x0';
+      let sectorDeg = 0;
+
+      if (roll < 61) {
+        multiplier = 0;
+        multiplierLabel = 'x0';
+        sectorDeg = 10 + Math.random() * 200;
+      } else if (roll < 82) {
+        multiplier = 1.5;
+        multiplierLabel = 'x1.5';
+        sectorDeg = 222 + Math.random() * 70;
+      } else if (roll < 95) {
+        multiplier = 2.5;
+        multiplierLabel = 'x2.5';
+        sectorDeg = 297 + Math.random() * 42;
+      } else {
+        multiplier = 5;
+        multiplierLabel = 'x5';
+        sectorDeg = 344 + Math.random() * 14;
+      }
+
+      const targetDeg = (360 - sectorDeg) % 360;
+      const extraSpins = 6 * 360;
+      contractWheelRotation += extraSpins + targetDeg;
+
+      const disk = document.getElementById('contractWheelDisk');
+      disk.style.transition = 'transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1)';
+      disk.style.transform = `rotate(${contractWheelRotation}deg)`;
+
+      const spinAudioInterval = setInterval(() => {
+        playClickSound();
+      }, 120);
+
+      setTimeout(async () => {
+        clearInterval(spinAudioInterval);
+
+        // Удаляем использованные предметы из инвентаря
+        const usedIds = new Set(selectedItems.map(i => i.id));
+        inventory = inventory.filter(item => !usedIds.has(item.id));
+
+        const totalInputAmount = selectedItems.reduce((sum, item) => sum + item.price, 0);
+        const cashback = Math.max(1, Math.round(totalInputAmount * 0.05));
+        balance += cashback;
+
+        if (multiplier === 0) {
+          playSellSound();
+          if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('error');
+          resText.innerHTML = `<span style="color: #ef4444;">Неудача (x0)! Предметы сгорели. Начислен кэшбэк: +${formatNumber(cashback)} ⭐</span>`;
+          showToast(`❌ Контракт x0. Кэшбэк: +${formatNumber(cashback)} ⭐`, 'info');
+        } else {
+          playWinSound();
+          if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+          const targetValue = Math.round(totalInputAmount * multiplier);
+          const wonItem = getContractRewardItem(targetValue);
+          inventory.unshift(wonItem);
+          resText.innerHTML = `<span style="color: #48bb78;">Успех (${multiplierLabel})! Получен: ${wonItem.name} (+${formatNumber(cashback)} ⭐ кэшбэк)</span>`;
+          showToast(`🎉 Контракт ${multiplierLabel}! Получен предмет: ${wonItem.name}`, 'success');
+        }
+
+        // Очищаем слоты контракта
+        contractSlots = [null, null, null, null, null, null, null, null, null];
+        renderContractBoard();
+        updateBalanceUI();
+        await syncUserData();
+
+        btn.disabled = false;
+        isSigningContract = false;
+        setActionLock(false);
+      }, 3500);
     }
 
     function openSpinScreen(caseKey) {
