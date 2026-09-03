@@ -1424,13 +1424,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background: conic-gradient(
-        #2a2e40 0deg 219.6deg,
-        #5832a8 219.6deg 295.2deg,
-        #7c3aed 295.2deg 342deg,
-        #c084fc 342deg 360deg
-      );
-      box-shadow: 0 0 25px rgba(0, 0, 0, 0.55), inset 0 0 10px rgba(0,0,0,0.5);
+      background: conic-gradient(#2a2e40 0deg 219.6deg,
+          #5832a8 219.6deg 295.2deg,
+          #7c3aed 295.2deg 342deg,
+          #c084fc 342deg 360deg);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.55), inset 0 0 10px rgba(0, 0, 0, 0.5);
       border: 3.5px solid #161724;
       transition: transform 3.5s cubic-bezier(0.12, 0.8, 0.15, 1);
     }
@@ -1722,7 +1720,8 @@
     <div style="display: flex; align-items: center; gap: 8px;">
       <div class="balance-badge ton-badge" id="tonBalanceBadge" style="display: none;">
         <span id="tonBalance">0</span>
-        <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON" style="width: 18px; height: 18px; vertical-align: middle; margin-left: 2px;">
+        <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON"
+          style="width: 18px; height: 18px; vertical-align: middle; margin-left: 2px;">
       </div>
       <div class="balance-badge">
         <span id="balance">1,000</span> ⭐
@@ -1996,8 +1995,10 @@
             <span>Amount:</span> <span>⭐</span> <span id="contractTotalAmount">0</span>
           </div>
           <div style="display: flex; gap: 8px; margin-top: 10px; width: 100%; max-width: 240px;">
-            <button class="btn-sort" style="flex: 1; font-size: 11px; padding: 6px 8px;" onclick="openContractPicker()">+ Добавить</button>
-            <button class="btn-sort" style="flex: 1; font-size: 11px; padding: 6px 8px;" onclick="clearContractSlots()">Очистить</button>
+            <button class="btn-sort" style="flex: 1; font-size: 11px; padding: 6px 8px;"
+              onclick="openContractPicker()">+ Добавить</button>
+            <button class="btn-sort" style="flex: 1; font-size: 11px; padding: 6px 8px;"
+              onclick="clearContractSlots()">Очистить</button>
           </div>
         </div>
 
@@ -2007,22 +2008,26 @@
             <div class="contract-wheel-arrow"></div>
             <div class="contract-wheel-disk" id="contractWheelDisk">
               <div class="contract-wheel-inner">
-                <svg class="contract-center-icon" viewBox="0 0 48 48" fill="none" stroke="#606684" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14 6H34C36.2 6 38 7.8 38 10V38C38 40.2 36.2 42 34 42H14C11.8 42 10 40.2 10 38V10C10 7.8 11.8 6 14 6Z"/>
-                  <line x1="16" y1="16" x2="32" y2="16"/>
-                  <line x1="16" y1="22" x2="32" y2="22"/>
-                  <line x1="16" y1="28" x2="24" y2="28"/>
-                  <path d="M22 36 C25 34, 28 38, 32 35"/>
-                  <line x1="30" y1="36" x2="37" y2="29" stroke-width="3"/>
+                <svg class="contract-center-icon" viewBox="0 0 48 48" fill="none" stroke="#606684" stroke-width="2.5"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M14 6H34C36.2 6 38 7.8 38 10V38C38 40.2 36.2 42 34 42H14C11.8 42 10 40.2 10 38V10C10 7.8 11.8 6 14 6Z" />
+                  <line x1="16" y1="16" x2="32" y2="16" />
+                  <line x1="16" y1="22" x2="32" y2="22" />
+                  <line x1="16" y1="28" x2="24" y2="28" />
+                  <path d="M22 36 C25 34, 28 38, 32 35" />
+                  <line x1="30" y1="36" x2="37" y2="29" stroke-width="3" />
                 </svg>
               </div>
             </div>
           </div>
 
           <button class="btn-contract-spin" id="btnSignContract" onclick="startSignContract()">
-            SIGN UP (<img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON" style="width: 17px; height: 17px; vertical-align: middle;"> 50)
+            SIGN UP (<img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+              alt="TON" style="width: 17px; height: 17px; vertical-align: middle;"> 50)
           </button>
-          <div id="contractResultText" style="font-weight: bold; font-size: 13px; text-align: center; min-height: 24px; margin-top: 8px;"></div>
+          <div id="contractResultText"
+            style="font-weight: bold; font-size: 13px; text-align: center; min-height: 24px; margin-top: 8px;"></div>
         </div>
 
         <!-- Справа: Possible rewards -->
@@ -2055,10 +2060,12 @@
       </div>
 
       <!-- Селектор предметов для контракта -->
-      <div id="contractPickerContainer" style="display: none; width: 100%; max-width: 620px; background: #1c1d2a; border: 1px solid #2e3146; border-radius: 14px; padding: 14px; margin-top: 10px;">
+      <div id="contractPickerContainer"
+        style="display: none; width: 100%; max-width: 620px; background: #1c1d2a; border: 1px solid #2e3146; border-radius: 14px; padding: 14px; margin-top: 10px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
           <div style="font-size: 13px; font-weight: bold;">Выберите предмет для контракта:</div>
-          <button class="btn-sort" onclick="closeContractPicker()" style="font-size: 11px; padding: 2px 8px;">Закрыть</button>
+          <button class="btn-sort" onclick="closeContractPicker()"
+            style="font-size: 11px; padding: 2px 8px;">Закрыть</button>
         </div>
         <div class="upgrade-selector-grid" id="contractSelectorGrid" style="max-height: 220px; overflow-y: auto;"></div>
       </div>
@@ -2076,7 +2083,8 @@
       <div class="ref-banner">
         <div style="font-size: 38px;">🎁</div>
         <div style="font-size: 16px; font-weight: bold; color: #fff;">Приглашай друзей и получай звёзды!</div>
-        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">Делись персональной ссылкой с друзьями — получай 500,000 ⭐ за каждого игрока!</div>
+        <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">Делись персональной ссылкой с друзьями
+          — получай 500,000 ⭐ за каждого игрока!</div>
       </div>
 
       <div class="ref-rewards-grid">
@@ -2118,8 +2126,20 @@
       <div class="ref-list-section">
         <div style="font-size: 13px; font-weight: 700; margin-top: 6px;">Приглашённые друзья:</div>
         <div id="referralsListContainer" style="display: flex; flex-direction: column; gap: 8px;">
-          <div class="inventory-empty" style="padding: 16px;">Пока нет приглашённых друзей. Нажмите кнопку выше, чтобы пригласить!</div>
+          <div class="inventory-empty" style="padding: 16px;">Пока нет приглашённых друзей. Нажмите кнопку выше, чтобы
+            пригласить!</div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Вкладка Магазин -->
+  <div id="tab-market" class="tab-content">
+    <div class="page-title">Магазин</div>
+    <div class="market-container">
+      <div class="market-category-title">🖼️ Фоны на витрину</div>
+      <div class="market-grid" id="wallpapersMarketGrid">
+        <!-- Карточки фонов генерируются через renderWallpapersMarket() -->
       </div>
     </div>
   </div>
@@ -2169,7 +2189,7 @@
         </div>
       </div>
 
-      <div class="profile-card">
+      <div class="profile-card" id="showcaseProfileCard" style="transition: all 0.3s ease;">
         <div class="showcase-section">
           <div class="showcase-title">Витрина предметов (до 3 шт):</div>
           <div class="showcase-grid" id="showcaseGrid">
@@ -2219,7 +2239,8 @@
       <div style="font-size: 12px; color: var(--text-muted); text-align: center;">Введите промокод, чтобы получить
         награду</div>
       <div style="font-size: 13px; text-align: center; margin: 8px 0 4px 0;">
-        Промокоды в нашем <span onclick="openTelegramLink('https://t.me/BattleCaser')" style="color: #0098ea; text-decoration: underline; font-weight: bold; cursor: pointer;">ТГ канале</span>
+        Промокоды в нашем <span onclick="openTelegramLink('https://t.me/BattleCaser')"
+          style="color: #0098ea; text-decoration: underline; font-weight: bold; cursor: pointer;">ТГ канале</span>
       </div>
 
       <div class="profile-edit-row" style="width: 100%;">
@@ -2305,6 +2326,10 @@
     <div class="nav-item" id="nav-inventory" onclick="switchTab('inventory')">
       <span style="font-size: 20px;">🎒</span>
       <span>Инвентарь</span>
+    </div>
+    <div class="nav-item" id="nav-market" onclick="switchTab('market')">
+      <span style="font-size: 20px;">🛍️</span>
+      <span>Магазин</span>
     </div>
     <div class="nav-item" id="nav-leaderboard" onclick="switchTab('leaderboard')">
       <span style="font-size: 20px;">🏆</span>
@@ -2611,7 +2636,7 @@
           { name: 'Lowrider', rarity: 'common', price: 35000, chance: 10.3, icon: '/images/case_snoop/item1.png' }
         ]
       },
-            gta6: {
+      gta6: {
         name: 'GTA VI',
         price: 999999999,
         pool: [
@@ -2652,6 +2677,19 @@
     let currentTradeSubscription = null;
 
     let targetShowcaseSlot = null; // Какой слот витрины сейчас заполняем
+
+    // --- Магазин обоев (Wallpapers Market) ---
+    const WALLPAPERS = [
+      {
+        id: 'pepe',
+        name: 'pepe',
+        price: 999000000,
+        image: '/images/wallpapers/wallpaper_pepe.png',
+        desc: 'Кастомный фон на витрину с Пепе'
+      }
+    ];
+    let purchasedWallpapers = [];
+    let equippedWallpaper = null;
 
     let lastDailyClaim = null;
     let dailyStreak = 0;
@@ -2727,11 +2765,11 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('balance, ton_balance, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes')
+          .select('balance, ton_balance, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes, purchased_wallpapers, equipped_wallpaper')
           .eq('user_id', userId)
           .maybeSingle();
 
-        if (error && error.message && error.message.includes('ton_balance')) {
+        if (error) {
           const res = await supabaseClient
             .from('users')
             .select('balance, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes')
@@ -2741,6 +2779,8 @@
         }
 
         const localTon = parseInt(localStorage.getItem('opencaser_ton_balance_' + userId)) || 0;
+        const localWps = JSON.parse(localStorage.getItem('opencaser_wallpapers_' + userId) || '[]');
+        const localEquippedWp = localStorage.getItem('opencaser_equipped_wp_' + userId) || null;
 
         if (data) {
           balance = data.balance ?? 1000;
@@ -2751,7 +2791,12 @@
           lastDailyClaim = data.last_daily_claim ?? null;
           dailyStreak = data.daily_streak ?? 0;
           redeemedPromoCodes = data.redeemed_promo_codes ?? [];
+          purchasedWallpapers = data.purchased_wallpapers ?? localWps;
+          equippedWallpaper = (data.equipped_wallpaper !== undefined) ? data.equipped_wallpaper : localEquippedWp;
         } else {
+          purchasedWallpapers = localWps;
+          equippedWallpaper = localEquippedWp;
+
           // Проверяем, пришел ли пользователь по реферальной ссылке
           let startParam = tg.initDataUnsafe?.start_param || '';
           if (!startParam) {
@@ -2802,6 +2847,10 @@
           }
         }
         localStorage.setItem('opencaser_ton_balance_' + userId, tonBalance);
+        localStorage.setItem('opencaser_wallpapers_' + userId, JSON.stringify(purchasedWallpapers));
+        if (equippedWallpaper) {
+          localStorage.setItem('opencaser_equipped_wp_' + userId, equippedWallpaper);
+        }
         document.getElementById('username').innerText = userFirstName;
         updateBalanceUI();
         syncUserData();
@@ -2815,6 +2864,12 @@
     async function syncUserData() {
       try {
         localStorage.setItem('opencaser_ton_balance_' + userId, tonBalance);
+        localStorage.setItem('opencaser_wallpapers_' + userId, JSON.stringify(purchasedWallpapers));
+        if (equippedWallpaper) {
+          localStorage.setItem('opencaser_equipped_wp_' + userId, equippedWallpaper);
+        } else {
+          localStorage.removeItem('opencaser_equipped_wp_' + userId);
+        }
         const payload = {
           user_id: userId,
           balance: balance,
@@ -2825,14 +2880,20 @@
           last_daily_claim: lastDailyClaim,
           daily_streak: dailyStreak,
           redeemed_promo_codes: redeemedPromoCodes,
+          purchased_wallpapers: purchasedWallpapers,
+          equipped_wallpaper: equippedWallpaper,
           last_seen: new Date().toISOString()
         };
         let { error } = await supabaseClient
           .from('users')
           .upsert(payload, { onConflict: 'user_id' });
-        if (error && error.message && error.message.includes('ton_balance')) {
-          delete payload.ton_balance;
-          await supabaseClient.from('users').upsert(payload, { onConflict: 'user_id' });
+        if (error) {
+          if (error.message && (error.message.includes('wallpapers') || error.message.includes('equipped_wallpaper') || error.message.includes('ton_balance'))) {
+            delete payload.purchased_wallpapers;
+            delete payload.equipped_wallpaper;
+            delete payload.ton_balance;
+            await supabaseClient.from('users').upsert(payload, { onConflict: 'user_id' });
+          }
         }
       } catch (e) {
         console.error('Ошибка синхронизации данных:', e);
@@ -3195,7 +3256,7 @@
       document.getElementById('profileNameInput').value = userFirstName;
       document.getElementById('profileBackBtn').style.display = 'none';
 
-      renderShowcase(true);
+      renderShowcase(true, null, equippedWallpaper);
     }
 
     async function openUserProfile(targetUserId) {
@@ -3207,9 +3268,18 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('username, showcase')
+          .select('username, showcase, equipped_wallpaper')
           .eq('user_id', targetUserId)
           .single();
+
+        if (error && error.message && error.message.includes('equipped_wallpaper')) {
+          const res = await supabaseClient
+            .from('users')
+            .select('username, showcase')
+            .eq('user_id', targetUserId)
+            .single();
+          data = res.data;
+        }
 
         if (error || !data) {
           showToast('❌ Не удалось загрузить профиль игрока', 'error');
@@ -3224,7 +3294,7 @@
         document.getElementById('profileEditSection').style.display = 'none';
         document.getElementById('profileBackBtn').style.display = 'block';
 
-        renderShowcase(false, data.showcase || [null, null, null]);
+        renderShowcase(false, data.showcase || [null, null, null], data.equipped_wallpaper || null);
       } catch (e) {
         console.error('Ошибка открытия профиля:', e);
       }
@@ -3239,7 +3309,28 @@
       showToast('✅ Имя успешно изменено!', 'success');
     }
 
-    function renderShowcase(isEditable, customShowcase = null) {
+    function renderShowcase(isEditable, customShowcase = null, customWallpaper = undefined) {
+      const cardEl = document.getElementById('showcaseProfileCard');
+      const wpToUse = (customWallpaper !== undefined) ? customWallpaper : equippedWallpaper;
+
+      if (cardEl) {
+        if (wpToUse && wpToUse !== 'default') {
+          const wp = WALLPAPERS.find(w => w.id === wpToUse);
+          const bgUrl = wp ? wp.image : `/images/wallpapers/wallpaper_${wpToUse}.png`;
+          cardEl.style.backgroundImage = `linear-gradient(rgba(18, 19, 28, 0.42), rgba(18, 19, 28, 0.65)), url('${bgUrl}')`;
+          cardEl.style.backgroundSize = 'cover';
+          cardEl.style.backgroundPosition = 'center';
+          cardEl.style.borderColor = '#5865f2';
+          cardEl.style.boxShadow = '0 0 24px rgba(88, 101, 242, 0.35)';
+        } else {
+          cardEl.style.backgroundImage = 'none';
+          cardEl.style.backgroundSize = '';
+          cardEl.style.backgroundPosition = '';
+          cardEl.style.borderColor = '#2a2b3d';
+          cardEl.style.boxShadow = 'none';
+        }
+      }
+
       const grid = document.getElementById('showcaseGrid');
       grid.innerHTML = '';
       const currentShowcase = customShowcase || showcase;
@@ -3792,11 +3883,98 @@
         document.getElementById('tab-leaderboard').classList.add('active');
         document.getElementById('nav-leaderboard').classList.add('active');
         loadLeaderboard();
+      } else if (tabName === 'market') {
+        document.getElementById('tab-market').classList.add('active');
+        document.getElementById('nav-market').classList.add('active');
+        renderWallpapersMarket();
       } else if (tabName === 'referrals') {
         document.getElementById('tab-referrals').classList.add('active');
         document.getElementById('nav-modes').classList.add('active');
         loadReferralsData();
       }
+    }
+
+    // --- МАГАЗИН ОБОЕВ ДЛЯ ВИТРИНЫ (WALLPAPERS MARKET) ---
+    async function buyWallpaper(wpId) {
+      const wp = WALLPAPERS.find(w => w.id === wpId);
+      if (!wp) return;
+
+      if (purchasedWallpapers.includes(wpId)) {
+        showToast('Этот фон уже куплен!', 'info');
+        return;
+      }
+
+      if (balance < wp.price) {
+        showToast(`❌ Недостаточно звёзд! Стоимость: ${formatNumber(wp.price)} ⭐`, 'error');
+        return;
+      }
+
+      initAudio();
+      balance -= wp.price;
+      purchasedWallpapers.push(wpId);
+      equippedWallpaper = wpId;
+
+      updateBalanceUI();
+      playWinSound();
+      if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      showToast(`🎉 Вы купили фон "${wp.name}"! Он установлен на вашу витрину.`, 'success');
+
+      await syncUserData();
+      renderWallpapersMarket();
+    }
+
+    async function equipWallpaper(wpId) {
+      initAudio();
+      playClickSound();
+      equippedWallpaper = wpId;
+      await syncUserData();
+      renderWallpapersMarket();
+      showToast(`🖼️ Фон "${wpId}" надет на витрину!`, 'success');
+    }
+
+    async function unequipWallpaper() {
+      initAudio();
+      playClickSound();
+      equippedWallpaper = null;
+      await syncUserData();
+      renderWallpapersMarket();
+      showToast('🖼️ Установлен стандартный фон витрины', 'info');
+    }
+
+    function renderWallpapersMarket() {
+      const grid = document.getElementById('wallpapersMarketGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      WALLPAPERS.forEach(wp => {
+        const card = document.createElement('div');
+        card.className = 'market-card';
+
+        const isOwned = purchasedWallpapers.includes(wp.id);
+        const isEquipped = (equippedWallpaper === wp.id);
+
+        let actionBtnHtml = '';
+        if (isEquipped) {
+          actionBtnHtml = `<button class="btn-market-action btn-market-active" onclick="unequipWallpaper()">✓ Надет (Нажмите, чтобы снять)</button>`;
+        } else if (isOwned) {
+          actionBtnHtml = `<button class="btn-market-action btn-market-equip" onclick="equipWallpaper('${wp.id}')">Надеть на витрину</button>`;
+        } else {
+          actionBtnHtml = `<button class="btn-market-action btn-market-buy" onclick="buyWallpaper('${wp.id}')">Купить за ${formatNumber(wp.price)} ⭐</button>`;
+        }
+
+        card.innerHTML = `
+          <img src="${wp.image}" class="market-preview-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x180/1c1d2a/ffffff?text=${wp.name}';">
+          <div class="market-card-info">
+            <div>
+              <div class="market-card-title">${wp.name}</div>
+              <div style="font-size: 11.5px; color: var(--text-muted); margin-top: 2px;">${wp.desc}</div>
+            </div>
+            <div class="market-card-price">${formatNumber(wp.price)} ⭐</div>
+          </div>
+          ${actionBtnHtml}
+        `;
+        grid.appendChild(card);
+      });
     }
 
     // --- РЕФЕРАЛЬНАЯ ПРОГРАММА (REFERRALS) ---
@@ -4053,32 +4231,39 @@
       closeContractPicker();
     }
 
-    function getContractRewardItem(targetPrice) {
+    function getContractRewardItem(totalInputAmount, multiplier) {
       const allItems = Object.values(casesData).flatMap(c => c.pool);
-      let bestItem = allItems[0];
-      let minDiff = Math.abs(bestItem.price - targetPrice);
-
-      allItems.forEach(item => {
-        const diff = Math.abs(item.price - targetPrice);
-        if (diff < minDiff) {
-          minDiff = diff;
-          bestItem = item;
+      const uniqueItems = [];
+      const seen = new Set();
+      allItems.forEach(it => {
+        if (!seen.has(it.name)) {
+          seen.add(it.name);
+          uniqueItems.push(it);
         }
       });
 
-      if (targetPrice > bestItem.price * 1.5) {
-        return {
-          name: `Контрактный Трофей (${formatNumber(targetPrice)} ⭐)`,
-          rarity: 'legendary',
-          price: targetPrice,
-          icon: bestItem.icon,
-          id: Date.now()
-        };
+      const targetPrice = Math.round(totalInputAmount * multiplier);
+
+      // Ищем только реальные предметы из кейсов, которые дороже всей суммы (it.price > totalInputAmount)
+      const profitableItems = uniqueItems.filter(it => it.price > totalInputAmount);
+
+      let chosenItem = null;
+      if (profitableItems.length > 0) {
+        // Сортируем по близости цены к targetPrice
+        profitableItems.sort((a, b) => Math.abs(a.price - targetPrice) - Math.abs(b.price - targetPrice));
+        chosenItem = profitableItems[0];
+      } else {
+        // Если сумма превышает все предметы, берем самый дорогой существующий предмет в игре
+        uniqueItems.sort((a, b) => b.price - a.price);
+        chosenItem = uniqueItems[0];
       }
 
+      // Возвращаем предмет с его ОРИГИНАЛЬНЫМ названием, ценой, редкостью и иконкой
       return {
-        ...bestItem,
-        price: Math.max(bestItem.price, targetPrice),
+        name: chosenItem.name,
+        rarity: chosenItem.rarity,
+        price: chosenItem.price,
+        icon: chosenItem.icon,
         id: Date.now()
       };
     }
@@ -4172,11 +4357,10 @@
         } else {
           playWinSound();
           if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-          const targetValue = Math.round(totalInputAmount * multiplier);
-          const wonItem = getContractRewardItem(targetValue);
+          const wonItem = getContractRewardItem(totalInputAmount, multiplier);
           inventory.unshift(wonItem);
-          resText.innerHTML = `<span style="color: #48bb78;">Успех (${multiplierLabel})! Получен: ${wonItem.name} (+${formatNumber(cashback)} ⭐ кэшбэк)</span>`;
-          showToast(`🎉 Контракт ${multiplierLabel}! Получен предмет: ${wonItem.name}`, 'success');
+          resText.innerHTML = `<span style="color: #48bb78;">Успех (${multiplierLabel})! Получен предмет: ${wonItem.name} (${formatNumber(wonItem.price)} ⭐) (+${formatNumber(cashback)} ⭐ кэшбэк)</span>`;
+          showToast(`🎉 Контракт ${multiplierLabel}! Выпал: ${wonItem.name} (${formatNumber(wonItem.price)} ⭐)`, 'success');
         }
 
         // Очищаем слоты контракта
