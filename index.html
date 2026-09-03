@@ -830,6 +830,27 @@
       color: var(--text-muted);
     }
 
+    .btn-showcase-settings {
+      background: #252840;
+      border: 1px solid #3d4266;
+      border-radius: 8px;
+      width: 32px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #fff;
+      font-size: 15px;
+      transition: all 0.2s;
+    }
+
+    .btn-showcase-settings:hover {
+      background: #2f3454;
+      border-color: #5865f2;
+      transform: scale(1.05);
+    }
+
     .showcase-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -1708,6 +1729,178 @@
       gap: 16px;
     }
 
+    .market-gold-title {
+      color: #ffea00 !important;
+      font-weight: 900 !important;
+      font-size: 14px !important;
+      letter-spacing: 2px !important;
+      text-shadow: 0 0 10px rgba(255, 234, 0, 0.75), 0 0 20px rgba(255, 200, 0, 0.4);
+    }
+
+    .market-divider .case-divider-line {
+      background: linear-gradient(90deg, transparent, rgba(255, 234, 0, 0.6), transparent);
+      box-shadow: 0 0 8px rgba(255, 234, 0, 0.4);
+    }
+
+    .market-wallpapers-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .market-wallpaper-card {
+      background: #151724;
+      border: 1px solid #2c3048;
+      border-radius: 20px;
+      padding: 14px 14px 16px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      width: 100%;
+    }
+
+    .market-wallpaper-card:hover {
+      border-color: #5865f2;
+      box-shadow: 0 8px 25px rgba(88, 101, 242, 0.25);
+    }
+
+    .market-wallpaper-card.equipped {
+      border-color: #22c55e;
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.25);
+    }
+
+    .market-wallpaper-preview {
+      width: 100%;
+      height: 155px;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      background: #0d0e17;
+      border: 1px solid #282b3d;
+      cursor: pointer;
+    }
+
+    .market-wallpaper-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .market-wallpaper-preview:hover img {
+      transform: scale(1.04);
+    }
+
+    .market-badge-type {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(14, 16, 24, 0.88);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #94a3b8;
+      letter-spacing: 0.5px;
+    }
+
+    .market-badge-equipped {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(34, 197, 94, 0.95);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 10px;
+      font-weight: 800;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+    }
+
+    .market-wallpaper-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      text-align: center;
+      text-transform: capitalize;
+    }
+
+    .market-wallpaper-price {
+      font-size: 14px;
+      font-weight: 800;
+      color: #22c55e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .btn-market-card-action {
+      width: 100%;
+      height: 42px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      border: 1.5px solid #3b4266;
+      background: #1f233a;
+      color: #ffffff;
+    }
+
+    .btn-market-card-action:active {
+      transform: scale(0.98);
+    }
+
+    .btn-market-card-action.btn-buy {
+      background: #22263d;
+      border-color: #3f476e;
+      color: #ffffff;
+    }
+
+    .btn-market-card-action.btn-buy:hover {
+      background: #2b314f;
+      border-color: #5865f2;
+      box-shadow: 0 0 14px rgba(88, 101, 242, 0.35);
+    }
+
+    .btn-market-card-action.btn-equip {
+      background: #1c2238;
+      border-color: #5865f2;
+      color: #818cf8;
+    }
+
+    .btn-market-card-action.btn-equip:hover {
+      background: #232b49;
+      color: #fff;
+      box-shadow: 0 0 14px rgba(88, 101, 242, 0.4);
+    }
+
+    .btn-market-card-action.btn-active {
+      background: rgba(34, 197, 94, 0.12);
+      border-color: rgba(34, 197, 94, 0.6);
+      color: #4ade80;
+    }
+
+    .btn-market-card-action.btn-active:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: rgba(239, 68, 68, 0.6);
+      color: #ef4444;
+    }
+
     .wallpaper-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -2300,15 +2493,14 @@
 
   <!-- Вкладка Магазин -->
   <div id="tab-market" class="tab-content">
-    <div class="page-title">Магазин</div>
     <div class="market-container">
-      <div class="case-section-divider" style="width: 100%;">
+      <div class="case-section-divider market-divider" style="width: 100%; margin-top: 10px; margin-bottom: 6px;">
         <div class="case-divider-line left"></div>
-        <div class="case-divider-title">ФОНЫ НА ВИТРИНУ</div>
+        <div class="case-divider-title market-gold-title">ФОНЫ НА ВИТРИНУ</div>
         <div class="case-divider-line right"></div>
       </div>
-      <div class="wallpaper-grid" id="wallpapersMarketGrid">
-        <!-- Карточки фонов в стиле кейсов -->
+      <div class="market-wallpapers-list" id="wallpapersMarketGrid">
+        <!-- Карточки фонов 1 в ряд точно как на скриншоте -->
       </div>
     </div>
   </div>
@@ -2360,7 +2552,10 @@
 
       <div class="profile-card" id="showcaseProfileCard" style="transition: all 0.3s ease;">
         <div class="showcase-section">
-          <div class="showcase-title">Витрина предметов (до 3 шт):</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div class="showcase-title">Витрина предметов (до 3 шт):</div>
+            <button class="btn-showcase-settings" id="btnShowcaseSettings" onclick="openShowcaseWallpapersModal()" title="Настройки фона витрины">⚙️</button>
+          </div>
           <div class="showcase-grid" id="showcaseGrid">
             <!-- Слоты витрины заполняются динамически -->
           </div>
@@ -2482,22 +2677,54 @@
     </div>
   </div>
 
-  <div class="modal-overlay" id="wallpaperPreviewModal">
-    <div class="modal-card" style="max-width: 380px; width: 92%; padding: 18px 14px;">
-      <h3 id="wpPreviewTitle">Примерка фона</h3>
-      <div style="font-size: 11.5px; color: var(--text-muted); text-align: center; margin-bottom: 10px;">Так фон будет смотреться на вашей витрине:</div>
-      <div class="profile-card" id="wpModalShowcasePreview" style="padding: 14px; margin-bottom: 12px; transition: all 0.3s ease;">
+  <div class="modal-overlay" id="wallpaperPreviewModal" onclick="if(event.target === this) closeWallpaperPreview()">
+    <div class="modal-card" style="max-width: 360px; width: 92%; padding: 16px 14px 18px 14px; position: relative; border-radius: 22px; background: #151724; border: 1px solid #2f3450; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);">
+      <button onclick="closeWallpaperPreview()" style="position: absolute; top: 10px; right: 14px; background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; z-index: 10;">✕</button>
+
+      <div class="profile-card" id="wpModalShowcasePreview" style="padding: 12px; margin-bottom: 12px; border-radius: 16px; border: 1px solid #333852; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);">
         <div class="showcase-section">
-          <div class="showcase-title" style="font-size: 11px;">Витрина предметов:</div>
-          <div class="showcase-grid" id="wpModalShowcaseGrid" style="gap: 6px;">
+          <div class="showcase-title" style="font-size: 11.5px; margin-bottom: 4px;">Витрина предметов:</div>
+          <div class="showcase-grid" id="wpModalShowcaseGrid" style="gap: 8px;">
             <!-- Слоты превью витрины -->
           </div>
         </div>
       </div>
-      <div id="wpModalActionContainer" style="width: 100%;"></div>
-      <div class="modal-actions" style="margin-top: 8px;">
-        <button class="btn-modal btn-modal-close" onclick="closeWallpaperPreview()">Закрыть</button>
+
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; margin-bottom: 14px; width: 100%;">
+        <div id="wpPreviewTitle" style="font-size: 18px; font-weight: 800; color: #fff; text-transform: capitalize;">Pepe</div>
+        <div id="wpPreviewPrice" style="font-size: 15px; font-weight: 800; color: #22c55e;">999,000,000 ⭐</div>
       </div>
+
+      <div id="wpModalActionContainer" style="width: 100%;"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="showcaseWallpapersModal">
+    <div class="modal-card" style="max-width: 400px; width: 94%; padding: 20px 16px;">
+      <h3 style="margin-bottom: 4px;">Фоны витрины</h3>
+      <div style="font-size: 12px; color: var(--text-muted); text-align: center; margin-bottom: 14px;">
+        Выберите фон для оформления вашей витрины:
+      </div>
+      <div class="wallpaper-grid" id="showcaseWardrobeGrid" style="max-height: 380px; overflow-y: auto; padding: 2px;">
+        <!-- Карточки вариантов фонов -->
+      </div>
+      <div class="modal-actions" style="margin-top: 14px;">
+        <button class="btn-modal btn-modal-close" onclick="closeShowcaseWallpapersModal()">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно обновления (New version available on Vercel) -->
+  <div class="modal-overlay" id="updateAvailableModal" style="z-index: 99999; backdrop-filter: blur(8px);">
+    <div class="modal-card" style="max-width: 360px; width: 92%; padding: 26px 20px; text-align: center; border-radius: 22px; background: #151726; border: 1.5px solid rgba(99, 102, 241, 0.5); box-shadow: 0 10px 40px rgba(99, 102, 241, 0.35);">
+      <div style="font-size: 46px; margin-bottom: 8px; line-height: 1;">🚀</div>
+      <h3 style="font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px;">Вышло обновление!</h3>
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 22px;">
+        Мы выпустили свежее обновление игры с новыми функциями и исправлениями. Перезапустите игру, чтобы продолжить!
+      </p>
+      <button class="btn-spin" onclick="applyAppUpdate()" style="width: 100%; height: 46px; font-size: 15px; font-weight: 800; letter-spacing: 0.5px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);">
+        🔄 Обновить сейчас
+      </button>
     </div>
   </div>
 
@@ -3444,6 +3671,9 @@
       document.getElementById('profileNameInput').value = userFirstName;
       document.getElementById('profileBackBtn').style.display = 'none';
 
+      const settingsBtn = document.getElementById('btnShowcaseSettings');
+      if (settingsBtn) settingsBtn.style.display = 'flex';
+
       renderShowcase(true, null, equippedWallpaper);
     }
 
@@ -3486,6 +3716,9 @@
         document.getElementById('tab-profile').classList.add('active');
         document.getElementById('profileTitleText').innerText = `Профиль: ${data.username || 'Игрок'}`;
         document.getElementById('profileEditSection').style.display = 'none';
+
+        const settingsBtn = document.getElementById('btnShowcaseSettings');
+        if (settingsBtn) settingsBtn.style.display = 'none';
 
         const backBtn = document.getElementById('profileBackBtn');
         if (backBtn) {
@@ -4129,6 +4362,7 @@
       equippedWallpaper = wpId;
       await syncUserData();
       renderWallpapersMarket();
+      renderShowcase(true, null, equippedWallpaper);
       showToast(`🖼️ Фон "${wpId}" надет на витрину!`, 'success');
     }
 
@@ -4138,6 +4372,7 @@
       equippedWallpaper = null;
       await syncUserData();
       renderWallpapersMarket();
+      renderShowcase(true, null, equippedWallpaper);
       showToast('🖼️ Установлен стандартный фон витрины', 'info');
     }
 
@@ -4151,26 +4386,26 @@
         const isOwned = purchasedWallpapers.includes(wp.id);
         const isEquipped = (equippedWallpaper === wp.id);
 
-        card.className = `wallpaper-card ${isEquipped ? 'equipped' : ''}`;
+        card.className = `market-wallpaper-card ${isEquipped ? 'equipped' : ''}`;
 
         let actionBtnHtml = '';
         if (isEquipped) {
-          actionBtnHtml = `<button class="btn-wallpaper-action btn-wp-active" onclick="event.stopPropagation(); unequipWallpaper();" title="Нажмите, чтобы снять">✓ Надет</button>`;
+          actionBtnHtml = `<button class="btn-market-card-action btn-active" onclick="event.stopPropagation(); openWallpaperPreview('${wp.id}');" title="Нажмите, чтобы открыть">✓ НАДЕТ</button>`;
         } else if (isOwned) {
-          actionBtnHtml = `<button class="btn-wallpaper-action btn-wp-equip" onclick="event.stopPropagation(); equipWallpaper('${wp.id}');">Надеть</button>`;
+          actionBtnHtml = `<button class="btn-market-card-action btn-equip" onclick="event.stopPropagation(); openWallpaperPreview('${wp.id}');">НАДЕТЬ</button>`;
         } else {
-          actionBtnHtml = `<button class="btn-wallpaper-action btn-wp-buy" onclick="event.stopPropagation(); buyWallpaper('${wp.id}');">Купить</button>`;
+          actionBtnHtml = `<button class="btn-market-card-action btn-buy" onclick="event.stopPropagation(); openWallpaperPreview('${wp.id}');">КУПИТЬ</button>`;
         }
 
         card.innerHTML = `
-          <div class="wallpaper-thumb-box" onclick="openWallpaperPreview('${wp.id}')" title="Нажмите для примерки">
-            <img src="${wp.image}" class="wallpaper-thumb-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150/1c1d2a/ffffff?text=${wp.name}';">
-            <div class="wallpaper-type-badge">ФОН</div>
-            ${isEquipped ? '<div class="wallpaper-equipped-badge">✓ НАДЕТ</div>' : ''}
+          <div class="market-wallpaper-preview" onclick="openWallpaperPreview('${wp.id}')" title="Нажмите для примерки">
+            <img src="${wp.image}" onerror="this.onerror=null; this.src='https://via.placeholder.com/400x200/1c1d2a/ffffff?text=${wp.name}';">
+            <div class="market-badge-type">ФОН</div>
+            ${isEquipped ? '<div class="market-badge-equipped">✓ НАДЕТ</div>' : ''}
           </div>
-          <div class="wallpaper-info" onclick="openWallpaperPreview('${wp.id}')" style="cursor: pointer;">
-            <div class="wallpaper-card-title">${wp.name}</div>
-            <div class="wallpaper-card-price">${formatNumber(wp.price)} ⭐</div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; width: 100%; margin: 2px 0;" onclick="openWallpaperPreview('${wp.id}')">
+            <div class="market-wallpaper-title">${wp.name}</div>
+            <div class="market-wallpaper-price">${formatNumber(wp.price)} ⭐</div>
           </div>
           ${actionBtnHtml}
         `;
@@ -4178,12 +4413,64 @@
       });
     }
 
+    function updateWallpaperPreviewAction(wpId) {
+      const wp = WALLPAPERS.find(w => w.id === wpId);
+      if (!wp) return;
+
+      const actionBox = document.getElementById('wpModalActionContainer');
+      if (!actionBox) return;
+
+      const isOwned = purchasedWallpapers.includes(wp.id);
+      const isEquipped = (equippedWallpaper === wp.id);
+
+      if (isEquipped) {
+        actionBox.innerHTML = `
+          <button class="btn-market-card-action btn-active" onclick="unequipWallpaperFromPreview('${wp.id}')" title="Нажмите, чтобы снять">✓ НАДЕТ</button>
+        `;
+      } else if (isOwned) {
+        actionBox.innerHTML = `
+          <button class="btn-market-card-action btn-equip" onclick="equipWallpaperFromPreview('${wp.id}')">НАДЕТЬ</button>
+        `;
+      } else {
+        actionBox.innerHTML = `
+          <button class="btn-market-card-action btn-buy" onclick="buyWallpaperFromPreview('${wp.id}')">КУПИТЬ</button>
+        `;
+      }
+    }
+
+    async function buyWallpaperFromPreview(wpId) {
+      await buyWallpaper(wpId);
+      updateWallpaperPreviewAction(wpId);
+      if (document.getElementById('showcaseWardrobeGrid')) {
+        renderShowcaseWardrobe();
+      }
+    }
+
+    async function equipWallpaperFromPreview(wpId) {
+      await equipWallpaper(wpId);
+      updateWallpaperPreviewAction(wpId);
+      if (document.getElementById('showcaseWardrobeGrid')) {
+        renderShowcaseWardrobe();
+      }
+    }
+
+    async function unequipWallpaperFromPreview(wpId) {
+      await unequipWallpaper();
+      updateWallpaperPreviewAction(wpId);
+      if (document.getElementById('showcaseWardrobeGrid')) {
+        renderShowcaseWardrobe();
+      }
+    }
+
     function openWallpaperPreview(wpId) {
       const wp = WALLPAPERS.find(w => w.id === wpId);
       if (!wp) return;
 
       const titleEl = document.getElementById('wpPreviewTitle');
-      if (titleEl) titleEl.innerText = `Примерка фона: ${wp.name}`;
+      if (titleEl) titleEl.innerText = wp.name;
+
+      const priceEl = document.getElementById('wpPreviewPrice');
+      if (priceEl) priceEl.innerText = `${formatNumber(wp.price)} ⭐`;
 
       const cardEl = document.getElementById('wpModalShowcasePreview');
       if (cardEl) {
@@ -4203,6 +4490,7 @@
           if (item) {
             slot.className = 'showcase-slot filled ' + item.rarity;
             slot.style.height = '85px';
+            slot.style.padding = '6px';
             slot.innerHTML = `
               <img src="${item.icon}" style="width:34px; height:34px; object-fit:contain;">
               <div style="font-size:9px; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:80px;">${item.name}</div>
@@ -4210,31 +4498,118 @@
           } else {
             slot.className = 'showcase-slot';
             slot.style.height = '85px';
-            slot.innerHTML = `<div style="color: var(--text-muted); font-size:10px;">Слот ${i + 1}</div><div style="font-size:16px;">➕</div>`;
+            slot.innerHTML = `
+              <div style="color: var(--text-muted); font-size:10px;">Слот ${i + 1}</div>
+              <div style="font-size:18px; color: var(--accent-color);">+</div>
+            `;
           }
           grid.appendChild(slot);
         }
       }
 
-      const actionBox = document.getElementById('wpModalActionContainer');
-      if (actionBox) {
-        const isOwned = purchasedWallpapers.includes(wp.id);
-        const isEquipped = (equippedWallpaper === wp.id);
-        if (isEquipped) {
-          actionBox.innerHTML = `<button class="btn-spin" style="width:100%; background:rgba(34,197,94,0.2); border:1px solid rgba(34,197,94,0.5); color:#4ade80;" onclick="unequipWallpaper(); closeWallpaperPreview();">✓ Надет на витрине (Снять)</button>`;
-        } else if (isOwned) {
-          actionBox.innerHTML = `<button class="btn-spin" style="width:100%; background:#5865f2;" onclick="equipWallpaper('${wp.id}'); closeWallpaperPreview();">Надеть на витрину</button>`;
-        } else {
-          actionBox.innerHTML = `<button class="btn-spin" style="width:100%;" onclick="buyWallpaper('${wp.id}'); closeWallpaperPreview();">Купить за ${formatNumber(wp.price)} ⭐</button>`;
-        }
-      }
-
+      updateWallpaperPreviewAction(wpId);
       document.getElementById('wallpaperPreviewModal').classList.add('active');
     }
 
     function closeWallpaperPreview() {
       const modal = document.getElementById('wallpaperPreviewModal');
       if (modal) modal.classList.remove('active');
+    }
+
+    // --- ГАРДЕРОБ ФОНОВ ВИТРИНЫ (SHOWCASE WALLPAPERS WARDROBE) ---
+    function openShowcaseWallpapersModal() {
+      renderShowcaseWardrobe();
+      const modal = document.getElementById('showcaseWallpapersModal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeShowcaseWallpapersModal() {
+      const modal = document.getElementById('showcaseWallpapersModal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    async function equipWallpaperFromModal(wpId) {
+      initAudio();
+      playClickSound();
+      equippedWallpaper = wpId;
+      await syncUserData();
+      renderShowcase(true, null, equippedWallpaper);
+      renderShowcaseWardrobe();
+      if (document.getElementById('tab-market').classList.contains('active')) {
+        renderWallpapersMarket();
+      }
+      showToast(`🖼️ Фон "${wpId}" надет на витрину!`, 'success');
+    }
+
+    async function unequipWallpaperFromModal() {
+      initAudio();
+      playClickSound();
+      equippedWallpaper = null;
+      await syncUserData();
+      renderShowcase(true, null, equippedWallpaper);
+      renderShowcaseWardrobe();
+      if (document.getElementById('tab-market').classList.contains('active')) {
+        renderWallpapersMarket();
+      }
+      showToast('🖼️ Установлен стандартный фон витрины', 'info');
+    }
+
+    function renderShowcaseWardrobe() {
+      const grid = document.getElementById('showcaseWardrobeGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      // 1. Базовый стандартный фон
+      const isDefaultActive = !equippedWallpaper || equippedWallpaper === 'default';
+      const defaultCard = document.createElement('div');
+      defaultCard.className = `wallpaper-card ${isDefaultActive ? 'equipped' : ''}`;
+      defaultCard.innerHTML = `
+        <div class="wallpaper-thumb-box" style="background: #10111a; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
+          <span style="font-size: 26px;">🏛️</span>
+          <div class="wallpaper-type-badge">БАЗОВЫЙ</div>
+          ${isDefaultActive ? '<div class="wallpaper-equipped-badge">✓ НАДЕТ</div>' : ''}
+        </div>
+        <div class="wallpaper-info">
+          <div class="wallpaper-card-title">Стандартный</div>
+          <div class="wallpaper-card-price" style="color: var(--text-muted);">По умолчанию</div>
+        </div>
+        ${isDefaultActive
+          ? `<button class="btn-wallpaper-action btn-wp-active" style="cursor: default;">✓ Надет</button>`
+          : `<button class="btn-wallpaper-action btn-wp-equip" onclick="unequipWallpaperFromModal()">Надеть</button>`
+        }
+      `;
+      grid.appendChild(defaultCard);
+
+      // 2. Обои из каталога
+      WALLPAPERS.forEach(wp => {
+        const isOwned = purchasedWallpapers.includes(wp.id);
+        const isEquipped = (equippedWallpaper === wp.id);
+        const card = document.createElement('div');
+        card.className = `wallpaper-card ${isEquipped ? 'equipped' : ''}`;
+
+        let actionBtn = '';
+        if (isEquipped) {
+          actionBtn = `<button class="btn-wallpaper-action btn-wp-active" onclick="unequipWallpaperFromModal()">✓ Надет (Снять)</button>`;
+        } else if (isOwned) {
+          actionBtn = `<button class="btn-wallpaper-action btn-wp-equip" onclick="equipWallpaperFromModal('${wp.id}')">Надеть</button>`;
+        } else {
+          actionBtn = `<button class="btn-wallpaper-action btn-wp-buy" onclick="closeShowcaseWallpapersModal(); switchTab('market');" title="Купить в магазине">В магазин</button>`;
+        }
+
+        card.innerHTML = `
+          <div class="wallpaper-thumb-box" onclick="openWallpaperPreview('${wp.id}')" title="Нажмите для примерки">
+            <img src="${wp.image}" class="wallpaper-thumb-img" onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150/1c1d2a/ffffff?text=${wp.name}';">
+            <div class="wallpaper-type-badge">ФОН</div>
+            ${isEquipped ? '<div class="wallpaper-equipped-badge">✓ НАДЕТ</div>' : ''}
+          </div>
+          <div class="wallpaper-info">
+            <div class="wallpaper-card-title">${wp.name}</div>
+            <div class="wallpaper-card-price">${isOwned ? '<span style="color: #4ade80;">В коллекции</span>' : formatNumber(wp.price) + ' ⭐'}</div>
+          </div>
+          ${actionBtn}
+        `;
+        grid.appendChild(card);
+      });
     }
 
     // --- РЕФЕРАЛЬНАЯ ПРОГРАММА (REFERRALS) ---
@@ -5082,6 +5457,78 @@
         setTimeout(() => { loadingScreen.style.display = 'none'; }, 400);
       }
     }
+
+    // --- СИСТЕМА АВТООБНАРУЖЕНИЯ ОБНОВЛЕНИЙ НА VERCEL ---
+    let currentAppETag = null;
+    let isUpdatePromptShown = false;
+
+    async function checkAppVersion() {
+      if (isUpdatePromptShown) return;
+
+      try {
+        // Отправляем легкий HEAD-запрос без кэширования для проверки ETag/Last-Modified на Vercel
+        const response = await fetch('/?_upd=' + Date.now(), {
+          method: 'HEAD',
+          cache: 'no-store'
+        });
+
+        const newETag = response.headers.get('etag') || response.headers.get('last-modified') || response.headers.get('x-vercel-id');
+        if (!newETag) return;
+
+        if (!currentAppETag) {
+          currentAppETag = newETag;
+          return;
+        }
+
+        // Если ETag изменился - на Vercel был загружен новый билд
+        if (newETag !== currentAppETag) {
+          // Если игрок прямо сейчас крутит кейс, апгрейдит или подписывает контракт - не прерываем
+          if (isSpinning || isUpgrading || isSigningContract) {
+            setTimeout(checkAppVersion, 4000);
+            return;
+          }
+
+          showUpdateAvailableModal();
+        }
+      } catch (err) {
+        // Ошибки сети тихо игнорируем
+      }
+    }
+
+    function showUpdateAvailableModal() {
+      if (isUpdatePromptShown) return;
+      isUpdatePromptShown = true;
+
+      initAudio();
+      playWinSound();
+      if (tg && tg.HapticFeedback) {
+        tg.HapticFeedback.notificationOccurred('warning');
+      }
+
+      const modal = document.getElementById('updateAvailableModal');
+      if (modal) {
+        modal.classList.add('active');
+      }
+    }
+
+    function applyAppUpdate() {
+      // Перезагрузка с обходом кэша браузера и Telegram WebApp
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.location.href = cleanUrl + '?t=' + Date.now();
+    }
+
+    // Первичная проверка после старта
+    setTimeout(checkAppVersion, 3000);
+
+    // Периодическая проверка каждые 45 секунд
+    setInterval(checkAppVersion, 45000);
+
+    // Проверка при возвращении игрока во вкладку
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        checkAppVersion();
+      }
+    });
 
     initApp();
   </script>
