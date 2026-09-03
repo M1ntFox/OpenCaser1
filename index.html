@@ -5459,46 +5459,47 @@
     }
 
     // --- СИСТЕМА АВТООБНАРУЖЕНИЯ ОБНОВЛЕНИЙ НА VERCEL ---
-    const CURRENT_APP_VERSION = '1.0.1';
-    let currentAppETag = null;
+    let initialAppVersion = null;
+    let initialAppETag = null;
     let isUpdatePromptShown = false;
 
     async function checkAppVersion() {
       if (isUpdatePromptShown) return;
 
       try {
-        // 1. Проверяем version.json / api/version
+        let serverVersion = null;
         try {
           const vRes = await fetch('/version.json?_t=' + Date.now(), { cache: 'no-store' });
           if (vRes.ok) {
             const vData = await vRes.json();
-            if (vData && vData.version && vData.version !== CURRENT_APP_VERSION) {
-              if (isSpinning || isUpgrading || isSigningContract) {
-                setTimeout(checkAppVersion, 4000);
-                return;
-              }
-              showUpdateAvailableModal();
-              return;
+            if (vData && vData.version) {
+              serverVersion = String(vData.version);
             }
           }
         } catch (_) {}
 
-        // 2. Проверяем ETag на Vercel через HEAD-запрос
-        const response = await fetch('/?_upd=' + Date.now(), {
-          method: 'HEAD',
-          cache: 'no-store'
-        });
+        let serverETag = null;
+        try {
+          const headRes = await fetch('/?_upd=' + Date.now(), {
+            method: 'HEAD',
+            cache: 'no-store'
+          });
+          serverETag = headRes.headers.get('etag') || headRes.headers.get('last-modified');
+        } catch (_) {}
 
-        const newETag = response.headers.get('etag') || response.headers.get('last-modified');
-        if (!newETag) return;
-
-        if (!currentAppETag) {
-          currentAppETag = newETag;
-          return;
+        // При первом запуске страницы просто фиксируем текущее состояние билда
+        if (initialAppVersion === null && serverVersion !== null) {
+          initialAppVersion = serverVersion;
+        }
+        if (initialAppETag === null && serverETag !== null) {
+          initialAppETag = serverETag;
         }
 
-        // Если ETag изменился - на Vercel выкатили новый билд
-        if (newETag !== currentAppETag) {
+        // Проверяем, изменился ли билд на Vercel С МОМЕНТА, когда игрок зашёл в игру
+        const isVersionChanged = serverVersion && initialAppVersion && (serverVersion !== initialAppVersion);
+        const isETagChanged = serverETag && initialAppETag && (serverETag !== initialAppETag);
+
+        if (isVersionChanged || isETagChanged) {
           if (isSpinning || isUpgrading || isSigningContract) {
             setTimeout(checkAppVersion, 4000);
             return;
@@ -5528,19 +5529,22 @@
     }
 
     function applyAppUpdate() {
-      // Сброс кэша и перезапуск
+      const modal = document.getElementById('updateAvailableModal');
+      if (modal) modal.classList.remove('active');
+
+      // Перезапуск с новым timestamp в URL для чистого сброса кэша
       const cleanUrl = window.location.origin + window.location.pathname;
-      window.location.href = cleanUrl + '?v=' + Date.now();
+      window.location.replace(cleanUrl + '?_r=' + Date.now());
     }
 
     // Для быстрого теста в консоли: window.testUpdateModal()
     window.testUpdateModal = showUpdateAvailableModal;
 
-    // Первичная проверка через 2 секунды после старта
-    setTimeout(checkAppVersion, 2000);
+    // Первичная фиксация версии через 1 секунду после старта
+    setTimeout(checkAppVersion, 1000);
 
-    // Периодическая проверка каждые 20 секунд
-    setInterval(checkAppVersion, 20000);
+    // Проверка новых версий каждые 25 секунд
+    setInterval(checkAppVersion, 25000);
 
     // Проверка при возвращении игрока в Telegram WebApp
     document.addEventListener('visibilitychange', () => {
