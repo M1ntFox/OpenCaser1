@@ -3448,31 +3448,37 @@
     }
 
     async function openUserProfile(targetUserId) {
-      if (targetUserId === userId) {
+      const targetIdStr = String(targetUserId);
+      if (targetIdStr === String(userId)) {
         openMyProfile();
         return;
       }
 
       try {
-        let { data, error } = await supabaseClient
+        // Загружаем базовые данные игрока (гарантированно существующие в БД)
+        const { data, error } = await supabaseClient
           .from('users')
-          .select('username, showcase, equipped_wallpaper')
-          .eq('user_id', targetUserId)
-          .single();
-
-        if (error && error.message && error.message.includes('equipped_wallpaper')) {
-          const res = await supabaseClient
-            .from('users')
-            .select('username, showcase')
-            .eq('user_id', targetUserId)
-            .single();
-          data = res.data;
-        }
+          .select('username, showcase')
+          .eq('user_id', targetIdStr)
+          .maybeSingle();
 
         if (error || !data) {
           showToast('❌ Не удалось загрузить профиль игрока', 'error');
           return;
         }
+
+        let equippedWp = null;
+        // Безопасно проверяем кастомные обои игрока, если колонка существует
+        try {
+          const wpRes = await supabaseClient
+            .from('users')
+            .select('equipped_wallpaper')
+            .eq('user_id', targetIdStr)
+            .maybeSingle();
+          if (wpRes && wpRes.data && wpRes.data.equipped_wallpaper) {
+            equippedWp = wpRes.data.equipped_wallpaper;
+          }
+        } catch (_) {}
 
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -3480,11 +3486,17 @@
         document.getElementById('tab-profile').classList.add('active');
         document.getElementById('profileTitleText').innerText = `Профиль: ${data.username || 'Игрок'}`;
         document.getElementById('profileEditSection').style.display = 'none';
-        document.getElementById('profileBackBtn').style.display = 'block';
 
-        renderShowcase(false, data.showcase || [null, null, null], data.equipped_wallpaper || null);
+        const backBtn = document.getElementById('profileBackBtn');
+        if (backBtn) {
+          backBtn.style.display = 'block';
+          backBtn.onclick = () => switchTab('leaderboard');
+        }
+
+        renderShowcase(false, data.showcase || [null, null, null], equippedWp);
       } catch (e) {
         console.error('Ошибка открытия профиля:', e);
+        showToast('❌ Не удалось загрузить профиль игрока', 'error');
       }
     }
 
