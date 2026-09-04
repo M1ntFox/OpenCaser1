@@ -4,7 +4,7 @@ module.exports = (req, res) => {
   res.setHeader('Pragma', 'no-cache');
   res.setHeader('Expires', '0');
   res.status(200).json({
-    version: '1.0.3',
+    version: '1.0.4',
     timestamp: Date.now()
   });
 };

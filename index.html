@@ -859,9 +859,11 @@
 
     .showcase-slot {
       height: 110px;
-      background: #12131c;
-      border: 2px dashed #2a2b3d;
-      border-radius: 12px;
+      background: rgba(12, 14, 24, 0.25);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1.5px dashed rgba(255, 255, 255, 0.22);
+      border-radius: 14px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -870,13 +872,32 @@
       position: relative;
       text-align: center;
       font-size: 11px;
+      transition: all 0.2s ease;
+    }
+
+    .showcase-slot:active {
+      transform: scale(0.96);
     }
 
     .showcase-slot.filled {
+      background: rgba(12, 14, 24, 0.2);
       border-style: solid;
-      border-color: var(--accent-color);
+      border-width: 1.5px;
+      border-color: rgba(99, 102, 241, 0.6);
       padding: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     }
+
+    .showcase-slot.filled:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .showcase-slot.filled.common { border-color: rgba(156, 163, 175, 0.6); }
+    .showcase-slot.filled.uncommon { border-color: rgba(74, 222, 128, 0.6); }
+    .showcase-slot.filled.rare { border-color: rgba(96, 165, 250, 0.7); box-shadow: 0 0 12px rgba(96, 165, 250, 0.25); }
+    .showcase-slot.filled.epic { border-color: rgba(192, 132, 252, 0.7); box-shadow: 0 0 14px rgba(192, 132, 252, 0.3); }
+    .showcase-slot.filled.legendary { border-color: rgba(251, 191, 36, 0.8); box-shadow: 0 0 18px rgba(251, 191, 36, 0.35); }
 
     .modal-overlay {
       position: fixed;
@@ -2677,6 +2698,24 @@
     </div>
   </div>
 
+  <!-- Модальное окно просмотра предмета с витрины -->
+  <div class="modal-overlay" id="showcaseItemModal" onclick="if(event.target === this) closeShowcaseItemModal()">
+    <div class="modal-card" style="max-width: 320px; width: 88%; padding: 22px 18px; text-align: center; border-radius: 22px; background: #151724; border: 1.5px solid #2f3450; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6); position: relative;">
+      <button onclick="closeShowcaseItemModal()" style="position: absolute; top: 10px; right: 14px; background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; z-index: 10;">✕</button>
+
+      <div id="showcaseItemIconBox" style="width: 100px; height: 100px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; border-radius: 20px; background: rgba(255, 255, 255, 0.03); border: 1.5px solid rgba(255, 255, 255, 0.1); position: relative;">
+        <img id="showcaseItemIcon" src="" style="width: 72px; height: 72px; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));">
+      </div>
+
+      <div id="showcaseItemRarityBadge" style="display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px;"></div>
+
+      <h3 id="showcaseItemName" style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 6px; line-height: 1.2;"></h3>
+      <div id="showcaseItemPrice" style="font-size: 16px; font-weight: 800; color: var(--green-color); margin-bottom: 18px;"></div>
+
+      <div id="showcaseItemActions" style="display: flex; flex-direction: column; gap: 8px; width: 100%;"></div>
+    </div>
+  </div>
+
   <div class="modal-overlay" id="wallpaperPreviewModal" onclick="if(event.target === this) closeWallpaperPreview()">
     <div class="modal-card" style="max-width: 360px; width: 92%; padding: 16px 14px 18px 14px; position: relative; border-radius: 22px; background: #151724; border: 1px solid #2f3450; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);">
       <button onclick="closeWallpaperPreview()" style="position: absolute; top: 10px; right: 14px; background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; z-index: 10;">✕</button>
@@ -3797,16 +3836,13 @@
         if (item) {
           slot.className = 'showcase-slot filled ' + item.rarity;
           slot.innerHTML = `
-            <img src="${item.icon}" style="width:45px; height:45px; object-fit:contain; margin-bottom:4px;">
-            <div style="font-size:10px; font-weight:bold;">${item.name}</div>
+            <img src="${item.icon}" style="width:60px; height:60px; object-fit:contain; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));" onerror="this.onerror=null; this.src='https://via.placeholder.com/60';">
           `;
-          if (isEditable) {
-            slot.title = 'Нажмите, чтобы убрать или заменить';
-            slot.onclick = () => removeOrChangeShowcase(i);
-          }
+          slot.title = 'Нажмите, чтобы посмотреть предмет';
+          slot.onclick = () => openShowcaseItemModal(item, i, isEditable);
         } else {
           slot.className = 'showcase-slot';
-          slot.innerHTML = `<div style="color: var(--text-muted)">Слот ${i + 1}</div><div style="font-size:20px; margin-top:4px;">➕</div>`;
+          slot.innerHTML = `<div style="color: rgba(255,255,255,0.6); font-size:11px;">Слот ${i + 1}</div><div style="font-size:22px; color: var(--accent-color); margin-top:2px;">+</div>`;
           if (isEditable) {
             slot.onclick = () => openShowcasePicker(i);
           }
@@ -3855,16 +3891,101 @@
       syncUserData();
     }
 
-    function removeOrChangeShowcase(slotIndex) {
-      if (confirm('Убрать предмет с витрины обратно в инвентарь?')) {
-        const item = showcase[slotIndex];
-        if (item) {
-          inventory.push(item);
-          showcase[slotIndex] = null;
-          renderShowcase(true);
-          syncUserData();
+    let activeShowcaseItemSlot = null;
+
+    function openShowcaseItemModal(item, slotIndex, isEditable) {
+      if (!item) return;
+      activeShowcaseItemSlot = slotIndex;
+
+      initAudio();
+      playClickSound();
+
+      const modal = document.getElementById('showcaseItemModal');
+      const icon = document.getElementById('showcaseItemIcon');
+      const iconBox = document.getElementById('showcaseItemIconBox');
+      const name = document.getElementById('showcaseItemName');
+      const price = document.getElementById('showcaseItemPrice');
+      const rarityBadge = document.getElementById('showcaseItemRarityBadge');
+      const actions = document.getElementById('showcaseItemActions');
+
+      if (icon) icon.src = item.icon || '';
+      if (name) name.innerText = item.name || 'Предмет';
+      if (price) {
+        if (item.currency === 'ton') {
+          price.innerHTML = `<span style="color: #38bdf8;">${formatNumber(item.price)} TON</span>`;
+        } else {
+          price.innerHTML = `${formatNumber(item.price)} ⭐`;
         }
       }
+
+      const rarityColors = {
+        common: '#9ca3af',
+        uncommon: '#4ade80',
+        rare: '#60a5fa',
+        epic: '#c084fc',
+        legendary: '#fbbf24'
+      };
+      const rarityNames = {
+        common: 'Обычный',
+        uncommon: 'Необычный',
+        rare: 'Редкий',
+        epic: 'Эпический',
+        legendary: 'Легендарный'
+      };
+      const rColor = rarityColors[item.rarity] || '#818cf8';
+      const rName = rarityNames[item.rarity] || 'Предмет';
+
+      if (rarityBadge) {
+        rarityBadge.innerText = rName;
+        rarityBadge.style.color = rColor;
+        rarityBadge.style.background = `${rColor}22`;
+        rarityBadge.style.border = `1px solid ${rColor}55`;
+      }
+      if (iconBox) {
+        iconBox.style.borderColor = `${rColor}66`;
+        iconBox.style.boxShadow = `0 0 20px ${rColor}33`;
+      }
+
+      if (actions) {
+        if (isEditable) {
+          actions.innerHTML = `
+            <button class="btn-spin" style="width: 100%; height: 42px; background: rgba(239, 68, 68, 0.15); border: 1.5px solid rgba(239, 68, 68, 0.5); color: #f87171; font-weight: bold; font-size: 13px;" onclick="removeActiveShowcaseItem()">
+              ❌ Снять с витрины
+            </button>
+            <button class="btn-modal btn-modal-close" style="width: 100%; height: 38px; margin: 0;" onclick="closeShowcaseItemModal()">
+              Закрыть
+            </button>
+          `;
+        } else {
+          actions.innerHTML = `
+            <button class="btn-modal btn-modal-close" style="width: 100%; height: 42px; margin: 0;" onclick="closeShowcaseItemModal()">
+              Закрыть
+            </button>
+          `;
+        }
+      }
+
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeShowcaseItemModal() {
+      const modal = document.getElementById('showcaseItemModal');
+      if (modal) modal.classList.remove('active');
+      activeShowcaseItemSlot = null;
+    }
+
+    function removeActiveShowcaseItem() {
+      if (activeShowcaseItemSlot === null) return;
+      const slotIndex = activeShowcaseItemSlot;
+      const item = showcase[slotIndex];
+      if (item) {
+        inventory.push(item);
+        showcase[slotIndex] = null;
+        renderShowcase(true);
+        syncUserData();
+        showToast(`Предмет "${item.name}" возвращён в инвентарь`, 'info');
+      }
+      closeShowcaseItemModal();
     }
     // --- КОНЕЦ БЛОКА ПРОФИЛЯ ---
 
@@ -4541,14 +4662,14 @@
             slot.style.height = '85px';
             slot.style.padding = '6px';
             slot.innerHTML = `
-              <img src="${item.icon}" style="width:34px; height:34px; object-fit:contain;">
-              <div style="font-size:9px; font-weight:bold; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:80px;">${item.name}</div>
+              <img src="${item.icon}" style="width:48px; height:48px; object-fit:contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.5));">
             `;
+            slot.onclick = () => openShowcaseItemModal(item, i, false);
           } else {
             slot.className = 'showcase-slot';
             slot.style.height = '85px';
             slot.innerHTML = `
-              <div style="color: var(--text-muted); font-size:10px;">Слот ${i + 1}</div>
+              <div style="color: rgba(255,255,255,0.6); font-size:10px;">Слот ${i + 1}</div>
               <div style="font-size:18px; color: var(--accent-color);">+</div>
             `;
           }
