@@ -893,11 +893,28 @@
       transform: translateY(-2px);
     }
 
-    .showcase-slot.filled.common { border-color: rgba(156, 163, 175, 0.6); }
-    .showcase-slot.filled.uncommon { border-color: rgba(74, 222, 128, 0.6); }
-    .showcase-slot.filled.rare { border-color: rgba(96, 165, 250, 0.7); box-shadow: 0 0 12px rgba(96, 165, 250, 0.25); }
-    .showcase-slot.filled.epic { border-color: rgba(192, 132, 252, 0.7); box-shadow: 0 0 14px rgba(192, 132, 252, 0.3); }
-    .showcase-slot.filled.legendary { border-color: rgba(251, 191, 36, 0.8); box-shadow: 0 0 18px rgba(251, 191, 36, 0.35); }
+    .showcase-slot.filled.common {
+      border-color: rgba(156, 163, 175, 0.6);
+    }
+
+    .showcase-slot.filled.uncommon {
+      border-color: rgba(74, 222, 128, 0.6);
+    }
+
+    .showcase-slot.filled.rare {
+      border-color: rgba(96, 165, 250, 0.7);
+      box-shadow: 0 0 12px rgba(96, 165, 250, 0.25);
+    }
+
+    .showcase-slot.filled.epic {
+      border-color: rgba(192, 132, 252, 0.7);
+      box-shadow: 0 0 14px rgba(192, 132, 252, 0.3);
+    }
+
+    .showcase-slot.filled.legendary {
+      border-color: rgba(251, 191, 36, 0.8);
+      box-shadow: 0 0 18px rgba(251, 191, 36, 0.35);
+    }
 
     .modal-overlay {
       position: fixed;
@@ -2076,6 +2093,1004 @@
       border-color: rgba(239, 68, 68, 0.5);
       color: #ef4444;
     }
+
+    /* === TON SHOP STYLES === */
+    .ton-shop-section {
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 22px;
+    }
+
+    .ton-bank-card {
+      background: linear-gradient(135deg, rgba(0, 136, 204, 0.12) 0%, rgba(0, 174, 255, 0.07) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 18px;
+      padding: 18px 20px 14px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ton-bank-card::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.14) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .ton-bank-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      color: #38bdf8;
+      text-transform: uppercase;
+      opacity: 0.85;
+    }
+
+    .ton-bank-amount {
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -1px;
+    }
+
+    .ton-bank-amount img {
+      width: 28px;
+      height: 28px;
+    }
+
+    .ton-bank-sub {
+      font-size: 11px;
+      color: rgba(148, 163, 184, 0.8);
+    }
+
+    .ton-progress-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(56, 189, 248, 0.12);
+      border-radius: 10px;
+      margin-top: 6px;
+      overflow: hidden;
+    }
+
+    .ton-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0ea5e9, #38bdf8);
+      border-radius: 10px;
+      transition: width 0.6s ease;
+    }
+
+    .ton-packages-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .ton-package-card {
+      background: rgba(18, 19, 28, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 14px;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ton-package-card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2);
+    }
+
+    .ton-package-card:active {
+      transform: scale(0.96);
+    }
+
+    .ton-package-card.best-deal {
+      border-color: rgba(168, 85, 247, 0.5);
+      background: rgba(88, 28, 135, 0.12);
+    }
+
+    .ton-package-card.best-deal:hover {
+      border-color: #a855f7;
+      box-shadow: 0 6px 20px rgba(168, 85, 247, 0.25);
+    }
+
+    .ton-pkg-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: #7c3aed;
+      color: #fff;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .ton-pkg-amount {
+      font-size: 22px;
+      font-weight: 900;
+      color: #38bdf8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ton-pkg-amount img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .ton-pkg-price {
+      font-size: 13px;
+      font-weight: bold;
+      color: #48bb78;
+    }
+
+    .ton-pkg-save {
+      font-size: 10px;
+      color: #a855f7;
+      font-weight: 700;
+    }
+
+    .btn-buy-ton {
+      width: 100%;
+      margin-top: 4px;
+      padding: 7px 4px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      border: none;
+      background: linear-gradient(135deg, #0ea5e9 0%, #38bdf8 100%);
+      color: #fff;
+      transition: all 0.2s;
+      box-shadow: 0 3px 10px rgba(14, 165, 233, 0.3);
+    }
+
+    .btn-buy-ton:hover {
+      box-shadow: 0 4px 14px rgba(14, 165, 233, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .ton-shop-empty {
+      text-align: center;
+      padding: 24px;
+      color: rgba(56, 189, 248, 0.5);
+      font-size: 14px;
+    }
+
+    /* === REFERRAL BANNER ON SHOP PAGE === */
+    .ref-shop-banner {
+      width: 100%;
+      margin-top: 28px;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, rgba(88, 101, 242, 0.18) 0%, rgba(168, 85, 247, 0.18) 50%, rgba(72, 187, 120, 0.12) 100%);
+      border: 1px solid rgba(88, 101, 242, 0.4);
+      border-radius: 20px;
+      padding: 20px 20px 18px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 24px rgba(88, 101, 242, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ref-shop-banner::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      right: -30px;
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .ref-shop-banner:hover {
+      border-color: rgba(168, 85, 247, 0.7);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(88, 101, 242, 0.25);
+    }
+
+    .ref-shop-banner:active {
+      transform: scale(0.98);
+    }
+
+    .ref-banner-emoji {
+      font-size: 42px;
+      flex-shrink: 0;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+    }
+
+    .ref-banner-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .ref-banner-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .ref-banner-desc {
+      font-size: 12px;
+      color: rgba(200, 210, 230, 0.8);
+      line-height: 1.4;
+    }
+
+    .ref-banner-reward {
+      font-size: 18px;
+      font-weight: 900;
+      color: #48bb78;
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+    }
+
+    .ref-banner-reward span {
+      font-size: 10px;
+      font-weight: 600;
+      color: rgba(168, 85, 247, 0.9);
+    }
+
+    /* ========================================== */
+    /* --- AUTUMN EVENT STYLES --- */
+    /* ========================================== */
+    .autumn-mode-card {
+      grid-column: 1 / -1;
+      position: relative;
+      background: linear-gradient(135deg, rgba(234, 88, 12, 0.3) 0%, rgba(180, 83, 9, 0.25) 45%, rgba(17, 24, 39, 0.95) 100%);
+      border: 1.5px solid rgba(251, 146, 60, 0.45);
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(234, 88, 12, 0.15);
+      overflow: hidden;
+    }
+
+    .autumn-mode-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(251, 146, 60, 0.8);
+      box-shadow: 0 6px 25px rgba(234, 88, 12, 0.28);
+    }
+
+    .autumn-mode-card::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 130px;
+      height: 130px;
+      background: radial-gradient(circle, rgba(251, 146, 60, 0.25) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .autumn-mode-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, #ff7a00, #c2410c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+    }
+
+    .autumn-mode-info {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .autumn-mode-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(251, 146, 60, 0.2);
+      border: 1px solid rgba(251, 146, 60, 0.4);
+      color: #fb923c;
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 2px 7px;
+      border-radius: 20px;
+      width: fit-content;
+    }
+
+    .autumn-mode-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: 0.2px;
+    }
+
+    .autumn-mode-subtitle {
+      font-size: 11.5px;
+      color: rgba(253, 186, 116, 0.85);
+      font-weight: 500;
+    }
+
+    .autumn-mode-action {
+      background: linear-gradient(135deg, #ff7a00, #ea580c);
+      color: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 8px 14px;
+      border-radius: 12px;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      box-shadow: 0 3px 10px rgba(234, 88, 12, 0.35);
+    }
+
+    /* Screen: tab-autumn */
+    .autumn-screen {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      min-height: 100%;
+      padding-bottom: 50px;
+      background-color: #0b0e17;
+      overflow-x: hidden;
+    }
+
+    .autumn-corner-decor {
+      position: absolute;
+      bottom: 0;
+      width: 140px;
+      height: 190px;
+      background: #ff5500;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .autumn-corner-left {
+      left: 0;
+      clip-path: polygon(0 40%, 0 100%, 100% 100%);
+    }
+
+    .autumn-corner-right {
+      right: 0;
+      clip-path: polygon(100% 40%, 0 100%, 100% 100%);
+    }
+
+    /* Playtime Scale Box */
+    .autumn-playtime-box {
+      width: 100%;
+      max-width: 440px;
+      background: linear-gradient(135deg, rgba(43, 20, 6, 0.95), rgba(22, 12, 6, 0.95));
+      border: 1.5px solid rgba(251, 146, 60, 0.35);
+      border-radius: 20px;
+      padding: 13px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      z-index: 2;
+      margin-top: 10px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+    }
+
+    .autumn-playtime-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .autumn-playtime-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fed7aa;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .autumn-playtime-time {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: rgba(254, 215, 170, 0.8);
+      font-family: monospace;
+    }
+
+    .autumn-playtime-bar {
+      width: 100%;
+      height: 9px;
+      background: rgba(0, 0, 0, 0.55);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(251, 146, 60, 0.2);
+    }
+
+    .autumn-playtime-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #ea580c);
+      border-radius: 6px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.5);
+    }
+
+    .btn-autumn-claim-leaves {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.05);
+      color: rgba(255, 255, 255, 0.45);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: not-allowed;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .btn-autumn-claim-leaves.claimable {
+      background: linear-gradient(135deg, #ff7a00, #ea580c);
+      border: none;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(234, 88, 12, 0.45);
+      animation: claimablePulse 1.2s infinite alternate;
+    }
+
+    @keyframes claimablePulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 4px 14px rgba(234, 88, 12, 0.4);
+      }
+
+      100% {
+        transform: scale(1.02);
+        box-shadow: 0 6px 20px rgba(234, 88, 12, 0.7);
+      }
+    }
+
+    .autumn-card-reward-val.is-leaf {
+      color: #fb923c;
+      font-size: 12px;
+      font-weight: 900;
+      text-shadow: 0 1px 4px rgba(234, 88, 12, 0.6);
+    }
+
+    /* Cases row */
+    .autumn-cases-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      width: 100%;
+      max-width: 440px;
+      margin-top: 14px;
+      margin-bottom: 24px;
+      z-index: 2;
+    }
+
+    .autumn-case-card {
+      background: #121724;
+      border: 1.5px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .autumn-case-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(251, 146, 60, 0.5);
+      box-shadow: 0 8px 24px rgba(251, 146, 60, 0.18);
+    }
+
+    .autumn-case-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(251, 146, 60, 0.2);
+      border: 1px solid rgba(251, 146, 60, 0.4);
+      color: #fb923c;
+      font-size: 9px;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 8px;
+      text-transform: uppercase;
+    }
+
+    .autumn-case-crate {
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 8px 0 12px;
+      position: relative;
+    }
+
+    .autumn-case-crate-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 4px 10px rgba(217, 83, 7, 0.35));
+    }
+
+    .autumn-case-title-striped {
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      background: repeating-linear-gradient(0deg, #ffffff 0px, #ffffff 2px, rgba(255, 255, 255, 0.25) 3px, rgba(255, 255, 255, 0.25) 4px);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .autumn-case-price-tag {
+      color: #84cc16;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+    }
+
+    /* Cards Minigame Board */
+    .autumn-board-card {
+      width: 100%;
+      max-width: 440px;
+      background: #2b1406;
+      border: 2px solid #3d1b08;
+      border-radius: 28px;
+      padding: 16px 14px 18px;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5), 0 10px 30px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2;
+      margin-bottom: 22px;
+    }
+
+    .autumn-board-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 0 4px;
+    }
+
+    .autumn-board-title {
+      font-size: 14px;
+      font-weight: 800;
+      color: #fed7aa;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .autumn-board-status {
+      font-size: 11px;
+      color: rgba(254, 215, 170, 0.7);
+      font-weight: 600;
+    }
+
+    .autumn-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+      width: 100%;
+    }
+
+    @media (max-width: 360px) {
+      .autumn-cards-grid {
+        gap: 6px;
+      }
+    }
+
+    /* Individual Card with 3D Flip */
+    .autumn-card {
+      perspective: 1000px;
+      aspect-ratio: 1 / 1.18;
+      width: 100%;
+      cursor: pointer;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      position: relative;
+      z-index: 2;
+    }
+
+    .autumn-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.34, 1.25, 0.64, 1), box-shadow 0.3s ease;
+      border-radius: 16px;
+      will-change: transform;
+    }
+
+    .autumn-card.flipped .autumn-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .autumn-card-front,
+    .autumn-card-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 4px;
+      box-sizing: border-box;
+    }
+
+    /* Front: Revealed Reward */
+    .autumn-card-front {
+      background: linear-gradient(145deg, #22150e, #140d08);
+      border: 2px solid rgba(251, 146, 60, 0.4);
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.6), 0 3px 8px rgba(0, 0, 0, 0.4);
+      transform: rotateY(0deg);
+    }
+
+    .autumn-card-reward-icon {
+      font-size: 20px;
+      line-height: 1;
+      margin-bottom: 3px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+    }
+
+    .autumn-card-reward-val {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #fef08a;
+      text-align: center;
+      line-height: 1.15;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+      white-space: nowrap;
+    }
+
+    .autumn-card-reward-val.is-ton {
+      color: #38bdf8;
+    }
+
+    .autumn-card-reward-val.is-legendary {
+      color: #fbbf24;
+      font-size: 8.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .autumn-card-reward-label {
+      font-size: 8px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.6);
+      text-align: center;
+      margin-top: 1px;
+    }
+
+    /* Back: Orange card cover with Autumn flower */
+    .autumn-card-back {
+      background: linear-gradient(145deg, #ff7100, #e05300);
+      border: 2px solid #ffa040;
+      box-shadow: 0 4px 12px rgba(224, 83, 0, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.3);
+      transform: rotateY(180deg);
+      cursor: pointer;
+    }
+
+    .autumn-card-back:hover {
+      border-color: #ffe082;
+      box-shadow: 0 6px 16px rgba(255, 113, 0, 0.6);
+    }
+
+    .autumn-card-flower {
+      width: 72%;
+      height: 72%;
+      pointer-events: none;
+    }
+
+    /* Realistic Multi-stage Shuffle States */
+    .autumn-card.deck-gather {
+      z-index: 10;
+    }
+
+    .autumn-card.deck-gather .autumn-card-inner {
+      transform: rotateY(180deg) translate3d(var(--gx, 0), var(--gy, 0), 0) rotate(var(--rot, 0deg));
+      transition: transform 0.48s cubic-bezier(0.25, 1, 0.5, 1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    .autumn-card.deck-split-left {
+      z-index: 15;
+    }
+
+    .autumn-card.deck-split-left .autumn-card-inner {
+      transform: rotateY(180deg) translate3d(calc(var(--gx, 0) - 34px), var(--gy, 0), 0) rotate(-6deg) scale(1.02);
+      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.4, 1);
+      box-shadow: -4px 10px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    .autumn-card.deck-split-right {
+      z-index: 16;
+    }
+
+    .autumn-card.deck-split-right .autumn-card-inner {
+      transform: rotateY(180deg) translate3d(calc(var(--gx, 0) + 34px), var(--gy, 0), 0) rotate(6deg) scale(1.02);
+      transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.4, 1);
+      box-shadow: 4px 10px 24px rgba(0, 0, 0, 0.7);
+    }
+
+    .autumn-card.deck-interleave {
+      z-index: 12;
+    }
+
+    .autumn-card.deck-interleave .autumn-card-inner {
+      transform: rotateY(180deg) translate3d(var(--gx, 0), var(--gy, 0), 0) rotate(var(--rot, 0deg));
+      transition: transform 0.24s cubic-bezier(0.34, 1.35, 0.64, 1);
+    }
+
+    .autumn-card.deck-deal-out .autumn-card-inner {
+      transform: rotateY(180deg) translate3d(0, 0, 0) rotate(0deg);
+      transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    /* Selected winning card */
+    .autumn-card.picked {
+      z-index: 20;
+    }
+
+    .autumn-card.picked .autumn-card-inner {
+      animation: cardPickedGlow 1.4s ease-in-out infinite alternate;
+    }
+
+    .autumn-card.picked .autumn-card-front {
+      border: 2.5px solid #fbbf24;
+      box-shadow: 0 0 24px rgba(251, 191, 36, 0.85), inset 0 0 14px rgba(245, 158, 11, 0.5);
+    }
+
+    .autumn-card-pick-badge {
+      position: absolute;
+      top: 3px;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      color: #000;
+      font-size: 7.5px;
+      font-weight: 900;
+      padding: 1px 5px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    @keyframes cardPickedGlow {
+      0% {
+        transform: rotateY(0deg) scale(1.04);
+      }
+
+      100% {
+        transform: rotateY(0deg) scale(1.1);
+      }
+    }
+
+    /* PLAY Button & Controls */
+    .autumn-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      z-index: 5;
+      width: 100%;
+      max-width: 320px;
+      position: relative;
+    }
+
+    .btn-autumn-play {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 9999px;
+      background: linear-gradient(180deg, #ff6b00 0%, #e65100 100%);
+      box-shadow: 0 8px 24px rgba(230, 81, 0, 0.5), inset 0 2px 2px rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .btn-autumn-play:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(230, 81, 0, 0.65);
+    }
+
+    .btn-autumn-play:active:not(:disabled) {
+      transform: translateY(1px);
+    }
+
+    .btn-autumn-play:disabled {
+      background: linear-gradient(180deg, #422006, #261103);
+      border: 1.5px solid rgba(251, 146, 60, 0.2);
+      box-shadow: none;
+      cursor: not-allowed;
+      opacity: 0.9;
+    }
+
+    .btn-autumn-play-text {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 3px;
+      line-height: 1;
+      background: repeating-linear-gradient(0deg, #ffffff 0px, #ffffff 3px, rgba(255, 255, 255, 0.2) 4px, rgba(255, 255, 255, 0.2) 6px);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+
+    .btn-autumn-play:disabled .btn-autumn-play-text {
+      background: none;
+      -webkit-text-fill-color: #fb923c;
+      font-size: 18px;
+      letter-spacing: 1px;
+      font-weight: 800;
+    }
+
+    .autumn-timer-hint {
+      font-size: 11.5px;
+      color: rgba(254, 215, 170, 0.7);
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* Win Celebration Modal */
+    .autumn-win-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .autumn-win-modal.active {
+      display: flex;
+    }
+
+    .autumn-win-box {
+      width: 100%;
+      max-width: 320px;
+      background: linear-gradient(160deg, #2b1406, #150902);
+      border: 2px solid #ff7a00;
+      border-radius: 24px;
+      padding: 26px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 12px 40px rgba(255, 106, 0, 0.35);
+      animation: popInModal 0.35s cubic-bezier(0.34, 1.4, 0.64, 1);
+    }
+
+    @keyframes popInModal {
+      0% {
+        transform: scale(0.7);
+        opacity: 0;
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .autumn-win-badge {
+      background: rgba(251, 146, 60, 0.2);
+      border: 1px solid rgba(251, 146, 60, 0.5);
+      color: #fb923c;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .autumn-win-title {
+      font-size: 20px;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+
+    .autumn-win-reward-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1.5px solid rgba(251, 146, 60, 0.3);
+      border-radius: 18px;
+      padding: 16px 24px;
+      margin-bottom: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .autumn-win-reward-icon {
+      font-size: 40px;
+      line-height: 1;
+      margin-bottom: 6px;
+      filter: drop-shadow(0 4px 10px rgba(245, 158, 11, 0.5));
+    }
+
+    .autumn-win-reward-amount {
+      font-size: 24px;
+      font-weight: 900;
+      color: #fef08a;
+    }
+
+    .autumn-win-reward-amount.is-ton {
+      color: #38bdf8;
+    }
+
+    .btn-autumn-claim {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #ff7a00, #ea580c);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(234, 88, 12, 0.4);
+    }
   </style>
 </head>
 
@@ -2102,8 +3117,12 @@
         <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON"
           style="width: 18px; height: 18px; vertical-align: middle; margin-left: 2px;">
       </div>
-      <div class="balance-badge">
+      <div class="balance-badge" id="starsBalanceBadge">
         <span id="balance">1,000</span> ⭐
+      </div>
+      <div class="balance-badge autumn-leaves-badge" id="autumnLeavesBadge"
+        style="display: none; background: rgba(249, 115, 22, 0.2); border: 1.5px solid rgba(249, 115, 22, 0.45); color: #fed7aa; font-weight: 800;">
+        <span id="leavesBalance">0</span> 🍂
       </div>
     </div>
   </div>
@@ -2111,6 +3130,19 @@
   <!-- Вкладка Магазин Кейсов -->
   <div id="tab-shop" class="tab-content active">
     <div class="page-title">Выберите кейс</div>
+
+    <!-- Баннер реферальной программы -->
+    <div class="ref-shop-banner" onclick="switchTab('referrals')" style="margin-top: 0; margin-bottom: 20px;">
+      <div class="ref-banner-emoji">🎁</div>
+      <div class="ref-banner-text">
+        <div class="ref-banner-title">Приглашай друзей — получай звёзды!</div>
+        <div class="ref-banner-desc">Каждый следующий друг приносит на 250,000 ⭐ больше</div>
+      </div>
+      <div class="ref-banner-reward">
+        +500K ⭐
+        <span>первый друг</span>
+      </div>
+    </div>
 
     <div class="case-section-divider">
       <div class="case-divider-line left"></div>
@@ -2234,12 +3266,44 @@
         <div class="case-price">999,999,999 ⭐</div>
       </div>
     </div>
+
+    <div class="case-section-divider" style="margin-top: 25px;">
+      <div class="case-divider-line left"></div>
+      <div class="case-divider-title">ОСЕННИЙ ИВЕНТ</div>
+      <div class="case-divider-line right"></div>
+    </div>
+
+    <div class="cases-grid">
+      <div class="case-card" onclick="openSpinScreen('autumn')">
+        <img src="/images/case_autumn/case_autumn.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Осенний</div>
+        <div class="case-price" style="color: #fb923c;">100 🍂</div>
+      </div>
+      <div class="case-card" onclick="openSpinScreen('pumpkin')">
+        <img src="/images/case_pumpkin/case_pumpkin.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Тыквеный Спас</div>
+        <div class="case-price" style="color: #fb923c;">250 🍂</div>
+      </div>
+    </div>
   </div>
 
   <!-- Вкладка Режимы -->
   <div id="tab-modes" class="tab-content">
     <div class="page-title">Режимы игры</div>
     <div class="cases-grid">
+      <!-- Осенний ивент (самый первый и большой) -->
+      <div class="autumn-mode-card" onclick="switchTab('autumn')">
+        <div class="autumn-mode-icon-box">🍂</div>
+        <div class="autumn-mode-info">
+          <div class="autumn-mode-badge">🍁 Ивент • Осень</div>
+          <div class="autumn-mode-title">Осенний фестиваль</div>
+          <div class="autumn-mode-subtitle">Кейсы &amp; Карточки раз в 2 часа</div>
+        </div>
+        <div class="autumn-mode-action">ИГРАТЬ</div>
+      </div>
+
       <div class="case-card case-card-full" onclick="openDailyModal()">
         <img src="/images/logos/daily.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
@@ -2269,12 +3333,6 @@
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Промокод</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Ввести код</div>
-      </div>
-      <div class="case-card" onclick="switchTab('referrals')">
-        <img src="/images/logos/friends.png" class="case-img"
-          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/1256/1256650.png';">
-        <div class="case-title">Друзья</div>
-        <div class="case-price" style="color: var(--green-color); font-weight: 500;">+500,000 ⭐ за друга</div>
       </div>
     </div>
   </div>
@@ -2470,8 +3528,8 @@
         <div class="ref-reward-card">
           <div style="font-size: 24px;">👤</div>
           <div style="font-size: 11px; color: var(--text-muted);">Вы получаете</div>
-          <div style="font-size: 15px; font-weight: 800; color: var(--green-color); margin-top: 2px;">+500,000 ⭐</div>
-          <div style="font-size: 9.5px; color: var(--text-muted);">за каждого друга</div>
+          <div style="font-size: 15px; font-weight: 800; color: var(--green-color); margin-top: 2px;">+500K → +∞ ⭐</div>
+          <div style="font-size: 9.5px; color: var(--text-muted);">+250,000 за каждого следующего</div>
         </div>
         <div class="ref-reward-card">
           <div style="font-size: 24px;">🤝</div>
@@ -2515,7 +3573,34 @@
   <!-- Вкладка Магазин -->
   <div id="tab-market" class="tab-content">
     <div class="market-container">
-      <div class="case-section-divider market-divider" style="width: 100%; margin-top: 10px; margin-bottom: 6px;">
+
+      <!-- TON SHOP SECTION -->
+      <div class="ton-shop-section" id="tonShopSection">
+        <div class="case-section-divider market-divider" style="width: 100%; margin-top: 10px; margin-bottom: 12px;">
+          <div class="case-divider-line left"></div>
+          <div class="case-divider-title" style="color: #38bdf8;">💎 КУПИТЬ TON</div>
+          <div class="case-divider-line right"></div>
+        </div>
+
+        <div class="ton-bank-card">
+          <div class="ton-bank-title">Глобальный банк TON</div>
+          <div class="ton-bank-amount">
+            <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON">
+            <span id="tonBankDisplay">—</span>
+          </div>
+          <div class="ton-bank-sub">осталось из 100,000 TON • при трате возвращается в банк</div>
+          <div class="ton-progress-bar">
+            <div class="ton-progress-fill" id="tonProgressFill" style="width: 100%;"></div>
+          </div>
+        </div>
+
+        <div class="ton-packages-grid" id="tonPackagesGrid">
+          <!-- Рендерится JS -->
+        </div>
+      </div>
+
+      <!-- WALLPAPERS SECTION -->
+      <div class="case-section-divider market-divider" style="width: 100%; margin-top: 6px; margin-bottom: 6px;">
         <div class="case-divider-line left"></div>
         <div class="case-divider-title market-gold-title">ФОНЫ НА ВИТРИНУ</div>
         <div class="case-divider-line right"></div>
@@ -2537,6 +3622,90 @@
     </div>
     <div class="inventory-grid" id="inventory-list">
       <div class="inventory-empty">Пока нет выпавших предметов</div>
+    </div>
+  </div>
+
+  <!-- Вкладка Осенний ивент -->
+  <div id="tab-autumn" class="tab-content">
+    <button class="btn-back" onclick="switchTab('modes')"
+      style="align-self: flex-start; margin-bottom: 12px; z-index: 10;">
+      <span>←</span> Назад к режимам
+    </button>
+
+    <div class="autumn-screen">
+      <!-- Фоновые оранжевые декоративные треугольники как на концепте -->
+      <div class="autumn-corner-decor autumn-corner-left"></div>
+      <div class="autumn-corner-decor autumn-corner-right"></div>
+
+      <!-- Шкала отыгрыша (2 минуты) на сбор 10 листиков -->
+      <div class="autumn-playtime-box">
+        <div class="autumn-playtime-header">
+          <div class="autumn-playtime-title">
+            <span>🍂</span> Сбор листиков <strong>(+10 🍂)</strong>
+          </div>
+          <div class="autumn-playtime-time" id="autumnPlaytimeTimer">00:00 / 02:00</div>
+        </div>
+        <div class="autumn-playtime-bar">
+          <div class="autumn-playtime-fill" id="autumnPlaytimeFill" style="width: 0%;"></div>
+        </div>
+        <button class="btn-autumn-claim-leaves" id="btnAutumnClaimLeaves" onclick="claimAutumnPlaytimeLeaves()"
+          disabled>
+          <span id="btnAutumnClaimLeavesText">Играйте 2 мин для сбора (0%)</span>
+        </button>
+      </div>
+
+      <!-- Верхний блок: 2 кейса события -->
+      <div class="cases-grid" style="margin-top: 10px; margin-bottom: 20px; z-index: 2;">
+        <div class="case-card" onclick="openSpinScreen('autumn')">
+          <img src="/images/case_autumn/case_autumn.png" class="case-img"
+            onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+          <div class="case-title">Осенний</div>
+          <div class="case-price" style="color: #fb923c;">100 🍂</div>
+        </div>
+        <div class="case-card" onclick="openSpinScreen('pumpkin')">
+          <img src="/images/case_pumpkin/case_pumpkin.png" class="case-img"
+            onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+          <div class="case-title">Тыквеный Спас</div>
+          <div class="case-price" style="color: #fb923c;">250 🍂</div>
+        </div>
+      </div>
+
+      <!-- Нижний блок: Осенние карточки (2x4 сетка в темном коричневом контейнере) -->
+      <div class="autumn-board-card">
+        <div class="autumn-board-header">
+          <div class="autumn-board-title">
+            <span>🍁</span> Осенние карты
+          </div>
+          <div class="autumn-board-status" id="autumnBoardStatus">Раз в 2 часа</div>
+        </div>
+
+        <div class="autumn-cards-grid" id="autumnCardsGrid">
+          <!-- Генерируется скриптом (8 карточек с 3D поворотом) -->
+        </div>
+      </div>
+
+      <!-- Кнопка управления и таймер -->
+      <div class="autumn-controls">
+        <button class="btn-autumn-play" id="btnAutumnPlay" onclick="onAutumnPlayClicked()">
+          <span class="btn-autumn-play-text" id="btnAutumnPlayText">PLAY</span>
+        </button>
+        <div class="autumn-timer-hint" id="autumnTimerHint">Раз в 2 часа • Не зависит от отыгрыша</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка победы в Осенних картах -->
+  <div id="autumnWinModal" class="autumn-win-modal">
+    <div class="autumn-win-box">
+      <div class="autumn-win-badge">🍁 ОСЕННИЙ ВЫИГРЫШ</div>
+      <div class="autumn-win-title">Поздравляем!</div>
+      <div class="autumn-win-reward-box">
+        <div class="autumn-win-reward-icon" id="autumnWinRewardIcon">⭐</div>
+        <div class="autumn-win-reward-amount" id="autumnWinRewardAmount">+500,000 ⭐</div>
+        <div style="font-size: 11px; color: rgba(255,255,255,0.6);" id="autumnWinRewardLabel">Звёзды начислены на баланс
+        </div>
+      </div>
+      <button class="btn-autumn-claim" onclick="closeAutumnWinModal()">Забрать награду</button>
     </div>
   </div>
 
@@ -2575,7 +3744,8 @@
         <div class="showcase-section">
           <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
             <div class="showcase-title">Витрина предметов (до 3 шт):</div>
-            <button class="btn-showcase-settings" id="btnShowcaseSettings" onclick="openShowcaseWallpapersModal()" title="Настройки фона витрины">⚙️</button>
+            <button class="btn-showcase-settings" id="btnShowcaseSettings" onclick="openShowcaseWallpapersModal()"
+              title="Настройки фона витрины">⚙️</button>
           </div>
           <div class="showcase-grid" id="showcaseGrid">
             <!-- Слоты витрины заполняются динамически -->
@@ -2700,27 +3870,38 @@
 
   <!-- Модальное окно просмотра предмета с витрины -->
   <div class="modal-overlay" id="showcaseItemModal" onclick="if(event.target === this) closeShowcaseItemModal()">
-    <div class="modal-card" style="max-width: 320px; width: 88%; padding: 22px 18px; text-align: center; border-radius: 22px; background: #151724; border: 1.5px solid #2f3450; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6); position: relative;">
-      <button onclick="closeShowcaseItemModal()" style="position: absolute; top: 10px; right: 14px; background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; z-index: 10;">✕</button>
+    <div class="modal-card"
+      style="max-width: 320px; width: 88%; padding: 22px 18px; text-align: center; border-radius: 22px; background: #151724; border: 1.5px solid #2f3450; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6); position: relative;">
+      <button onclick="closeShowcaseItemModal()"
+        style="position: absolute; top: 10px; right: 14px; background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; z-index: 10;">✕</button>
 
-      <div id="showcaseItemIconBox" style="width: 100px; height: 100px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; border-radius: 20px; background: rgba(255, 255, 255, 0.03); border: 1.5px solid rgba(255, 255, 255, 0.1); position: relative;">
-        <img id="showcaseItemIcon" src="" style="width: 72px; height: 72px; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));">
+      <div id="showcaseItemIconBox"
+        style="width: 100px; height: 100px; margin: 0 auto 12px auto; display: flex; align-items: center; justify-content: center; border-radius: 20px; background: rgba(255, 255, 255, 0.03); border: 1.5px solid rgba(255, 255, 255, 0.1); position: relative;">
+        <img id="showcaseItemIcon" src=""
+          style="width: 72px; height: 72px; object-fit: contain; filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));">
       </div>
 
-      <div id="showcaseItemRarityBadge" style="display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px;"></div>
+      <div id="showcaseItemRarityBadge"
+        style="display: inline-block; font-size: 10px; font-weight: 800; text-transform: uppercase; padding: 2px 8px; border-radius: 6px; margin-bottom: 6px;">
+      </div>
 
-      <h3 id="showcaseItemName" style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 6px; line-height: 1.2;"></h3>
-      <div id="showcaseItemPrice" style="font-size: 16px; font-weight: 800; color: var(--green-color); margin-bottom: 18px;"></div>
+      <h3 id="showcaseItemName"
+        style="font-size: 18px; font-weight: 800; color: #fff; margin-bottom: 6px; line-height: 1.2;"></h3>
+      <div id="showcaseItemPrice"
+        style="font-size: 16px; font-weight: 800; color: var(--green-color); margin-bottom: 18px;"></div>
 
       <div id="showcaseItemActions" style="display: flex; flex-direction: column; gap: 8px; width: 100%;"></div>
     </div>
   </div>
 
   <div class="modal-overlay" id="wallpaperPreviewModal" onclick="if(event.target === this) closeWallpaperPreview()">
-    <div class="modal-card" style="max-width: 360px; width: 92%; padding: 16px 14px 18px 14px; position: relative; border-radius: 22px; background: #151724; border: 1px solid #2f3450; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);">
-      <button onclick="closeWallpaperPreview()" style="position: absolute; top: 10px; right: 14px; background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; z-index: 10;">✕</button>
+    <div class="modal-card"
+      style="max-width: 360px; width: 92%; padding: 16px 14px 18px 14px; position: relative; border-radius: 22px; background: #151724; border: 1px solid #2f3450; box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);">
+      <button onclick="closeWallpaperPreview()"
+        style="position: absolute; top: 10px; right: 14px; background: transparent; border: none; color: var(--text-muted); font-size: 20px; cursor: pointer; z-index: 10;">✕</button>
 
-      <div class="profile-card" id="wpModalShowcasePreview" style="padding: 12px; margin-bottom: 12px; border-radius: 16px; border: 1px solid #333852; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);">
+      <div class="profile-card" id="wpModalShowcasePreview"
+        style="padding: 12px; margin-bottom: 12px; border-radius: 16px; border: 1px solid #333852; transition: all 0.3s ease; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);">
         <div class="showcase-section">
           <div class="showcase-title" style="font-size: 11.5px; margin-bottom: 4px;">Витрина предметов:</div>
           <div class="showcase-grid" id="wpModalShowcaseGrid" style="gap: 8px;">
@@ -2729,8 +3910,10 @@
         </div>
       </div>
 
-      <div style="display: flex; flex-direction: column; align-items: center; gap: 3px; margin-bottom: 14px; width: 100%;">
-        <div id="wpPreviewTitle" style="font-size: 18px; font-weight: 800; color: #fff; text-transform: capitalize;">Pepe</div>
+      <div
+        style="display: flex; flex-direction: column; align-items: center; gap: 3px; margin-bottom: 14px; width: 100%;">
+        <div id="wpPreviewTitle" style="font-size: 18px; font-weight: 800; color: #fff; text-transform: capitalize;">
+          Pepe</div>
         <div id="wpPreviewPrice" style="font-size: 15px; font-weight: 800; color: #22c55e;">999,000,000 ⭐</div>
       </div>
 
@@ -2755,13 +3938,15 @@
 
   <!-- Модальное окно обновления (New version available on Vercel) -->
   <div class="modal-overlay" id="updateAvailableModal" style="z-index: 99999; backdrop-filter: blur(8px);">
-    <div class="modal-card" style="max-width: 360px; width: 92%; padding: 26px 20px; text-align: center; border-radius: 22px; background: #151726; border: 1.5px solid rgba(99, 102, 241, 0.5); box-shadow: 0 10px 40px rgba(99, 102, 241, 0.35);">
+    <div class="modal-card"
+      style="max-width: 360px; width: 92%; padding: 26px 20px; text-align: center; border-radius: 22px; background: #151726; border: 1.5px solid rgba(99, 102, 241, 0.5); box-shadow: 0 10px 40px rgba(99, 102, 241, 0.35);">
       <div style="font-size: 46px; margin-bottom: 8px; line-height: 1;">🚀</div>
       <h3 style="font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px;">Вышло обновление!</h3>
       <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; margin-bottom: 22px;">
         Мы выпустили свежее обновление игры с новыми функциями и исправлениями. Перезапустите игру, чтобы продолжить!
       </p>
-      <button class="btn-spin" onclick="applyAppUpdate()" style="width: 100%; height: 46px; font-size: 15px; font-weight: 800; letter-spacing: 0.5px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);">
+      <button class="btn-spin" onclick="applyAppUpdate()"
+        style="width: 100%; height: 46px; font-size: 15px; font-weight: 800; letter-spacing: 0.5px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);">
         🔄 Обновить сейчас
       </button>
     </div>
@@ -3101,10 +4286,35 @@
           { name: 'Очки Дурова (GTA VI)', rarity: 'common', price: 120000000, chance: 74.95, icon: '/images/case_gta6/item5.png' }
         ]
       },
+      autumn: {
+        name: 'Осенний',
+        price: 100,
+        currency: 'leaves',
+        pool: [
+          { name: 'Плюшевый Пепе (Осень)', rarity: 'legendary', price: 8469741220, chance: 1.0, icon: '/images/case_autumn/item1.png' },
+          { name: 'Кристальный Шар (Осень)', rarity: 'epic', price: 2998476125, chance: 2.5, icon: '/images/case_autumn/item2.png' },
+          { name: 'Лепесток Сакуры (Осень)', rarity: 'rare', price: 491673055, chance: 10.0, icon: '/images/case_autumn/item3.png' },
+          { name: 'Подвесная Звезда (Осень)', rarity: 'rare', price: 185934105, chance: 20.0, icon: '/images/case_autumn/item4.png' },
+          { name: 'Настольный Календарь (Октябрь)', rarity: 'common', price: 27591195, chance: 66.5, icon: '/images/case_autumn/item5.png' }
+        ]
+      },
+      pumpkin: {
+        name: 'Тыквеный Спас',
+        price: 250,
+        currency: 'leaves',
+        pool: [
+          { name: 'Собака В Капюшоне (Осень)', rarity: 'legendary', price: 22641344565, chance: 0.5, icon: '/images/case_pumpkin/item1.png' },
+          { name: 'Снуп Дог (Dr. Autumn)', rarity: 'legendary', price: 7945823135, chance: 1.75, icon: '/images/case_pumpkin/item2.png' },
+          { name: 'Героический Шлем (Осень)', rarity: 'epic', price: 2045197400, chance: 7.0, icon: '/images/case_pumpkin/item3.png' },
+          { name: 'Котел с Зельем (Осень)', rarity: 'rare', price: 791467250, chance: 20.0, icon: '/images/case_pumpkin/item4.png' },
+          { name: 'Леденец (Осень)', rarity: 'common', price: 120564325, chance: 70.75, icon: '/images/case_pumpkin/item5.png' }
+        ]
+      }
     };
 
     let balance = 1000;
     let tonBalance = 0;
+    let tonBankRemaining = null; // null = ещё не загружен
     let currentCase = casesData.standart;
     let inventory = [];
     let showcase = [null, null, null]; // 3 слота витрины
@@ -3769,7 +4979,7 @@
           if (wpRes && wpRes.data && wpRes.data.equipped_wallpaper) {
             equippedWp = wpRes.data.equipped_wallpaper;
           }
-        } catch (_) {}
+        } catch (_) { }
 
         document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
         document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -4206,6 +5416,8 @@
       balanceSpan.innerText = formatNumber(balance);
       const tonEl = document.getElementById('tonBalance');
       if (tonEl) tonEl.innerText = formatNumber(tonBalance);
+      const leavesEl = document.getElementById('leavesBalance');
+      if (leavesEl) leavesEl.innerText = formatNumber(autumnLeaves || 0);
     }
 
     function getItemHTML(item) {
@@ -4435,10 +5647,22 @@
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
 
-      // Показываем плашку TON только в тех вкладках, где его можно тратить (в частности, в Контрактах)
+      // Показываем плашку TON в контрактах и магазине, скрывая баланс звезд там, где есть TON
       const tonBadge = document.getElementById('tonBalanceBadge');
+      const starsBadge = document.getElementById('starsBalanceBadge');
+      const leavesBadge = document.getElementById('autumnLeavesBadge');
+      const isTonScreen = (tabName === 'contracts' || tabName === 'market');
+      const isAutumnScreen = (tabName === 'autumn');
+
       if (tonBadge) {
-        tonBadge.style.display = (tabName === 'contracts') ? 'flex' : 'none';
+        tonBadge.style.display = isTonScreen ? 'flex' : 'none';
+      }
+      if (starsBadge) {
+        // Там где есть баланс ТОН, не должно быть баланса звезд
+        starsBadge.style.display = isTonScreen ? 'none' : 'flex';
+      }
+      if (leavesBadge) {
+        leavesBadge.style.display = isAutumnScreen ? 'flex' : 'none';
       }
 
       if (tabName === 'shop') {
@@ -4471,10 +5695,131 @@
         document.getElementById('tab-market').classList.add('active');
         document.getElementById('nav-market').classList.add('active');
         renderWallpapersMarket();
+        loadTonBank();
       } else if (tabName === 'referrals') {
         document.getElementById('tab-referrals').classList.add('active');
         document.getElementById('nav-modes').classList.add('active');
         loadReferralsData();
+      } else if (tabName === 'autumn') {
+        document.getElementById('tab-autumn').classList.add('active');
+        document.getElementById('nav-modes').classList.add('active');
+        initAutumnMinigame();
+      }
+    }
+
+    // ==========================================
+    // --- TON BANK & TON SHOP ---
+    // ==========================================
+    const TON_BANK_TOTAL = 100000;
+
+    const TON_PACKAGES = [
+      { amount: 10, priceStars: 10000000, save: null, label: null },
+      { amount: 50, priceStars: 45000000, save: '10%', label: null },
+      { amount: 100, priceStars: 80000000, save: '20%', label: null },
+      { amount: 500, priceStars: 350000000, save: '30%', label: 'ВЫГОДНО' },
+    ];
+
+    async function loadTonBank() {
+      try {
+        const { data, error } = await supabaseClient
+          .from('ton_bank')
+          .select('remaining')
+          .eq('id', 1)
+          .maybeSingle();
+        if (data && !error) {
+          tonBankRemaining = data.remaining;
+        } else {
+          // Таблица ещё не создана или пустая — используем дефолт
+          tonBankRemaining = TON_BANK_TOTAL;
+        }
+      } catch (e) {
+        tonBankRemaining = TON_BANK_TOTAL;
+      }
+      renderTonShop();
+    }
+
+    function renderTonShop() {
+      const bankDisplay = document.getElementById('tonBankDisplay');
+      const progressFill = document.getElementById('tonProgressFill');
+      const packagesGrid = document.getElementById('tonPackagesGrid');
+      if (!packagesGrid) return;
+
+      const remaining = tonBankRemaining !== null ? tonBankRemaining : TON_BANK_TOTAL;
+      const pct = Math.max(0, Math.min(100, (remaining / TON_BANK_TOTAL) * 100));
+
+      if (bankDisplay) bankDisplay.innerText = formatNumber(remaining);
+      if (progressFill) progressFill.style.width = pct + '%';
+
+      packagesGrid.innerHTML = '';
+
+      if (remaining <= 0) {
+        packagesGrid.innerHTML = '<div class="ton-shop-empty">💎 Банк пуст. TON закончился. Он пополнится, когда игроки его потратят.</div>';
+        return;
+      }
+
+      TON_PACKAGES.forEach(pkg => {
+        if (pkg.amount > remaining) return; // не показываем пакет если банк не вмещает
+        const isBest = !!pkg.label;
+        const card = document.createElement('div');
+        card.className = 'ton-package-card' + (isBest ? ' best-deal' : '');
+        card.innerHTML = `
+          ${pkg.label ? `<div class="ton-pkg-badge">${pkg.label}</div>` : ''}
+          <div class="ton-pkg-amount">
+            <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON">
+            ${formatNumber(pkg.amount)} TON
+          </div>
+          <div class="ton-pkg-price">${formatNumber(pkg.priceStars)} ⭐</div>
+          ${pkg.save ? `<div class="ton-pkg-save">Скидка ${pkg.save}</div>` : '<div style="height:14px"></div>'}
+          <button class="btn-buy-ton" onclick="buyTon(${pkg.amount}, ${pkg.priceStars})">Купить</button>
+        `;
+        packagesGrid.appendChild(card);
+      });
+    }
+
+    async function buyTon(amount, priceStars) {
+      if (balance < priceStars) {
+        showToast(`❌ Недостаточно ⭐! Нужно ${formatNumber(priceStars)} ⭐`, 'error');
+        return;
+      }
+      const remaining = tonBankRemaining !== null ? tonBankRemaining : 0;
+      if (remaining < amount) {
+        showToast('❌ В банке недостаточно TON. Попробуйте меньший пакет.', 'error');
+        return;
+      }
+
+      // Списываем ⭐ у игрока, выдаём TON
+      balance -= priceStars;
+      tonBalance += amount;
+      tonBankRemaining -= amount;
+      updateBalanceUI();
+      renderTonShop();
+
+      showToast(`💎 +${formatNumber(amount)} TON! Куплено за ${formatNumber(priceStars)} ⭐`, 'success');
+
+      // Атомарное обновление банка в Supabase
+      try {
+        await supabaseClient
+          .from('ton_bank')
+          .update({ remaining: tonBankRemaining })
+          .eq('id', 1);
+      } catch (e) {
+        console.warn('ton_bank sync error:', e);
+      }
+
+      await syncUserData();
+    }
+
+    // Возврат TON в банк (вызывается при трате)
+    async function returnTonToBank(amount) {
+      if (tonBankRemaining === null) tonBankRemaining = TON_BANK_TOTAL;
+      tonBankRemaining = Math.min(TON_BANK_TOTAL, tonBankRemaining + amount);
+      try {
+        await supabaseClient
+          .from('ton_bank')
+          .update({ remaining: tonBankRemaining })
+          .eq('id', 1);
+      } catch (e) {
+        console.warn('ton_bank return sync error:', e);
       }
     }
 
@@ -4834,9 +6179,15 @@
           .maybeSingle();
 
         if (refUser) {
-          const newBal = (refUser.balance || 0) + 500000;
-          const newCount = (refUser.referrals_count || 0) + 1;
-          const newEarned = (refUser.referrals_earnings || 0) + 500000;
+          // Прогрессивная награда:
+          // 1-й друг → +500,000
+          // 2-й друг → +750,000
+          // 3-й друг → +1,000,000 и т.д.
+          const currentCount = refUser.referrals_count || 0;
+          const reward = 500000 + currentCount * 250000; // N-й друг = 500k + (N-1)*250k
+          const newBal = (refUser.balance || 0) + reward;
+          const newCount = currentCount + 1;
+          const newEarned = (refUser.referrals_earnings || 0) + reward;
           await supabaseClient
             .from('users')
             .update({
@@ -4845,16 +6196,26 @@
               referrals_earnings: newEarned
             })
             .eq('user_id', refId);
-        }
 
-        await supabaseClient
-          .from('referrals')
-          .insert([{
-            referrer_id: refId,
-            referee_id: newUserId,
-            referee_name: newUserName,
-            reward_stars: 500000
-          }]);
+          await supabaseClient
+            .from('referrals')
+            .insert([{
+              referrer_id: refId,
+              referee_id: newUserId,
+              referee_name: newUserName,
+              reward_stars: reward
+            }]);
+        } else {
+          // Приглашающий ещё не в базе — просто фиксируем
+          await supabaseClient
+            .from('referrals')
+            .insert([{
+              referrer_id: refId,
+              referee_id: newUserId,
+              referee_name: newUserName,
+              reward_stars: 500000
+            }]);
+        }
       } catch (e) {
         console.warn('Ошибка начисления реферального бонуса:', e);
       }
@@ -5102,9 +6463,10 @@
       const btn = document.getElementById('btnSignContract');
       btn.disabled = true;
 
-      // Списываем 50 TON
+      // Списываем 50 TON и возвращаем их в банк
       tonBalance -= CONTRACT_COST_TON;
       updateBalanceUI();
+      returnTonToBank(CONTRACT_COST_TON); // TON возвращается в глобальный банк
 
       const resText = document.getElementById('contractResultText');
       resText.innerText = 'Контракт подписывается... Колесо вращается!';
@@ -5186,10 +6548,25 @@
       }, 3500);
     }
 
+    let previousCaseTab = 'shop';
+
+    function isLeavesCase(c = currentCase) {
+      return !!(c && (c.currency === 'leaves' || c === casesData.autumn || c === casesData.pumpkin));
+    }
+
     function openSpinScreen(caseKey) {
       if (isSpinning || isUpgrading) return;
       const caseInfo = casesData[caseKey];
       if (!caseInfo) return;
+
+      const autumnTab = document.getElementById('tab-autumn');
+      if (autumnTab && autumnTab.classList.contains('active')) {
+        previousCaseTab = 'autumn';
+      } else if (caseKey === 'autumn' || caseKey === 'pumpkin') {
+        previousCaseTab = 'autumn';
+      } else {
+        previousCaseTab = 'shop';
+      }
 
       currentCase = caseInfo;
       selectedQuantity = 1;
@@ -5207,13 +6584,23 @@
 
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.getElementById('tab-spin').classList.add('active');
+
+      const leavesBadge = document.getElementById('autumnLeavesBadge');
+      if (leavesBadge) {
+        leavesBadge.style.display = isLeavesCase() ? 'flex' : 'none';
+      }
+
       generateTape(currentCase.pool[0]);
       renderCaseContents();
     }
 
     function backToShop() {
       if (isSpinning || isUpgrading) return;
-      switchTab('shop');
+      if (previousCaseTab === 'autumn') {
+        switchTab('autumn');
+      } else {
+        switchTab('shop');
+      }
     }
 
     function buildTapeCards(tapeEl, winningItem, small) {
@@ -5287,16 +6674,25 @@
     function updateOpenButtonText() {
       const totalPrice = currentCase.price * selectedQuantity;
       const qtySuffix = selectedQuantity > 1 ? ` x${selectedQuantity}` : '';
-      openBtn.innerText = totalPrice > 0 ? `Открыть кейс${qtySuffix} (${formatNumber(totalPrice)} ⭐)` : `Открыть кейс${qtySuffix} (Бесплатно)`;
+      const sym = isLeavesCase() ? '🍂' : '⭐';
+      openBtn.innerText = totalPrice > 0 ? `Открыть кейс${qtySuffix} (${formatNumber(totalPrice)} ${sym})` : `Открыть кейс${qtySuffix} (Бесплатно)`;
     }
 
     function openCase() {
       initAudio();
 
       const totalPrice = currentCase.price * selectedQuantity;
-      if (balance < totalPrice) {
-        resultText.innerText = 'Недостаточно средств!';
-        return;
+      if (isLeavesCase()) {
+        if (autumnLeaves < totalPrice) {
+          resultText.innerText = 'Недостаточно листиков 🍂!';
+          showToast('❌ Недостаточно листиков 🍂!', 'error');
+          return;
+        }
+      } else {
+        if (balance < totalPrice) {
+          resultText.innerText = 'Недостаточно средств!';
+          return;
+        }
       }
 
       if (selectedQuantity === 1) {
@@ -5311,7 +6707,12 @@
       quickSellBtn.style.display = 'none';
       resultText.innerText = '';
 
-      balance -= currentCase.price;
+      if (isLeavesCase()) {
+        autumnLeaves -= currentCase.price;
+        localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+      } else {
+        balance -= currentCase.price;
+      }
       updateBalanceUI();
       syncUserData();
 
@@ -5394,7 +6795,12 @@
       resultText.innerText = '';
 
       const totalPrice = currentCase.price * qty;
-      balance -= totalPrice;
+      if (isLeavesCase()) {
+        autumnLeaves -= totalPrice;
+        localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+      } else {
+        balance -= totalPrice;
+      }
       updateBalanceUI();
       syncUserData();
 
@@ -5652,7 +7058,7 @@
               serverVersion = String(vData.version);
             }
           }
-        } catch (_) {}
+        } catch (_) { }
 
         let serverETag = null;
         try {
@@ -5661,7 +7067,7 @@
             cache: 'no-store'
           });
           serverETag = headRes.headers.get('etag') || headRes.headers.get('last-modified');
-        } catch (_) {}
+        } catch (_) { }
 
         // При первом запуске страницы просто фиксируем текущее состояние билда
         if (initialAppVersion === null && serverVersion !== null) {
@@ -5728,6 +7134,556 @@
         checkAppVersion();
       }
     });
+
+    // ==========================================
+    // --- AUTUMN EVENT & CARDS MINIGAME ---
+    // ==========================================
+    const AUTUMN_COOLDOWN_MS = 2 * 60 * 60 * 1000; // 2 часа
+    const AUTUMN_STORAGE_KEY = 'autumn_cards_last_play';
+
+    const AUTUMN_REWARDS_POOL = [
+      { id: 'stars_1m', name: '1,000,000 ⭐', type: 'stars', amount: 1000000, icon: '⭐', label: 'Звёзды' },
+      { id: 'stars_100m', name: '100,000,000 ⭐', type: 'stars', amount: 100000000, icon: '🌟', label: 'СУПЕР ДЖЕКПОТ' },
+      { id: 'stars_10m', name: '10,000,000 ⭐', type: 'stars', amount: 10000000, icon: '⭐', label: 'Звёзды' },
+      { id: 'legendary', name: 'Легендарка', type: 'item', amount: 1, icon: '👑', label: 'Легендарный предмет' },
+      { id: 'stars_50m', name: '50,000,000 ⭐', type: 'stars', amount: 50000000, icon: '🔥', label: 'Супер приз' },
+      { id: 'ton_10', name: '10 TON', type: 'ton', amount: 10, icon: '💎', label: 'TON кошелек' },
+      { id: 'ton_30', name: '30 TON', type: 'ton', amount: 30, icon: '💎', label: 'МЕГА TON' },
+      { id: 'stars_100k', name: '100,000 ⭐', type: 'stars', amount: 100000, icon: '⭐', label: 'Звёзды' },
+      { id: 'leaf_25', name: '25 🍂', type: 'leaf', amount: 25, icon: '🍂', label: 'Листики' },
+      { id: 'leaf_50', name: '50 🍂', type: 'leaf', amount: 50, icon: '🍂', label: 'Листики' },
+      { id: 'leaf_100', name: '100 🍂', type: 'leaf', amount: 100, icon: '🍁', label: 'Много листиков' },
+      { id: 'leaf_250', name: '250 🍂', type: 'leaf', amount: 250, icon: '🍁', label: 'МЕГА Листики' },
+    ];
+
+    let autumnLeaves = parseInt(localStorage.getItem('autumn_leaves_balance') || '0', 10);
+    let autumnPlaytimeSeconds = parseInt(localStorage.getItem('autumn_playtime_sec') || '0', 10);
+    let autumnCooldownTimer = null;
+    let isAutumnShuffling = false;
+    let autumnCanPick = false;
+    let currentAutumnCards = [];
+
+    function getRandomLegendaryItem() {
+      const candidates = [];
+      if (typeof casesData !== 'undefined') {
+        Object.keys(casesData).forEach(k => {
+          const c = casesData[k];
+          if (c && Array.isArray(c.pool)) {
+            c.pool.forEach(it => {
+              if (it.rarity === 'legendary') {
+                candidates.push(it);
+              }
+            });
+          }
+        });
+      }
+      if (candidates.length === 0) {
+        return {
+          id: 'item_' + Date.now(),
+          name: 'Кубок Чемпиона (Золото)',
+          rarity: 'legendary',
+          price: 25000000,
+          icon: '/images/logos/upgrade.png'
+        };
+      }
+      const picked = candidates[Math.floor(Math.random() * candidates.length)];
+      return {
+        ...picked,
+        id: 'item_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5)
+      };
+    }
+
+    function getAutumnFlowerSvg() {
+      return `
+        <svg class="autumn-card-flower" viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="10" fill="#a8430b" fill-opacity="0.3"/>
+          <circle cx="50" cy="50" r="4" fill="#7a2a02"/>
+          <path d="M50 16 C43 30 57 30 50 16" fill="#d95000" stroke="#7a2a02" stroke-width="1.6"/>
+          <path d="M50 84 C43 70 57 70 50 84" fill="#d95000" stroke="#7a2a02" stroke-width="1.6"/>
+          <path d="M16 50 C30 43 30 57 16 50" fill="#d95000" stroke="#7a2a02" stroke-width="1.6"/>
+          <path d="M84 50 C70 43 70 57 84 50" fill="#d95000" stroke="#7a2a02" stroke-width="1.6"/>
+          <path d="M26 26 C38 36 46 28 26 26" fill="#d95000" stroke="#7a2a02" stroke-width="1.6"/>
+          <path d="M74 26 C62 36 54 28 74 26" fill="#d95000" stroke="#7a2a02" stroke-width="1.6"/>
+          <path d="M26 74 C38 64 46 72 26 74" fill="#d95000" stroke="#7a2a02" stroke-width="1.6"/>
+          <path d="M74 74 C62 64 54 72 74 74" fill="#d95000" stroke="#7a2a02" stroke-width="1.6"/>
+          <path d="M50 26 C45 36 55 36 50 26" fill="#e86100" stroke="#7a2a02" stroke-width="1.4"/>
+          <path d="M50 74 C45 64 55 64 50 74" fill="#e86100" stroke="#7a2a02" stroke-width="1.4"/>
+          <path d="M26 50 C36 45 36 55 26 50" fill="#e86100" stroke="#7a2a02" stroke-width="1.4"/>
+          <path d="M74 50 C64 45 64 55 74 50" fill="#e86100" stroke="#7a2a02" stroke-width="1.4"/>
+          <path d="M33 33 C41 41 46 36 33 33" fill="#e86100" stroke="#7a2a02" stroke-width="1.4"/>
+          <path d="M67 33 C59 41 54 36 67 33" fill="#e86100" stroke="#7a2a02" stroke-width="1.4"/>
+          <path d="M33 67 C41 59 46 64 33 67" fill="#e86100" stroke="#7a2a02" stroke-width="1.4"/>
+          <path d="M67 67 C59 59 54 64 67 67" fill="#e86100" stroke="#7a2a02" stroke-width="1.4"/>
+        </svg>
+      `;
+    }
+
+    function getAutumnCooldownRemaining() {
+      const lastPlay = parseInt(localStorage.getItem(AUTUMN_STORAGE_KEY) || '0', 10);
+      const now = Date.now();
+      const diff = now - lastPlay;
+      if (diff >= AUTUMN_COOLDOWN_MS) return 0;
+      return AUTUMN_COOLDOWN_MS - diff;
+    }
+
+    function formatTimeRemaining(ms) {
+      const totalSec = Math.max(0, Math.floor(ms / 1000));
+      const hours = Math.floor(totalSec / 3600);
+      const minutes = Math.floor((totalSec % 3600) / 60);
+      const seconds = totalSec % 60;
+      const pad = n => String(n).padStart(2, '0');
+      return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    }
+
+    function updateAutumnPlaytimeScale() {
+      const fillEl = document.getElementById('autumnPlaytimeFill');
+      const timerEl = document.getElementById('autumnPlaytimeTimer');
+      const btn = document.getElementById('btnAutumnClaimLeaves');
+      const btnText = document.getElementById('btnAutumnClaimLeavesText');
+
+      const sec = Math.min(120, autumnPlaytimeSeconds);
+      const pct = Math.min(100, Math.floor((sec / 120) * 100));
+
+      if (fillEl) fillEl.style.width = pct + '%';
+      const m = String(Math.floor(sec / 60)).padStart(2, '0');
+      const s = String(sec % 60).padStart(2, '0');
+      if (timerEl) timerEl.innerText = `${m}:${s} / 02:00`;
+
+      if (btn && btnText) {
+        if (sec >= 120) {
+          btn.disabled = false;
+          btn.classList.add('claimable');
+          btnText.innerText = '🎁 СОБРАТЬ 10 🍂 (ГОТОВО!)';
+        } else {
+          btn.disabled = true;
+          btn.classList.remove('claimable');
+          btnText.innerText = `Играйте: ${m}:${s} / 02:00 (${pct}%)`;
+        }
+      }
+    }
+
+    function claimAutumnPlaytimeLeaves() {
+      if (autumnPlaytimeSeconds < 120) return;
+      autumnPlaytimeSeconds = 0;
+      localStorage.setItem('autumn_playtime_sec', '0');
+      autumnLeaves += 10;
+      localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+      updateBalanceUI();
+      if (typeof syncUserData === 'function') syncUserData();
+      if (typeof playWinSound === 'function') playWinSound();
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+      showToast('🍂 +10 листиков успешно собрано за 2 мин игры!', 'success');
+      updateAutumnPlaytimeScale();
+    }
+
+    function initAutumnMinigame() {
+      isAutumnShuffling = false;
+      autumnCanPick = false;
+
+      updateAutumnPlaytimeScale();
+      updateBalanceUI();
+
+      const remaining = getAutumnCooldownRemaining();
+      if (remaining > 0) {
+        startAutumnCooldownTimer();
+      } else {
+        stopAutumnCooldownTimer();
+        setupAutumnReadyState();
+      }
+    }
+
+    function setupAutumnReadyState() {
+      currentAutumnCards = [...AUTUMN_REWARDS_POOL];
+      renderAutumnCards(currentAutumnCards, false);
+
+      const btn = document.getElementById('btnAutumnPlay');
+      const btnText = document.getElementById('btnAutumnPlayText');
+      const status = document.getElementById('autumnBoardStatus');
+      const hint = document.getElementById('autumnTimerHint');
+
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.innerText = 'PLAY';
+      if (status) status.innerText = '12 карт готовы!';
+      if (hint) hint.innerText = 'Нажмите PLAY, чтобы перевернуть и перемешать';
+    }
+
+    function renderAutumnCards(cards, isFaceDown = false) {
+      const grid = document.getElementById('autumnCardsGrid');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      cards.forEach((reward, index) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'autumn-card' + (isFaceDown ? ' flipped' : '');
+        cardEl.id = `autumnCard_${index}`;
+        cardEl.onclick = () => onAutumnCardClicked(index);
+
+        const isTon = reward.type === 'ton';
+        const isLeg = reward.type === 'item';
+        const isLeaf = reward.type === 'leaf';
+
+        cardEl.innerHTML = `
+          <div class="autumn-card-inner">
+            <!-- Лицевая сторона (награда) -->
+            <div class="autumn-card-front">
+              <div class="autumn-card-reward-icon">${reward.icon}</div>
+              <div class="autumn-card-reward-val ${isTon ? 'is-ton' : ''} ${isLeg ? 'is-legendary' : ''} ${isLeaf ? 'is-leaf' : ''}">${reward.name}</div>
+              <div class="autumn-card-reward-label">${reward.label}</div>
+            </div>
+            <!-- Рубашка (оранжевая с цветком) -->
+            <div class="autumn-card-back">
+              ${getAutumnFlowerSvg()}
+            </div>
+          </div>
+        `;
+        grid.appendChild(cardEl);
+      });
+    }
+
+    function startAutumnCooldownTimer() {
+      const btn = document.getElementById('btnAutumnPlay');
+      const btnText = document.getElementById('btnAutumnPlayText');
+      const status = document.getElementById('autumnBoardStatus');
+      const hint = document.getElementById('autumnTimerHint');
+
+      if (currentAutumnCards.length === 0) {
+        currentAutumnCards = [...AUTUMN_REWARDS_POOL];
+      }
+      renderAutumnCards(currentAutumnCards, false);
+
+      if (btn) btn.disabled = true;
+
+      function tick() {
+        const remaining = getAutumnCooldownRemaining();
+        if (remaining <= 0) {
+          stopAutumnCooldownTimer();
+          setupAutumnReadyState();
+          showToast('🍂 Осенние карты снова готовы к игре!', 'success');
+          return;
+        }
+        const timeStr = formatTimeRemaining(remaining);
+        if (btnText) btnText.innerText = `ЧЕРЕЗ ${timeStr}`;
+        if (status) status.innerText = `Кулдаун: ${timeStr}`;
+        if (hint) hint.innerText = `Следующая попытка через ${timeStr}`;
+      }
+
+      if (autumnCooldownTimer) clearInterval(autumnCooldownTimer);
+      tick();
+      autumnCooldownTimer = setInterval(tick, 1000);
+    }
+
+    function stopAutumnCooldownTimer() {
+      if (autumnCooldownTimer) {
+        clearInterval(autumnCooldownTimer);
+        autumnCooldownTimer = null;
+      }
+    }
+
+    function onAutumnPlayClicked() {
+      const remaining = getAutumnCooldownRemaining();
+      if (remaining > 0) {
+        showToast(`Подождите еще ${formatTimeRemaining(remaining)}`, 'info');
+        return;
+      }
+      if (isAutumnShuffling || autumnCanPick) return;
+
+      isAutumnShuffling = true;
+      const btn = document.getElementById('btnAutumnPlay');
+      const btnText = document.getElementById('btnAutumnPlayText');
+      const status = document.getElementById('autumnBoardStatus');
+      const hint = document.getElementById('autumnTimerHint');
+
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.innerText = 'ПЕРЕМЕШИВАНИЕ...';
+      if (status) status.innerText = 'Карты переворачиваются...';
+      if (hint) hint.innerText = 'Сборка в колоду...';
+
+      const grid = document.getElementById('autumnCardsGrid');
+      const cardEls = Array.from(document.querySelectorAll('.autumn-card'));
+
+      // 0. Сброс предыдущих классов и переворот рубашкой вверх
+      cardEls.forEach(card => {
+        card.classList.remove('deck-gather', 'deck-split-left', 'deck-split-right', 'deck-interleave', 'deck-deal-out', 'picked');
+        card.classList.add('flipped');
+        const badge = card.querySelector('.autumn-card-pick-badge');
+        if (badge) badge.remove();
+      });
+
+      if (typeof playButtonSound === 'function') playButtonSound();
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+
+      // Шаг 1 (400мс): Сборка всех карт в аккуратную колоду в центре
+      setTimeout(() => {
+        const gridRect = grid.getBoundingClientRect();
+        const centerX = gridRect.width / 2;
+        const centerY = gridRect.height / 2;
+
+        cardEls.forEach((card, idx) => {
+          const cardRect = card.getBoundingClientRect();
+          const cardCenterX = (cardRect.left - gridRect.left) + cardRect.width / 2;
+          const cardCenterY = (cardRect.top - gridRect.top) + cardRect.height / 2;
+          const gx = Math.round(centerX - cardCenterX);
+          const gy = Math.round(centerY - cardCenterY);
+          const rot = ((idx % 5) - 2) * 2; // Легкий наклон в стопке
+
+          card.style.setProperty('--gx', `${gx}px`);
+          card.style.setProperty('--gy', `${gy}px`);
+          card.style.setProperty('--rot', `${rot}deg`);
+          card.style.zIndex = 10 + idx;
+          card.classList.add('deck-gather');
+        });
+
+        if (status) status.innerText = 'Сборка в колоду...';
+        if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+
+        // Шаг 2 (через 550мс): Первая фаза - разрез колоды (половина влево, половина вправо)
+        setTimeout(() => {
+          if (status) status.innerText = 'Тасовка карт...';
+          cardEls.forEach((card, idx) => {
+            card.classList.remove('deck-gather');
+            if (idx % 2 === 0) {
+              card.classList.add('deck-split-left');
+            } else {
+              card.classList.add('deck-split-right');
+            }
+          });
+          if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+
+          // Шаг 3 (через 300мс): Сведение половинок обратно (interleave)
+          setTimeout(() => {
+            cardEls.forEach(card => {
+              card.classList.remove('deck-split-left', 'deck-split-right');
+              card.classList.add('deck-interleave');
+            });
+            if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('medium');
+
+            // Шаг 4 (через 300мс): Вторая быстрая фаза тасовки со сменой сторон
+            setTimeout(() => {
+              cardEls.forEach((card, idx) => {
+                card.classList.remove('deck-interleave');
+                if (idx % 2 === 0) {
+                  card.classList.add('deck-split-right');
+                } else {
+                  card.classList.add('deck-split-left');
+                }
+              });
+              if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+
+              // Шаг 5 (через 280мс): Сведение в колоду и перемешивание массива
+              setTimeout(() => {
+                cardEls.forEach(card => {
+                  card.classList.remove('deck-split-left', 'deck-split-right');
+                  card.classList.add('deck-gather');
+                });
+                if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('heavy');
+
+                // Fisher-Yates shuffle массива наград
+                for (let i = currentAutumnCards.length - 1; i > 0; i--) {
+                  const j = Math.floor(Math.random() * (i + 1));
+                  [currentAutumnCards[i], currentAutumnCards[j]] = [currentAutumnCards[j], currentAutumnCards[i]];
+                }
+
+                // Обновляем лицевую сторону карточек новыми значениями
+                currentAutumnCards.forEach((reward, idx) => {
+                  const cardEl = document.getElementById(`autumnCard_${idx}`);
+                  if (cardEl) {
+                    const front = cardEl.querySelector('.autumn-card-front');
+                    if (front) {
+                      const isTon = reward.type === 'ton';
+                      const isLeg = reward.type === 'item';
+                      const isLeaf = reward.type === 'leaf';
+                      front.innerHTML = `
+                        <div class="autumn-card-reward-icon">${reward.icon}</div>
+                        <div class="autumn-card-reward-val ${isTon ? 'is-ton' : ''} ${isLeg ? 'is-legendary' : ''} ${isLeaf ? 'is-leaf' : ''}">${reward.name}</div>
+                        <div class="autumn-card-reward-label">${reward.label}</div>
+                      `;
+                    }
+                  }
+                });
+
+                // Шаг 6 (через 350мс): Раздача карт обратно по ячейкам 3x4
+                setTimeout(() => {
+                  if (status) status.innerText = 'Раскладка карт...';
+                  cardEls.forEach(card => {
+                    card.classList.remove('deck-gather');
+                    card.classList.add('deck-deal-out');
+                  });
+
+                  // Шаг 7 (через 520мс): Карты разложены, готовы к выбору игрока
+                  setTimeout(() => {
+                    cardEls.forEach((card) => {
+                      card.classList.remove('deck-deal-out');
+                      card.style.zIndex = 2;
+                    });
+
+                    isAutumnShuffling = false;
+                    autumnCanPick = true;
+
+                    if (btnText) btnText.innerText = 'ВЫБЕРИТЕ КАРТУ';
+                    if (status) status.innerText = '👉 Выберите любую из 12 карт!';
+                    if (hint) hint.innerText = 'Нажмите на карту, чтобы открыть свой приз';
+
+                    if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('warning');
+                  }, 520);
+                }, 350);
+              }, 280);
+            }, 300);
+          }, 300);
+        }, 550);
+      }, 400);
+    }
+
+    function onAutumnCardClicked(cardIndex) {
+      if (!autumnCanPick || isAutumnShuffling) return;
+      autumnCanPick = false;
+
+      const cardEls = document.querySelectorAll('.autumn-card');
+      const pickedCard = document.getElementById(`autumnCard_${cardIndex}`);
+      const reward = currentAutumnCards[cardIndex];
+
+      // 1. Выбранная карта сразу переворачивается лицом вверх и выделяется золотым свечением
+      if (pickedCard) {
+        pickedCard.classList.remove('flipped');
+        pickedCard.classList.add('picked');
+        const front = pickedCard.querySelector('.autumn-card-front');
+        if (front && !front.querySelector('.autumn-card-pick-badge')) {
+          const badge = document.createElement('div');
+          badge.className = 'autumn-card-pick-badge';
+          badge.innerText = 'ВЫБОР';
+          front.appendChild(badge);
+        }
+      }
+
+      if (typeof playWinSound === 'function') playWinSound();
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+      // 2. ПОСЛЕ ВЫБОРА ОТКРЫВАЮТСЯ ВСЕ КАРТОЧКИ (через 220мс)
+      setTimeout(() => {
+        cardEls.forEach((card, idx) => {
+          if (idx !== cardIndex) {
+            card.classList.remove('flipped');
+          }
+        });
+      }, 220);
+
+      // Начисляем награду
+      let wonItemDetails = null;
+      if (reward.type === 'stars') {
+        balance += reward.amount;
+      } else if (reward.type === 'ton') {
+        tonBalance += reward.amount;
+      } else if (reward.type === 'item') {
+        wonItemDetails = getRandomLegendaryItem();
+        inventory.push(wonItemDetails);
+        if (typeof renderInventory === 'function') renderInventory();
+      } else if (reward.type === 'leaf') {
+        autumnLeaves += reward.amount;
+        localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+      }
+      updateBalanceUI();
+      if (typeof syncUserData === 'function') syncUserData();
+
+      // Фиксируем время попытки (кулдаун 2 часа)
+      localStorage.setItem(AUTUMN_STORAGE_KEY, Date.now().toString());
+
+      const status = document.getElementById('autumnBoardStatus');
+      const hint = document.getElementById('autumnTimerHint');
+      if (status) status.innerText = 'Все 12 карт открыты!';
+      if (hint) hint.innerText = `Ваш выигрыш: ${wonItemDetails ? wonItemDetails.name : reward.name}`;
+
+      // Показываем окно победы через 1.1с
+      setTimeout(() => {
+        showAutumnWinModal(reward, wonItemDetails);
+      }, 1100);
+    }
+
+    function showAutumnWinModal(reward, wonItemDetails = null) {
+      const modal = document.getElementById('autumnWinModal');
+      const iconEl = document.getElementById('autumnWinRewardIcon');
+      const amountEl = document.getElementById('autumnWinRewardAmount');
+      const labelEl = document.getElementById('autumnWinRewardLabel');
+
+      if (wonItemDetails) {
+        if (iconEl) {
+          iconEl.innerHTML = `<img src="${wonItemDetails.icon}" style="width: 60px; height: 60px; object-fit: contain; filter: drop-shadow(0 4px 10px rgba(234, 179, 8, 0.6));" onerror="this.innerHTML='👑';">`;
+        }
+        if (amountEl) {
+          amountEl.innerText = wonItemDetails.name;
+          amountEl.className = 'autumn-win-reward-amount is-legendary';
+          amountEl.style.fontSize = '18px';
+          amountEl.style.color = '#fbbf24';
+        }
+        if (labelEl) {
+          labelEl.innerText = `Легендарный предмет добавлен в инвентарь (${formatNumber(wonItemDetails.price)} ⭐)`;
+        }
+      } else if (reward.type === 'leaf') {
+        if (iconEl) iconEl.innerText = reward.icon;
+        if (amountEl) {
+          amountEl.innerText = `+${reward.name}`;
+          amountEl.className = 'autumn-win-reward-amount is-leaf';
+          amountEl.style.fontSize = '26px';
+          amountEl.style.color = '#fb923c';
+        }
+        if (labelEl) {
+          labelEl.innerText = 'Осенние листики зачислены на ваш баланс';
+        }
+      } else {
+        if (iconEl) iconEl.innerText = reward.icon;
+        if (amountEl) {
+          amountEl.innerText = `+${reward.name}`;
+          amountEl.style.fontSize = '24px';
+          amountEl.style.color = '';
+          if (reward.type === 'ton') {
+            amountEl.className = 'autumn-win-reward-amount is-ton';
+          } else {
+            amountEl.className = 'autumn-win-reward-amount';
+          }
+        }
+        if (labelEl) {
+          labelEl.innerText = reward.type === 'ton' ? 'TON зачислен на ваш баланс' : 'Звёзды зачислены на ваш баланс';
+        }
+      }
+
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeAutumnWinModal() {
+      const modal = document.getElementById('autumnWinModal');
+      if (modal) modal.classList.remove('active');
+
+      // Снимаем класс picked и бейдж
+      const cardEls = document.querySelectorAll('.autumn-card');
+      cardEls.forEach(card => {
+        card.classList.remove('picked');
+        const badge = card.querySelector('.autumn-card-pick-badge');
+        if (badge) badge.remove();
+      });
+
+      // Запускаем кулдаун-таймер
+      startAutumnCooldownTimer();
+    }
+
+    function showAutumnCaseSoonToast(caseNum) {
+      const price = caseNum === 1 ? 100 : 250;
+      if (autumnLeaves >= price) {
+        showToast(`🍂 У вас есть ${autumnLeaves} 🍂! Кейс за ${price} 🍂 откроется в ближайшем обновлении.`, 'success');
+      } else {
+        const need = price - autumnLeaves;
+        showToast(`🍂 Кейс стоит ${price} 🍂. Вам не хватает ${need} 🍂 (собирайте за каждые 2 мин игры или в картах)!`, 'info');
+      }
+      if (tg && tg.HapticFeedback) tg.HapticFeedback.impactOccurred('light');
+    }
+
+    // Таймер активного отыгрыша (2 минуты)
+    setInterval(() => {
+      if (document.visibilityState === 'visible') {
+        if (autumnPlaytimeSeconds < 120) {
+          autumnPlaytimeSeconds++;
+          localStorage.setItem('autumn_playtime_sec', autumnPlaytimeSeconds.toString());
+          updateAutumnPlaytimeScale();
+        }
+      }
+    }, 1000);
 
     initApp();
   </script>
