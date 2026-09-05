@@ -3138,7 +3138,7 @@
         <div class="ref-banner-title">Приглашай друзей — получай звёзды!</div>
       </div>
       <div class="ref-banner-reward">
-        +500K ⭐
+        +1M ⭐
         <span>первый друг</span>
       </div>
     </div>
@@ -3520,15 +3520,15 @@
         <div style="font-size: 38px;">🎁</div>
         <div style="font-size: 16px; font-weight: bold; color: #fff;">Приглашай друзей и получай звёзды!</div>
         <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">Делись персональной ссылкой с друзьями
-          — получай 500,000 ⭐ за каждого игрока!</div>
+          — получай от 1,000,000 ⭐ (+500,000 за каждого следующего)!</div>
       </div>
 
       <div class="ref-rewards-grid">
         <div class="ref-reward-card">
           <div style="font-size: 24px;">👤</div>
           <div style="font-size: 11px; color: var(--text-muted);">Вы получаете</div>
-          <div style="font-size: 15px; font-weight: 800; color: var(--green-color); margin-top: 2px;">+500K → +∞ ⭐</div>
-          <div style="font-size: 9.5px; color: var(--text-muted);">+250,000 за каждого следующего</div>
+          <div style="font-size: 15px; font-weight: 800; color: var(--green-color); margin-top: 2px;">+1M → +∞ ⭐</div>
+          <div style="font-size: 9.5px; color: var(--text-muted);">+500,000 за каждого следующего</div>
         </div>
         <div class="ref-reward-card">
           <div style="font-size: 24px;">🤝</div>
@@ -6179,11 +6179,11 @@
 
         if (refUser) {
           // Прогрессивная награда:
-          // 1-й друг → +500,000
-          // 2-й друг → +750,000
-          // 3-й друг → +1,000,000 и т.д.
+          // 1-й друг → +1,000,000
+          // 2-й друг → +1,500,000
+          // 3-й друг → +2,000,000 и т.д.
           const currentCount = refUser.referrals_count || 0;
-          const reward = 500000 + currentCount * 250000; // N-й друг = 500k + (N-1)*250k
+          const reward = 1000000 + currentCount * 500000; // N-й друг = 1M + (N-1)*500k
           const newBal = (refUser.balance || 0) + reward;
           const newCount = currentCount + 1;
           const newEarned = (refUser.referrals_earnings || 0) + reward;
@@ -6212,7 +6212,7 @@
               referrer_id: refId,
               referee_id: newUserId,
               referee_name: newUserName,
-              reward_stars: 500000
+              reward_stars: 1000000
             }]);
         }
       } catch (e) {
@@ -6269,7 +6269,7 @@
                   <div style="font-size: 10px; color: var(--text-muted);">${dateStr}</div>
                 </div>
               </div>
-              <div style="font-size: 13px; font-weight: 800; color: var(--green-color);">+${formatNumber(r.reward_stars || 500000)} ⭐</div>
+              <div style="font-size: 13px; font-weight: 800; color: var(--green-color);">+${formatNumber(r.reward_stars || 1000000)} ⭐</div>
             `;
             listEl.appendChild(itemEl);
           });
