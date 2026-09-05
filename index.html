@@ -4313,6 +4313,7 @@
 
     let balance = 1000;
     let tonBalance = 0;
+    let autumnLeaves = parseInt(localStorage.getItem('autumn_leaves_balance') || '0', 10);
     let tonBankRemaining = null; // null = ещё не загружен
     let currentCase = casesData.standart;
     let inventory = [];
@@ -4450,7 +4451,7 @@
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('balance, ton_balance, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes, purchased_wallpapers, equipped_wallpaper')
+          .select('balance, ton_balance, autumn_leaves, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes, purchased_wallpapers, equipped_wallpaper')
           .eq('user_id', userId)
           .maybeSingle();
 
@@ -4464,12 +4465,14 @@
         }
 
         const localTon = parseInt(localStorage.getItem('opencaser_ton_balance_' + userId)) || 0;
+        const localLeaves = parseInt(localStorage.getItem('opencaser_autumn_leaves_' + userId) || localStorage.getItem('autumn_leaves_balance')) || 0;
         const localWps = JSON.parse(localStorage.getItem('opencaser_wallpapers_' + userId) || '[]');
         const localEquippedWp = localStorage.getItem('opencaser_equipped_wp_' + userId) || null;
 
         if (data) {
           balance = data.balance ?? 1000;
           tonBalance = (data.ton_balance !== undefined && data.ton_balance !== null) ? data.ton_balance : localTon;
+          autumnLeaves = (data.autumn_leaves !== undefined && data.autumn_leaves !== null) ? data.autumn_leaves : localLeaves;
           inventory = data.inventory ?? [];
           userFirstName = data.username ?? userFirstName;
           showcase = data.showcase ?? [null, null, null];
@@ -4481,6 +4484,7 @@
         } else {
           purchasedWallpapers = localWps;
           equippedWallpaper = localEquippedWp;
+          autumnLeaves = localLeaves;
 
           // Проверяем, пришел ли пользователь по реферальной ссылке
           let startParam = tg.initDataUnsafe?.start_param || '';
@@ -4511,6 +4515,7 @@
             user_id: userId,
             balance: initialBalance,
             ton_balance: localTon,
+            autumn_leaves: localLeaves,
             inventory: [],
             username: userFirstName,
             showcase: [null, null, null],
@@ -4526,12 +4531,18 @@
             .from('users')
             .insert([newUserData]);
 
-          if (insertErr && insertErr.message && insertErr.message.includes('referred_by')) {
-            delete newUserData.referred_by;
-            await supabaseClient.from('users').insert([newUserData]);
+          if (insertErr) {
+            if (insertErr.message && (insertErr.message.includes('referred_by') || insertErr.message.includes('autumn_leaves') || insertErr.message.includes('ton_balance'))) {
+              if (insertErr.message.includes('autumn_leaves')) delete newUserData.autumn_leaves;
+              if (insertErr.message.includes('referred_by')) delete newUserData.referred_by;
+              if (insertErr.message.includes('ton_balance')) delete newUserData.ton_balance;
+              await supabaseClient.from('users').insert([newUserData]);
+            }
           }
         }
         localStorage.setItem('opencaser_ton_balance_' + userId, tonBalance);
+        localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+        localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
         localStorage.setItem('opencaser_wallpapers_' + userId, JSON.stringify(purchasedWallpapers));
         if (equippedWallpaper) {
           localStorage.setItem('opencaser_equipped_wp_' + userId, equippedWallpaper);
@@ -4549,6 +4560,8 @@
     async function syncUserData() {
       try {
         localStorage.setItem('opencaser_ton_balance_' + userId, tonBalance);
+        localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+        localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
         localStorage.setItem('opencaser_wallpapers_' + userId, JSON.stringify(purchasedWallpapers));
         if (equippedWallpaper) {
           localStorage.setItem('opencaser_equipped_wp_' + userId, equippedWallpaper);
@@ -4559,6 +4572,7 @@
           user_id: userId,
           balance: balance,
           ton_balance: tonBalance,
+          autumn_leaves: autumnLeaves,
           inventory: inventory,
           username: userFirstName,
           showcase: showcase,
@@ -4573,10 +4587,11 @@
           .from('users')
           .upsert(payload, { onConflict: 'user_id' });
         if (error) {
-          if (error.message && (error.message.includes('wallpapers') || error.message.includes('equipped_wallpaper') || error.message.includes('ton_balance'))) {
-            delete payload.purchased_wallpapers;
-            delete payload.equipped_wallpaper;
-            delete payload.ton_balance;
+          if (error.message && (error.message.includes('wallpapers') || error.message.includes('equipped_wallpaper') || error.message.includes('ton_balance') || error.message.includes('autumn_leaves'))) {
+            if (error.message.includes('autumn_leaves')) delete payload.autumn_leaves;
+            if (error.message.includes('wallpapers')) delete payload.purchased_wallpapers;
+            if (error.message.includes('equipped_wallpaper')) delete payload.equipped_wallpaper;
+            if (error.message.includes('ton_balance')) delete payload.ton_balance;
             await supabaseClient.from('users').upsert(payload, { onConflict: 'user_id' });
           }
         }
@@ -6709,6 +6724,7 @@
       if (isLeavesCase()) {
         autumnLeaves -= currentCase.price;
         localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+        localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
       } else {
         balance -= currentCase.price;
       }
@@ -6797,6 +6813,7 @@
       if (isLeavesCase()) {
         autumnLeaves -= totalPrice;
         localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+        localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
       } else {
         balance -= totalPrice;
       }
@@ -7155,7 +7172,7 @@
       { id: 'leaf_250', name: '250 🍂', type: 'leaf', amount: 250, icon: '🍁', label: 'МЕГА Листики' },
     ];
 
-    let autumnLeaves = parseInt(localStorage.getItem('autumn_leaves_balance') || '0', 10);
+    autumnLeaves = autumnLeaves || parseInt(localStorage.getItem('autumn_leaves_balance') || '0', 10);
     let autumnPlaytimeSeconds = parseInt(localStorage.getItem('autumn_playtime_sec') || '0', 10);
     let autumnCooldownTimer = null;
     let isAutumnShuffling = false;
@@ -7267,6 +7284,7 @@
       localStorage.setItem('autumn_playtime_sec', '0');
       autumnLeaves += 10;
       localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+      localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
       updateBalanceUI();
       if (typeof syncUserData === 'function') syncUserData();
       if (typeof playWinSound === 'function') playWinSound();
@@ -7578,6 +7596,7 @@
       } else if (reward.type === 'leaf') {
         autumnLeaves += reward.amount;
         localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+        localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
       }
       updateBalanceUI();
       if (typeof syncUserData === 'function') syncUserData();
