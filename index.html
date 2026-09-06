@@ -3114,7 +3114,7 @@
     <div style="display: flex; align-items: center; gap: 8px;">
       <div class="balance-badge ton-badge" id="tonBalanceBadge" style="display: none;">
         <span id="tonBalance">0</span>
-        <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON"
+        <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="PON"
           style="width: 18px; height: 18px; vertical-align: middle; margin-left: 2px;">
       </div>
       <div class="balance-badge" id="starsBalanceBadge">
@@ -3133,13 +3133,13 @@
 
     <!-- Баннер реферальной программы -->
     <div class="ref-shop-banner" onclick="switchTab('referrals')" style="margin-top: 0; margin-bottom: 20px;">
-      <div class="ref-banner-emoji">🎁</div>
+      <div class="ref-banner-emoji">🍂</div>
       <div class="ref-banner-text">
-        <div class="ref-banner-title">Приглашай друзей — получай звёзды!</div>
+        <div class="ref-banner-title">Приглашай друзей — получай листики!</div>
       </div>
-      <div class="ref-banner-reward">
-        +1M ⭐
-        <span>первый друг</span>
+      <div class="ref-banner-reward" style="color: #f59e0b;">
+        +100 🍂
+        <span style="color: #fb923c;">первый друг</span>
       </div>
     </div>
 
@@ -3289,7 +3289,7 @@
 
     <div class="case-section-divider" style="margin-top: 25px;">
       <div class="case-divider-line left"></div>
-      <div class="case-divider-title" style="color: #38bdf8;">ТОН</div>
+      <div class="case-divider-title" style="color: #38bdf8;">PON</div>
       <div class="case-divider-line right"></div>
     </div>
 
@@ -3297,20 +3297,20 @@
       <div class="case-card" onclick="openSpinScreen('ton')">
         <img src="/images/case_ton/case_ton.png" class="case-img"
           onerror="this.onerror=null; this.src='/images/logos/ton.png';">
-        <div class="case-title">Кейс TON</div>
+        <div class="case-title">Кейс PON</div>
         <div class="case-price"
           style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
-          2 TON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+          2 PON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
             style="width: 14px; height: 14px; vertical-align: middle;">
         </div>
       </div>
       <div class="case-card" onclick="openSpinScreen('ton_whale')">
         <img src="/images/case_ton_whale/case_ton_whale.png" class="case-img"
           onerror="this.onerror=null; this.src='/images/logos/ton.png';">
-        <div class="case-title">TON Кит</div>
+        <div class="case-title">PON Кит</div>
         <div class="case-price"
           style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
-          10 TON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+          10 PON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
             style="width: 14px; height: 14px; vertical-align: middle;">
         </div>
       </div>
@@ -3320,7 +3320,7 @@
         <div class="case-title">Супергерой</div>
         <div class="case-price"
           style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
-          200 TON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+          200 PON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
             style="width: 14px; height: 14px; vertical-align: middle;">
         </div>
       </div>
@@ -3352,7 +3352,7 @@
         <img src="/images/logos/contract.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Контракты</div>
-        <div class="case-price" style="color: #38bdf8; font-weight: 500;">1 до 9 шт • 50 TON</div>
+        <div class="case-price" style="color: #38bdf8; font-weight: 500;">1 до 9 шт • 50 PON</div>
       </div>
       <div class="case-card" onclick="switchTab('upgrade')">
         <img src="/images/logos/upgrade.png" class="case-img"
@@ -3499,7 +3499,7 @@
 
           <button class="btn-contract-spin" id="btnSignContract" onclick="startSignContract()">
             SIGN UP (<img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
-              alt="TON" style="width: 17px; height: 17px; vertical-align: middle;"> 50)
+              alt="PON" style="width: 17px; height: 17px; vertical-align: middle;"> 50)
           </button>
           <div id="contractResultText"
             style="font-weight: bold; font-size: 13px; text-align: center; min-height: 24px; margin-top: 8px;"></div>
@@ -3556,23 +3556,23 @@
 
     <div class="referrals-container">
       <div class="ref-banner">
-        <div style="font-size: 38px;">🎁</div>
-        <div style="font-size: 16px; font-weight: bold; color: #fff;">Приглашай друзей и получай звёзды!</div>
+        <div style="font-size: 38px;">🍂</div>
+        <div style="font-size: 16px; font-weight: bold; color: #fff;">Приглашай друзей и получай листики!</div>
         <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;">Делись персональной ссылкой с друзьями
-          — получай от 1,000,000 ⭐ (+500,000 за каждого следующего)!</div>
+          — получай от 100 🍂 (+50 за каждого следующего)!</div>
       </div>
 
       <div class="ref-rewards-grid">
         <div class="ref-reward-card">
           <div style="font-size: 24px;">👤</div>
           <div style="font-size: 11px; color: var(--text-muted);">Вы получаете</div>
-          <div style="font-size: 15px; font-weight: 800; color: var(--green-color); margin-top: 2px;">+1M → +∞ ⭐</div>
-          <div style="font-size: 9.5px; color: var(--text-muted);">+500,000 за каждого следующего</div>
+          <div style="font-size: 15px; font-weight: 800; color: #f59e0b; margin-top: 2px;">+100 → +∞ 🍂</div>
+          <div style="font-size: 9.5px; color: var(--text-muted);">+50 за каждого следующего</div>
         </div>
         <div class="ref-reward-card">
           <div style="font-size: 24px;">🤝</div>
           <div style="font-size: 11px; color: var(--text-muted);">Друг получает</div>
-          <div style="font-size: 15px; font-weight: 800; color: #38bdf8; margin-top: 2px;">+250,000 ⭐</div>
+          <div style="font-size: 15px; font-weight: 800; color: #fb923c; margin-top: 2px;">+50 🍂</div>
           <div style="font-size: 9.5px; color: var(--text-muted);">на старт в игре</div>
         </div>
       </div>
@@ -3584,7 +3584,7 @@
         </div>
         <div style="width: 1px; background: #2d3044;"></div>
         <div class="ref-stat-item">
-          <div class="ref-stat-val" id="refEarned" style="color: var(--green-color);">0 ⭐</div>
+          <div class="ref-stat-val" id="refEarned" style="color: #f59e0b;">0 🍂</div>
           <div class="ref-stat-label">Всего заработано</div>
         </div>
       </div>
@@ -3616,17 +3616,17 @@
       <div class="ton-shop-section" id="tonShopSection">
         <div class="case-section-divider market-divider" style="width: 100%; margin-top: 10px; margin-bottom: 12px;">
           <div class="case-divider-line left"></div>
-          <div class="case-divider-title" style="color: #38bdf8;">💎 КУПИТЬ TON</div>
+          <div class="case-divider-title" style="color: #38bdf8;">💎 КУПИТЬ PON</div>
           <div class="case-divider-line right"></div>
         </div>
 
         <div class="ton-bank-card">
-          <div class="ton-bank-title">Глобальный банк TON</div>
+          <div class="ton-bank-title">Глобальный банк PON</div>
           <div class="ton-bank-amount">
-            <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON">
+            <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="PON">
             <span id="tonBankDisplay">—</span>
           </div>
-          <div class="ton-bank-sub">осталось из 100,000 TON • при трате возвращается в банк</div>
+          <div class="ton-bank-sub">осталось из 100,000 PON • при трате возвращается в банк</div>
           <div class="ton-progress-bar">
             <div class="ton-progress-fill" id="tonProgressFill" style="width: 100%;"></div>
           </div>
@@ -4349,7 +4349,7 @@
         ]
       },
       ton: {
-        name: 'ТОН',
+        name: 'PON',
         price: 2,
         currency: 'ton',
         pool: [
@@ -4359,12 +4359,12 @@
         ]
       },
       ton_whale: {
-        name: 'TON Кит',
+        name: 'PON Кит',
         price: 10,
         currency: 'ton',
         pool: [
           { name: 'Плюшевый Пепе (Щенок Мопса)', rarity: 'legendary', price: 10412223234, chance: 0.01, icon: '/images/case_ton_whale/item3.gif' },
-          { name: 'Фигурка Дурова (TON)', rarity: 'legendary', price: 3746634265, chance: 0.05, icon: '/images/case_ton_whale/item4.gif' },
+          { name: 'Фигурка Дурова (PON)', rarity: 'legendary', price: 3746634265, chance: 0.05, icon: '/images/case_ton_whale/item4.gif' },
           { name: 'Надувной Круг (Несси)', rarity: 'epic', price: 793356832, chance: 0.6, icon: '/images/case_ton_whale/item5.gif' },
           { name: 'Какашка (Туалетный Робот)', rarity: 'rare', price: 52228677, chance: 4.0, icon: '/images/case_ton_whale/item1.gif' },
           { name: 'Школьный Рюкзак (Сейф)', rarity: 'common', price: 3124789, chance: 39.34, icon: '/images/case_ton_whale/item2.gif' },
@@ -4459,7 +4459,7 @@
       { day: 3, type: 'stars', amount: 75000, label: '75,000 ⭐' },
       { day: 4, type: 'stars', amount: 200000, label: '200,000 ⭐' },
       { day: 5, type: 'wallpaper', wallpaperId: 'telegram', label: 'Фон Telegram 🖼️' },
-      { day: 6, type: 'ton', amount: 500, label: '500 TON' },
+      { day: 6, type: 'ton', amount: 500, label: '500 PON' },
       { day: 7, type: 'stars', amount: 500000, label: '500,000 ⭐' }
     ];
     let dailyTimerInterval = null;
@@ -4574,11 +4574,12 @@
             const refCandidate = startParam.replace(/^ref_/, '').trim();
             if (refCandidate && refCandidate !== userId) {
               referredBy = refCandidate;
-              initialBalance = 251000; // 1,000 базовых + 250,000 бонус за друга!
+              localLeaves = localLeaves + 50; // +50 листиков бонус за друга!
+              autumnLeaves = localLeaves;
               setTimeout(() => {
-                showToast('🎉 Добро пожаловать! Вам начислено +250,000 ⭐ по ссылке друга!', 'success');
+                showToast('🎉 Добро пожаловать! Вам начислено +50 🍂 по ссылке друга!', 'success');
               }, 1500);
-              // Начисляем 500,000 ⭐ пригласителю
+              // Начисляем листики пригласителю
               creditReferrer(referredBy, userId, userFirstName);
             }
           }
@@ -5210,7 +5211,7 @@
       if (name) name.innerText = item.name || 'Предмет';
       if (price) {
         if (item.currency === 'ton') {
-          price.innerHTML = `<span style="color: #38bdf8;">${formatNumber(item.price)} TON</span>`;
+          price.innerHTML = `<span style="color: #38bdf8;">${formatNumber(item.price)} PON</span>`;
         } else {
           price.innerHTML = `${formatNumber(item.price)} ⭐`;
         }
@@ -5415,7 +5416,7 @@
         rewardText = `+${formatNumber(reward.amount)} ⭐`;
       } else if (reward.type === 'ton') {
         tonBalance += reward.amount;
-        rewardText = `+${formatNumber(reward.amount)} TON`;
+        rewardText = `+${formatNumber(reward.amount)} PON`;
       } else if (reward.type === 'wallpaper') {
         if (!purchasedWallpapers.includes(reward.wallpaperId)) {
           purchasedWallpapers.push(reward.wallpaperId);
@@ -5842,7 +5843,7 @@
       packagesGrid.innerHTML = '';
 
       if (remaining <= 0) {
-        packagesGrid.innerHTML = '<div class="ton-shop-empty">💎 Банк пуст. TON закончился. Он пополнится, когда игроки его потратят.</div>';
+        packagesGrid.innerHTML = '<div class="ton-shop-empty">💎 Банк пуст. PON закончился. Он пополнится, когда игроки его потратят.</div>';
         return;
       }
 
@@ -5854,8 +5855,8 @@
         card.innerHTML = `
           ${pkg.label ? `<div class="ton-pkg-badge">${pkg.label}</div>` : ''}
           <div class="ton-pkg-amount">
-            <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="TON">
-            ${formatNumber(pkg.amount)} TON
+            <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="PON">
+            ${formatNumber(pkg.amount)} PON
           </div>
           <div class="ton-pkg-price">${formatNumber(pkg.priceStars)} ⭐</div>
           ${pkg.save ? `<div class="ton-pkg-save">Скидка ${pkg.save}</div>` : '<div style="height:14px"></div>'}
@@ -5872,18 +5873,18 @@
       }
       const remaining = tonBankRemaining !== null ? tonBankRemaining : 0;
       if (remaining < amount) {
-        showToast('❌ В банке недостаточно TON. Попробуйте меньший пакет.', 'error');
+        showToast('❌ В банке недостаточно PON. Попробуйте меньший пакет.', 'error');
         return;
       }
 
-      // Списываем ⭐ у игрока, выдаём TON
+      // Списываем ⭐ у игрока, выдаём PON
       balance -= priceStars;
       tonBalance += amount;
       tonBankRemaining -= amount;
       updateBalanceUI();
       renderTonShop();
 
-      showToast(`💎 +${formatNumber(amount)} TON! Куплено за ${formatNumber(priceStars)} ⭐`, 'success');
+      showToast(`💎 +${formatNumber(amount)} PON! Куплено за ${formatNumber(priceStars)} ⭐`, 'success');
 
       // Атомарное обновление банка в Supabase
       try {
@@ -6231,7 +6232,7 @@
 
     function shareReferralLink() {
       const link = getReferralLink();
-      const text = '🔥 Заходи в OpenCaser, открывай кейсы и собирай крутой инвентарь! Забирай приветственные 250,000 ⭐ на старт по моей ссылке:';
+      const text = '🍂 Заходи в OpenCaser, открывай кейсы и собирай осенние листики! Забирай приветственные +50 🍂 на старт по моей ссылке:';
       const shareUrl = `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(text)}`;
       openTelegramLink(shareUrl);
     }
@@ -6263,28 +6264,48 @@
       try {
         const { data: refUser } = await supabaseClient
           .from('users')
-          .select('balance, referrals_count, referrals_earnings')
+          .select('balance, autumn_leaves, referrals_count, referrals_earnings')
           .eq('user_id', refId)
           .maybeSingle();
 
         if (refUser) {
-          // Прогрессивная награда:
-          // 1-й друг → +1,000,000
-          // 2-й друг → +1,500,000
-          // 3-й друг → +2,000,000 и т.д.
+          // Прогрессивная награда в листиках:
+          // 1-й друг → +100 🍂
+          // 2-й друг → +150 🍂
+          // 3-й друг → +200 🍂 и т.д.
           const currentCount = refUser.referrals_count || 0;
-          const reward = 1000000 + currentCount * 500000; // N-й друг = 1M + (N-1)*500k
-          const newBal = (refUser.balance || 0) + reward;
+          const reward = 100 + currentCount * 50; // N-й друг = 100 + (N-1)*50 🍂
+          const newLeaves = (refUser.autumn_leaves || 0) + reward;
           const newCount = currentCount + 1;
           const newEarned = (refUser.referrals_earnings || 0) + reward;
-          await supabaseClient
+
+          const updatePayload = {
+            autumn_leaves: newLeaves,
+            referrals_count: newCount,
+            referrals_earnings: newEarned
+          };
+
+          const { error: updateErr } = await supabaseClient
             .from('users')
-            .update({
-              balance: newBal,
-              referrals_count: newCount,
-              referrals_earnings: newEarned
-            })
+            .update(updatePayload)
             .eq('user_id', refId);
+
+          if (updateErr && updateErr.message && updateErr.message.includes('autumn_leaves')) {
+            await supabaseClient
+              .from('users')
+              .update({
+                referrals_count: newCount,
+                referrals_earnings: newEarned
+              })
+              .eq('user_id', refId);
+          }
+
+          if (String(refId) === String(userId)) {
+            autumnLeaves = newLeaves;
+            localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+            localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
+            updateBalanceUI();
+          }
 
           await supabaseClient
             .from('referrals')
@@ -6302,7 +6323,7 @@
               referrer_id: refId,
               referee_id: newUserId,
               referee_name: newUserName,
-              reward_stars: 1000000
+              reward_stars: 100
             }]);
         }
       } catch (e) {
@@ -6330,7 +6351,7 @@
         const earned = userData?.referrals_earnings || 0;
 
         if (countEl) countEl.innerText = formatNumber(count);
-        if (earnedEl) earnedEl.innerText = `${formatNumber(earned)} ⭐`;
+        if (earnedEl) earnedEl.innerText = `${formatNumber(earned)} 🍂`;
 
         const { data: refs, error } = await supabaseClient
           .from('referrals')
@@ -6359,7 +6380,7 @@
                   <div style="font-size: 10px; color: var(--text-muted);">${dateStr}</div>
                 </div>
               </div>
-              <div style="font-size: 13px; font-weight: 800; color: var(--green-color);">+${formatNumber(r.reward_stars || 1000000)} ⭐</div>
+              <div style="font-size: 13px; font-weight: 800; color: #f59e0b;">+${formatNumber(r.reward_stars || 100)} 🍂</div>
             `;
             listEl.appendChild(itemEl);
           });
@@ -6540,7 +6561,7 @@
 
       const CONTRACT_COST_TON = 50;
       if (tonBalance < CONTRACT_COST_TON) {
-        showToast('❌ Недостаточно TON! Стоимость контракта: 50 TON', 'error');
+        showToast('❌ Недостаточно PON! Стоимость контракта: 50 PON', 'error');
         return;
       }
 
@@ -6778,7 +6799,7 @@
     function updateOpenButtonText() {
       const totalPrice = currentCase.price * selectedQuantity;
       const qtySuffix = selectedQuantity > 1 ? ` x${selectedQuantity}` : '';
-      const sym = isLeavesCase() ? '🍂' : (isTonCase() ? 'TON' : '⭐');
+      const sym = isLeavesCase() ? '🍂' : (isTonCase() ? 'PON' : '⭐');
       openBtn.innerText = totalPrice > 0 ? `Открыть кейс${qtySuffix} (${formatNumber(totalPrice)} ${sym})` : `Открыть кейс${qtySuffix} (Бесплатно)`;
     }
 
@@ -6794,8 +6815,8 @@
         }
       } else if (isTonCase()) {
         if (tonBalance < totalPrice) {
-          resultText.innerText = 'Недостаточно TON!';
-          showToast('❌ Недостаточно TON!', 'error');
+          resultText.innerText = 'Недостаточно PON!';
+          showToast('❌ Недостаточно PON!', 'error');
           return;
         }
       } else {
@@ -7267,8 +7288,8 @@
       { id: 'stars_10m', name: '10,000,000 ⭐', type: 'stars', amount: 10000000, icon: '⭐', label: 'Звёзды' },
       { id: 'legendary', name: 'Легендарка', type: 'item', amount: 1, icon: '👑', label: 'Легендарный предмет' },
       { id: 'stars_50m', name: '50,000,000 ⭐', type: 'stars', amount: 50000000, icon: '🔥', label: 'Супер приз' },
-      { id: 'ton_10', name: '10 TON', type: 'ton', amount: 10, icon: '💎', label: 'TON кошелек' },
-      { id: 'ton_30', name: '30 TON', type: 'ton', amount: 30, icon: '💎', label: 'МЕГА TON' },
+      { id: 'ton_10', name: '10 PON', type: 'ton', amount: 10, icon: '💎', label: 'PON кошелек' },
+      { id: 'ton_30', name: '30 PON', type: 'ton', amount: 30, icon: '💎', label: 'МЕГА PON' },
       { id: 'stars_100k', name: '100,000 ⭐', type: 'stars', amount: 100000, icon: '⭐', label: 'Звёзды' },
       { id: 'leaf_25', name: '25 🍂', type: 'leaf', amount: 25, icon: '🍂', label: 'Листики' },
       { id: 'leaf_50', name: '50 🍂', type: 'leaf', amount: 50, icon: '🍂', label: 'Листики' },
@@ -7762,7 +7783,7 @@
           }
         }
         if (labelEl) {
-          labelEl.innerText = reward.type === 'ton' ? 'TON зачислен на ваш баланс' : 'Звёзды зачислены на ваш баланс';
+          labelEl.innerText = reward.type === 'ton' ? 'PON зачислен на ваш баланс' : 'Звёзды зачислены на ваш баланс';
         }
       }
 
