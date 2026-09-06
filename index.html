@@ -3286,6 +3286,45 @@
         <div class="case-price" style="color: #fb923c;">250 🍂</div>
       </div>
     </div>
+
+    <div class="case-section-divider" style="margin-top: 25px;">
+      <div class="case-divider-line left"></div>
+      <div class="case-divider-title" style="color: #38bdf8;">ТОН</div>
+      <div class="case-divider-line right"></div>
+    </div>
+
+    <div class="cases-grid">
+      <div class="case-card" onclick="openSpinScreen('ton')">
+        <img src="/images/case_ton/case_ton.png" class="case-img"
+          onerror="this.onerror=null; this.src='/images/logos/ton.png';">
+        <div class="case-title">Кейс TON</div>
+        <div class="case-price"
+          style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          2 TON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+            style="width: 14px; height: 14px; vertical-align: middle;">
+        </div>
+      </div>
+      <div class="case-card" onclick="openSpinScreen('ton_whale')">
+        <img src="/images/case_ton_whale/case_ton_whale.png" class="case-img"
+          onerror="this.onerror=null; this.src='/images/logos/ton.png';">
+        <div class="case-title">TON Кит</div>
+        <div class="case-price"
+          style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          10 TON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+            style="width: 14px; height: 14px; vertical-align: middle;">
+        </div>
+      </div>
+      <div class="case-card" onclick="openSpinScreen('superhero')">
+        <img src="/images/case_superhero/case_superhero.png" class="case-img"
+          onerror="this.onerror=null; this.src='/images/logos/ton.png';">
+        <div class="case-title">Супергерой</div>
+        <div class="case-price"
+          style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          200 TON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+            style="width: 14px; height: 14px; vertical-align: middle;">
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Вкладка Режимы -->
@@ -4307,6 +4346,41 @@
           { name: 'Героический Шлем (Осень)', rarity: 'epic', price: 2045197400, chance: 7.0, icon: '/images/case_pumpkin/item4.png' },
           { name: 'Котел с Зельем (Осень)', rarity: 'rare', price: 791467250, chance: 20.0, icon: '/images/case_pumpkin/item1.png' },
           { name: 'Леденец (Осень)', rarity: 'common', price: 120564325, chance: 70.75, icon: '/images/case_pumpkin/item3.png' }
+        ]
+      },
+      ton: {
+        name: 'ТОН',
+        price: 2,
+        currency: 'ton',
+        pool: [
+          { name: 'Plush Pepe (X-Ray)', rarity: 'legendary', price: 1000206225, chance: 0.05, icon: '/images/case_ton/item2.gif' },
+          { name: 'Heart', rarity: 'common', price: 15, chance: 25.0, icon: '/images/case_ton/item1.png' },
+          { name: 'Plush Pepe (Hue Jester)', rarity: 'rare', price: 1337250, chance: 74.95, icon: '/images/case_ton/item3.png' }
+        ]
+      },
+      ton_whale: {
+        name: 'TON Кит',
+        price: 10,
+        currency: 'ton',
+        pool: [
+          { name: 'Плюшевый Пепе (Щенок Мопса)', rarity: 'legendary', price: 10412223234, chance: 0.01, icon: '/images/case_ton_whale/item3.gif' },
+          { name: 'Фигурка Дурова (TON)', rarity: 'legendary', price: 3746634265, chance: 0.05, icon: '/images/case_ton_whale/item4.gif' },
+          { name: 'Надувной Круг (Несси)', rarity: 'epic', price: 793356832, chance: 0.6, icon: '/images/case_ton_whale/item5.gif' },
+          { name: 'Какашка (Туалетный Робот)', rarity: 'rare', price: 52228677, chance: 4.0, icon: '/images/case_ton_whale/item1.gif' },
+          { name: 'Школьный Рюкзак (Сейф)', rarity: 'common', price: 3124789, chance: 39.34, icon: '/images/case_ton_whale/item2.gif' },
+          { name: 'Плюшевый Медведь (Чертеж)', rarity: 'common', price: 1536235, chance: 56.0, icon: '/images/case_ton_whale/item6.gif' }
+        ]
+      },
+      superhero: {
+        name: 'Супергерой',
+        price: 200,
+        currency: 'ton',
+        pool: [
+          { name: 'Фигурка Дурова (Омни-Мэн)', rarity: 'legendary', price: 250555555555, chance: 0.1, icon: '/images/case_superhero/item1.gif' },
+          { name: 'Фигурка Дурова (Патриот)', rarity: 'legendary', price: 57888888888, chance: 0.7, icon: '/images/case_superhero/item5.png' },
+          { name: 'Фигурка Дурова (Сумер-Мэн)', rarity: 'epic', price: 12333333333, chance: 5.2, icon: '/images/case_superhero/item2.gif' },
+          { name: 'Фигурка Дурова (Железный Человек)', rarity: 'rare', price: 4666666666, chance: 24.0, icon: '/images/case_superhero/item3.png' },
+          { name: 'Фигурка Дурова (Человек-Паук)', rarity: 'common', price: 1777777777, chance: 70.0, icon: '/images/case_superhero/item4.png' }
         ]
       }
     };
@@ -5449,8 +5523,9 @@
       currentCase.pool.forEach((item) => {
         const div = document.createElement('div');
         div.className = `content-item-card ${item.rarity}`;
+        const fallback = `https://via.placeholder.com/40/000000/FFFFFF?text=${encodeURIComponent(item.name[0])}`;
         div.innerHTML = `
-          <img src="${item.icon}">
+          <img src="${item.icon}" onerror="this.onerror=null; this.src='${fallback}';">
           <div style="font-weight: bold; font-size: 10px;">${item.name}</div>
           <div style="color: var(--green-color);">${formatNumber(item.price)} ⭐</div>
           <div class="content-item-chance">${item.chance}%</div>
@@ -6568,6 +6643,10 @@
       return !!(c && (c.currency === 'leaves' || c === casesData.autumn || c === casesData.pumpkin));
     }
 
+    function isTonCase(c = currentCase) {
+      return !!(c && (c.currency === 'ton' || c === casesData.ton));
+    }
+
     function openSpinScreen(caseKey) {
       if (isSpinning || isUpgrading) return;
       const caseInfo = casesData[caseKey];
@@ -6602,6 +6681,17 @@
       const leavesBadge = document.getElementById('autumnLeavesBadge');
       if (leavesBadge) {
         leavesBadge.style.display = isLeavesCase() ? 'flex' : 'none';
+      }
+      const tonBadge = document.getElementById('tonBalanceBadge');
+      const starsBadge = document.getElementById('starsBalanceBadge');
+      if (tonBadge && starsBadge) {
+        if (isTonCase()) {
+          tonBadge.style.display = 'flex';
+          starsBadge.style.display = 'none';
+        } else {
+          tonBadge.style.display = 'none';
+          starsBadge.style.display = 'flex';
+        }
       }
 
       generateTape(currentCase.pool[0]);
@@ -6688,7 +6778,7 @@
     function updateOpenButtonText() {
       const totalPrice = currentCase.price * selectedQuantity;
       const qtySuffix = selectedQuantity > 1 ? ` x${selectedQuantity}` : '';
-      const sym = isLeavesCase() ? '🍂' : '⭐';
+      const sym = isLeavesCase() ? '🍂' : (isTonCase() ? 'TON' : '⭐');
       openBtn.innerText = totalPrice > 0 ? `Открыть кейс${qtySuffix} (${formatNumber(totalPrice)} ${sym})` : `Открыть кейс${qtySuffix} (Бесплатно)`;
     }
 
@@ -6700,6 +6790,12 @@
         if (autumnLeaves < totalPrice) {
           resultText.innerText = 'Недостаточно листиков 🍂!';
           showToast('❌ Недостаточно листиков 🍂!', 'error');
+          return;
+        }
+      } else if (isTonCase()) {
+        if (tonBalance < totalPrice) {
+          resultText.innerText = 'Недостаточно TON!';
+          showToast('❌ Недостаточно TON!', 'error');
           return;
         }
       } else {
@@ -6725,6 +6821,10 @@
         autumnLeaves -= currentCase.price;
         localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
         localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
+      } else if (isTonCase()) {
+        tonBalance -= currentCase.price;
+        if (typeof returnTonToBank === 'function') returnTonToBank(currentCase.price);
+        localStorage.setItem('opencaser_ton_balance_' + userId, tonBalance);
       } else {
         balance -= currentCase.price;
       }
@@ -6814,6 +6914,10 @@
         autumnLeaves -= totalPrice;
         localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
         localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
+      } else if (isTonCase()) {
+        tonBalance -= totalPrice;
+        if (typeof returnTonToBank === 'function') returnTonToBank(totalPrice);
+        localStorage.setItem('opencaser_ton_balance_' + userId, tonBalance);
       } else {
         balance -= totalPrice;
       }
