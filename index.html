@@ -2205,6 +2205,7 @@
     .ton-package-card.best-deal {
       border-color: rgba(168, 85, 247, 0.5);
       background: rgba(88, 28, 135, 0.12);
+      grid-column: span 2;
     }
 
     .ton-package-card.best-deal:hover {
@@ -5817,10 +5818,11 @@
     const TON_BANK_TOTAL = 100000;
 
     const TON_PACKAGES = [
-      { amount: 10, priceStars: 10000000, save: null, label: null },
-      { amount: 50, priceStars: 45000000, save: '10%', label: null },
-      { amount: 100, priceStars: 80000000, save: '20%', label: null },
-      { amount: 500, priceStars: 350000000, save: '30%', label: 'ВЫГОДНО' },
+      { amount: 1, priceStars: 10000000, save: null, label: null },
+      { amount: 10, priceStars: 95000000, save: '5%', label: null },
+      { amount: 50, priceStars: 450000000, save: '10%', label: null },
+      { amount: 100, priceStars: 800000000, save: '20%', label: null },
+      { amount: 500, priceStars: 3500000000, save: '30%', label: 'ВЫГОДНО' },
     ];
 
     async function loadTonBank() {
