@@ -4536,11 +4536,43 @@
     const balanceSpan = document.getElementById('balance');
     const quickSellBtn = document.getElementById('quickSellBtn');
 
+    // --- Получение реферального параметра Telegram WebApp ---
+    function getTelegramStartParam() {
+      try {
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+          const param = window.Telegram.WebApp.initDataUnsafe.start_param;
+          if (param) return String(param).trim();
+        }
+      } catch (e) {}
+
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const param = urlParams.get('tgWebAppStartParam') || urlParams.get('startapp') || urlParams.get('ref') || urlParams.get('start');
+        if (param) return String(param).trim();
+      } catch (e) {}
+
+      try {
+        const hash = window.location.hash.replace(/^#/, '');
+        if (hash) {
+          const hashParams = new URLSearchParams(hash);
+          const param = hashParams.get('tgWebAppStartParam') || hashParams.get('startapp') || hashParams.get('ref') || hashParams.get('start');
+          if (param) return String(param).trim();
+        }
+      } catch (e) {}
+
+      try {
+        const match = window.location.href.match(/[?&#](?:tgWebAppStartParam|startapp|ref|start)=([^&#]+)/i);
+        if (match && match[1]) return decodeURIComponent(match[1]).trim();
+      } catch (e) {}
+
+      return '';
+    }
+
     async function loadUserData() {
       try {
         let { data, error } = await supabaseClient
           .from('users')
-          .select('balance, ton_balance, autumn_leaves, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes, purchased_wallpapers, equipped_wallpaper')
+          .select('balance, ton_balance, autumn_leaves, inventory, username, showcase, last_daily_claim, daily_streak, redeemed_promo_codes, purchased_wallpapers, equipped_wallpaper, referred_by, referrals_count, referrals_earnings')
           .eq('user_id', userId)
           .maybeSingle();
 
@@ -4558,10 +4590,13 @@
         const localWps = JSON.parse(localStorage.getItem('opencaser_wallpapers_' + userId) || '[]');
         const localEquippedWp = localStorage.getItem('opencaser_equipped_wp_' + userId) || null;
 
+        const startParam = getTelegramStartParam();
+        const refCandidate = startParam ? startParam.replace(/^ref_?/, '').trim() : '';
+
         if (data) {
           balance = data.balance ?? 1000;
           tonBalance = (data.ton_balance !== undefined && data.ton_balance !== null) ? data.ton_balance : localTon;
-          autumnLeaves = (data.autumn_leaves !== undefined && data.autumn_leaves !== null) ? data.autumn_leaves : localLeaves;
+          autumnLeaves = (data.autumn_leaves !== undefined && data.autumn_leaves !== null) ? Math.max(data.autumn_leaves, localLeaves) : localLeaves;
           inventory = data.inventory ?? [];
           userFirstName = data.username ?? userFirstName;
           showcase = data.showcase ?? [null, null, null];
@@ -4570,33 +4605,44 @@
           redeemedPromoCodes = data.redeemed_promo_codes ?? [];
           purchasedWallpapers = data.purchased_wallpapers ?? localWps;
           equippedWallpaper = (data.equipped_wallpaper !== undefined) ? data.equipped_wallpaper : localEquippedWp;
+
+          // Если пользователь ещё не имел пригласившего и перешёл по реферальной ссылке
+          if (refCandidate && refCandidate !== String(userId) && !data.referred_by) {
+            autumnLeaves += 50;
+            data.referred_by = refCandidate;
+            localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+            localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
+
+            try {
+              await supabaseClient
+                .from('users')
+                .update({ referred_by: refCandidate, autumn_leaves: autumnLeaves })
+                .eq('user_id', userId);
+            } catch (err) {
+              console.warn('Не удалось обновить referred_by:', err);
+            }
+
+            setTimeout(() => {
+              showToast('🎉 Добро пожаловать! Вам начислено +50 🍂 по ссылке друга!', 'success');
+            }, 1500);
+
+            creditReferrer(refCandidate, userId, userFirstName);
+          }
         } else {
           purchasedWallpapers = localWps;
           equippedWallpaper = localEquippedWp;
           autumnLeaves = localLeaves;
 
-          // Проверяем, пришел ли пользователь по реферальной ссылке
-          let startParam = tg.initDataUnsafe?.start_param || '';
-          if (!startParam) {
-            const urlParams = new URLSearchParams(window.location.search);
-            startParam = urlParams.get('startapp') || urlParams.get('ref') || '';
-          }
-
           let initialBalance = 1000;
           let referredBy = null;
 
-          if (startParam) {
-            const refCandidate = startParam.replace(/^ref_/, '').trim();
-            if (refCandidate && refCandidate !== userId) {
-              referredBy = refCandidate;
-              localLeaves = localLeaves + 50; // +50 листиков бонус за друга!
-              autumnLeaves = localLeaves;
-              setTimeout(() => {
-                showToast('🎉 Добро пожаловать! Вам начислено +50 🍂 по ссылке друга!', 'success');
-              }, 1500);
-              // Начисляем листики пригласителю
-              creditReferrer(referredBy, userId, userFirstName);
-            }
+          if (refCandidate && refCandidate !== String(userId)) {
+            referredBy = refCandidate;
+            autumnLeaves += 50; // +50 листиков бонус за друга!
+            setTimeout(() => {
+              showToast('🎉 Добро пожаловать! Вам начислено +50 🍂 по ссылке друга!', 'success');
+            }, 1500);
+            creditReferrer(referredBy, userId, userFirstName);
           }
 
           balance = initialBalance;
@@ -4605,7 +4651,7 @@
             user_id: userId,
             balance: initialBalance,
             ton_balance: localTon,
-            autumn_leaves: localLeaves,
+            autumn_leaves: autumnLeaves,
             inventory: [],
             username: userFirstName,
             showcase: [null, null, null],
@@ -4742,6 +4788,26 @@
             activeTradeId = newTrade.id;
             isSender = false;
             document.getElementById('tradeInviteModal').classList.add('active');
+          }
+        })
+        .subscribe();
+
+      // Слушатель новых рефералов в реальном времени
+      supabaseClient
+        .channel('public:referrals_' + userId)
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'referrals', filter: `referrer_id=eq.${userId}` }, payload => {
+          const newRef = payload.new;
+          if (newRef) {
+            const reward = newRef.reward_stars || 100;
+            autumnLeaves += reward;
+            localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+            localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
+            updateBalanceUI();
+            showToast(`🎉 Друг ${newRef.referee_name || ''} присоединился! Вам начислено +${reward} 🍂!`, 'success');
+            const tabRef = document.getElementById('tab-referrals');
+            if (tabRef && tabRef.classList.contains('active')) {
+              loadReferralsData();
+            }
           }
         })
         .subscribe();
@@ -5757,7 +5823,7 @@
       const starsBadge = document.getElementById('starsBalanceBadge');
       const leavesBadge = document.getElementById('autumnLeavesBadge');
       const isTonScreen = (tabName === 'contracts' || tabName === 'market');
-      const isAutumnScreen = (tabName === 'autumn');
+      const isAutumnScreen = (tabName === 'autumn' || tabName === 'referrals');
 
       if (tonBadge) {
         tonBadge.style.display = isTonScreen ? 'flex' : 'none';
@@ -6278,22 +6344,24 @@
 
     async function creditReferrer(refId, newUserId, newUserName) {
       try {
+        const cleanRefId = String(refId).trim();
         const { data: refUser } = await supabaseClient
           .from('users')
           .select('balance, autumn_leaves, referrals_count, referrals_earnings')
-          .eq('user_id', refId)
+          .eq('user_id', cleanRefId)
           .maybeSingle();
 
+        // Прогрессивная награда в листиках:
+        // 1-й друг → +100 🍂
+        // 2-й друг → +150 🍂
+        // 3-й друг → +200 🍂 и т.д.
+        const currentCount = (refUser && refUser.referrals_count) ? Number(refUser.referrals_count) : 0;
+        const reward = 100 + currentCount * 50; // N-й друг = 100 + (N-1)*50 🍂
+
         if (refUser) {
-          // Прогрессивная награда в листиках:
-          // 1-й друг → +100 🍂
-          // 2-й друг → +150 🍂
-          // 3-й друг → +200 🍂 и т.д.
-          const currentCount = refUser.referrals_count || 0;
-          const reward = 100 + currentCount * 50; // N-й друг = 100 + (N-1)*50 🍂
-          const newLeaves = (refUser.autumn_leaves || 0) + reward;
+          const newLeaves = (Number(refUser.autumn_leaves) || 0) + reward;
           const newCount = currentCount + 1;
-          const newEarned = (refUser.referrals_earnings || 0) + reward;
+          const newEarned = (Number(refUser.referrals_earnings) || 0) + reward;
 
           const updatePayload = {
             autumn_leaves: newLeaves,
@@ -6304,7 +6372,7 @@
           const { error: updateErr } = await supabaseClient
             .from('users')
             .update(updatePayload)
-            .eq('user_id', refId);
+            .eq('user_id', cleanRefId);
 
           if (updateErr && updateErr.message && updateErr.message.includes('autumn_leaves')) {
             await supabaseClient
@@ -6313,34 +6381,29 @@
                 referrals_count: newCount,
                 referrals_earnings: newEarned
               })
-              .eq('user_id', refId);
+              .eq('user_id', cleanRefId);
           }
 
-          if (String(refId) === String(userId)) {
+          if (cleanRefId === String(userId)) {
             autumnLeaves = newLeaves;
             localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
             localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
             updateBalanceUI();
           }
+        }
 
-          await supabaseClient
-            .from('referrals')
-            .insert([{
-              referrer_id: refId,
-              referee_id: newUserId,
-              referee_name: newUserName,
-              reward_stars: reward
-            }]);
-        } else {
-          // Приглашающий ещё не в базе — просто фиксируем
-          await supabaseClient
-            .from('referrals')
-            .insert([{
-              referrer_id: refId,
-              referee_id: newUserId,
-              referee_name: newUserName,
-              reward_stars: 100
-            }]);
+        // Фиксируем запись в таблице referrals
+        const { error: refErr } = await supabaseClient
+          .from('referrals')
+          .insert([{
+            referrer_id: cleanRefId,
+            referee_id: String(newUserId),
+            referee_name: newUserName || 'Друг',
+            reward_stars: reward
+          }]);
+
+        if (refErr) {
+          console.warn('Внимание: запись в referrals (проверьте RLS политики):', refErr.message || refErr);
         }
       } catch (e) {
         console.warn('Ошибка начисления реферального бонуса:', e);
@@ -6359,12 +6422,20 @@
       try {
         const { data: userData } = await supabaseClient
           .from('users')
-          .select('referrals_count, referrals_earnings')
+          .select('autumn_leaves, referrals_count, referrals_earnings')
           .eq('user_id', userId)
           .maybeSingle();
 
         const count = userData?.referrals_count || 0;
         const earned = userData?.referrals_earnings || 0;
+
+        // Синхронизируем баланс листиков, если в БД он больше локального
+        if (userData && userData.autumn_leaves !== undefined && userData.autumn_leaves > autumnLeaves) {
+          autumnLeaves = userData.autumn_leaves;
+          localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
+          localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
+          updateBalanceUI();
+        }
 
         if (countEl) countEl.innerText = formatNumber(count);
         if (earnedEl) earnedEl.innerText = `${formatNumber(earned)} 🍂`;
