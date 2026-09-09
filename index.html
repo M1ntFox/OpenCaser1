@@ -5,6 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Case Opener, Upgrade & Trade</title>
+  <script>
+    // Автоматическое исправление путей к картинкам при локальном открытии через file://
+    window.addEventListener('error', function (e) {
+      if (e.target && e.target.tagName === 'IMG') {
+        var src = e.target.getAttribute('src');
+        if (src && src.startsWith('/images/')) {
+          e.target.src = '.' + src;
+        }
+      }
+    }, true);
+  </script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Supabase JS Client SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1268,48 +1279,152 @@
     .loading-screen {
       position: fixed;
       inset: 0;
-      background: var(--bg-color);
+      background-color: #0b0c15;
+      background-image:
+        linear-gradient(to top, rgba(11, 12, 21, 0.96) 0%, rgba(11, 12, 21, 0.72) 20%, rgba(11, 12, 21, 0.15) 45%, rgba(11, 12, 21, 0) 65%),
+        url('./images/logos/load_screen.png');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
       z-index: 20000;
       display: flex;
       flex-direction: column;
+      justify-content: flex-end;
       align-items: center;
-      justify-content: center;
-      gap: 22px;
-      padding: 20px;
-      transition: opacity 0.4s ease;
+      padding: 20px 20px calc(env(safe-area-inset-bottom, 20px) + 24px);
+      box-sizing: border-box;
+      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s ease;
+      overflow: hidden;
     }
 
     .loading-screen.hidden {
       opacity: 0;
+      transform: scale(1.02);
       pointer-events: none;
     }
 
-    .loading-spinner {
-      width: 52px;
-      height: 52px;
-      border: 4px solid #2a2b3d;
-      border-top-color: var(--accent-color);
-      border-radius: 50%;
-      animation: loadingSpin 1s linear infinite;
+    .loading-bottom {
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+      z-index: 2;
     }
 
-    @keyframes loadingSpin {
-      to {
-        transform: rotate(360deg);
+    .loading-progress-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .loading-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      font-weight: 600;
+    }
+
+    .loading-progress-status {
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .loading-progress-percent {
+      color: #38bdf8;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .loading-progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 999px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .loading-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1, #38bdf8, #818cf8);
+      border-radius: 999px;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.75);
+      transition: width 0.12s linear;
+      position: relative;
+    }
+
+    .loading-progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+      animation: progressShimmer 1.6s linear infinite;
+    }
+
+    @keyframes progressShimmer {
+      0% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(100%);
       }
     }
 
-    .loading-title {
-      font-size: 16px;
-      font-weight: bold;
+    .loading-subscribe-card {
+      width: 100%;
+      background: rgba(24, 27, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+      padding: 13px 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(12px);
+      box-sizing: border-box;
+    }
+
+    .loading-subscribe-text {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.88);
       text-align: center;
-      max-width: 280px;
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
     .loading-subscribe-btn {
-      width: auto;
-      padding: 12px 34px;
+      width: 100%;
+      padding: 12px 18px;
+      background: linear-gradient(135deg, #24A1DE 0%, #0088cc 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(36, 161, 222, 0.45);
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+
+    .loading-subscribe-btn:active {
+      transform: scale(0.97);
+      filter: brightness(0.92);
     }
 
     /* Оверлей, блокирующий все нажатия во время открытия кейса / апгрейда */
@@ -3099,10 +3214,28 @@
 
   <!-- Экран загрузки -->
   <div id="loadingScreen" class="loading-screen">
-    <div class="loading-spinner"></div>
-    <div class="loading-title">Подписывайтесь на нас в Telegram</div>
-    <button class="btn-spin loading-subscribe-btn"
-      onclick="window.open('https://t.me/BattleCaser', '_blank')">Подписаться</button>
+    <div class="loading-bottom">
+      <div class="loading-progress-wrapper">
+        <div class="loading-progress-header">
+          <span id="loadingProgressStatus" class="loading-progress-status">Загрузка данных...</span>
+          <span id="loadingProgressPercent" class="loading-progress-percent">0%</span>
+        </div>
+        <div class="loading-progress-track">
+          <div id="loadingProgressBar" class="loading-progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="loading-subscribe-card">
+        <div class="loading-subscribe-text">Подписывайтесь на наш Telegram канал</div>
+        <button class="loading-subscribe-btn" onclick="openTelegramLink('https://t.me/BattleCaser')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.63 3.73-.53.36-1.02.54-1.45.53-.48-.01-1.4-.27-2.09-.49-.84-.27-1.51-.42-1.45-.89.03-.25.38-.51 1.07-.78 4.18-1.82 6.98-3.02 8.39-3.61 3.99-1.66 4.83-1.95 5.37-1.96.12 0 .39.03.56.17.15.12.19.28.21.45-.01.06.01.24 0 .37z" />
+          </svg>
+          <span>Подписаться</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Оверлей блокировки нажатий -->
@@ -3115,7 +3248,7 @@
     <div style="display: flex; align-items: center; gap: 8px;">
       <div class="balance-badge ton-badge" id="tonBalanceBadge" style="display: none;">
         <span id="tonBalance">0</span>
-        <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="PON"
+        <img src="./images/logos/ton.png" onerror="this.onerror=null; this.src='./images/logos/ton.svg';" alt="PON"
           style="width: 18px; height: 18px; vertical-align: middle; margin-left: 2px;">
       </div>
       <div class="balance-badge" id="starsBalanceBadge">
@@ -3152,55 +3285,55 @@
 
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('bomj')">
-        <img src="/images/case_bomj/case_bomj.png" class="case-img"
+        <img src="./images/case_bomj/case_bomj.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бомж</div>
         <div class="case-price">Бесплатно</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('standart')">
-        <img src="/images/case_standart/case_standart.png" class="case-img"
+        <img src="./images/case_standart/case_standart.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бедняк</div>
         <div class="case-price">200 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('romance')">
-        <img src="/images/case_romance/case_romance.png" class="case-img"
+        <img src="./images/case_romance/case_romance.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Романтика</div>
         <div class="case-price">420 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('manager')">
-        <img src="/images/case_manager/case_manager.png" class="case-img"
+        <img src="./images/case_manager/case_manager.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Менеджер</div>
         <div class="case-price">830 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('rich')">
-        <img src="/images/case_/case_rich.png" class="case-img"
+        <img src="./images/case_/case_rich.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">На богатом</div>
         <div class="case-price">1,365 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('night')">
-        <img src="/images/case_night/case_night.png" class="case-img"
+        <img src="./images/case_night/case_night.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Ночь</div>
         <div class="case-price">5,000 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('summer')">
-        <img src="/images/case_summer/case_summer.png" class="case-img"
+        <img src="./images/case_summer/case_summer.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Лето</div>
         <div class="case-price">13,999 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('bourgeois')">
-        <img src="/images/case_bourgeois/case_bourgeois.png" class="case-img"
+        <img src="./images/case_bourgeois/case_bourgeois.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Буржуй</div>
         <div class="case-price">37,999 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('lux')">
-        <img src="/images/case_lux/case_lux.png" class="case-img"
+        <img src="./images/case_lux/case_lux.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Люкс</div>
         <div class="case-price">120,000 ⭐</div>
@@ -3215,25 +3348,25 @@
 
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('frosty')">
-        <img src="/images/case_frosty/case_frosty.png" class="case-img"
-          onerror="this.onerror=null; this.src='/images/case_frosty/item4.png';">
+        <img src="./images/case_frosty/case_frosty.png" class="case-img"
+          onerror="this.onerror=null; this.src='./images/case_frosty/item4.png';">
         <div class="case-title">Морозный</div>
         <div class="case-price">4,500 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('pink')">
-        <img src="/images/case_pink/case_pink.png" class="case-img"
+        <img src="./images/case_pink/case_pink.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Розовый Взрыв</div>
         <div class="case-price">12,000 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('chernuar')">
-        <img src="/images/case_chernuar/case_chernuar.png" class="case-img"
+        <img src="./images/case_chernuar/case_chernuar.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Чернуар</div>
         <div class="case-price">135,000 ⭐</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('mechta')">
-        <img src="/images/case_mechta/case_mechta.png" class="case-img"
+        <img src="./images/case_mechta/case_mechta.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Мечта</div>
         <div class="case-price">250,000 ⭐</div>
@@ -3247,23 +3380,35 @@
     </div>
 
     <div class="cases-grid">
-      <div class="case-card" onclick="openSpinScreen('pepe')">
-        <img src="/images/case_pepe/case_pepe.png" class="case-img"
-          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
-        <div class="case-title">Пепе</div>
-        <div class="case-price">5,000,000 ⭐</div>
-      </div>
       <div class="case-card" onclick="openSpinScreen('snoop')">
-        <img src="/images/case_snoop/case_snoop.png" class="case-img"
+        <img src="./images/case_snoop/case_snoop.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Снуп Дог</div>
         <div class="case-price">1,000,000 ⭐</div>
       </div>
+      <div class="case-card" onclick="openSpinScreen('pepe')">
+        <img src="./images/case_pepe/case_pepe.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Пепе</div>
+        <div class="case-price">5,000,000 ⭐</div>
+      </div>
+      <div class="case-card" onclick="openSpinScreen('minicraft')">
+        <img src="./images/case_minicraft/case_minicraft.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Minicraft</div>
+        <div class="case-price">199,999,999 ⭐</div>
+      </div>
       <div class="case-card" onclick="openSpinScreen('gta6')">
-        <img src="/images/case_gta6/case_gta6.png" class="case-img"
+        <img src="./images/case_gta6/case_gta6.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">GTA VI</div>
         <div class="case-price">999,999,999 ⭐</div>
+      </div>
+      <div class="case-card" onclick="openSpinScreen('dornado')">
+        <img src="./images/case_dornado/case_dornado.png" class="case-img"
+          onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
+        <div class="case-title">Dornado Energy</div>
+        <div class="case-price">1,666,666,666 ⭐</div>
       </div>
     </div>
 
@@ -3275,13 +3420,13 @@
 
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('autumn')">
-        <img src="/images/case_autumn/case_autumn.png" class="case-img"
+        <img src="./images/case_autumn/case_autumn.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Осенний</div>
         <div class="case-price" style="color: #fb923c;">100 🍂</div>
       </div>
       <div class="case-card" onclick="openSpinScreen('pumpkin')">
-        <img src="/images/case_pumpkin/case_pumpkin.png" class="case-img"
+        <img src="./images/case_pumpkin/case_pumpkin.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Тыквеный Спас</div>
         <div class="case-price" style="color: #fb923c;">250 🍂</div>
@@ -3296,32 +3441,32 @@
 
     <div class="cases-grid">
       <div class="case-card" onclick="openSpinScreen('ton')">
-        <img src="/images/case_ton/case_ton.png" class="case-img"
-          onerror="this.onerror=null; this.src='/images/logos/ton.png';">
+        <img src="./images/case_ton/case_ton.png" class="case-img"
+          onerror="this.onerror=null; this.src='./images/logos/ton.png';">
         <div class="case-title">Кейс PON</div>
         <div class="case-price"
           style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
-          2 PON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+          2 PON <img src="./images/logos/ton.png" onerror="this.onerror=null; this.src='./images/logos/ton.svg';"
             style="width: 14px; height: 14px; vertical-align: middle;">
         </div>
       </div>
       <div class="case-card" onclick="openSpinScreen('ton_whale')">
-        <img src="/images/case_ton_whale/case_ton_whale.png" class="case-img"
-          onerror="this.onerror=null; this.src='/images/logos/ton.png';">
+        <img src="./images/case_ton_whale/case_ton_whale.png" class="case-img"
+          onerror="this.onerror=null; this.src='./images/logos/ton.png';">
         <div class="case-title">PON Кит</div>
         <div class="case-price"
           style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
-          10 PON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+          10 PON <img src="./images/logos/ton.png" onerror="this.onerror=null; this.src='./images/logos/ton.svg';"
             style="width: 14px; height: 14px; vertical-align: middle;">
         </div>
       </div>
       <div class="case-card" onclick="openSpinScreen('superhero')">
-        <img src="/images/case_superhero/case_superhero.png" class="case-img"
-          onerror="this.onerror=null; this.src='/images/logos/ton.png';">
+        <img src="./images/case_superhero/case_superhero.png" class="case-img"
+          onerror="this.onerror=null; this.src='./images/logos/ton.png';">
         <div class="case-title">Супергерой</div>
         <div class="case-price"
           style="color: #38bdf8; display: flex; align-items: center; justify-content: center; gap: 4px;">
-          500 PON <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+          500 PON <img src="./images/logos/ton.png" onerror="this.onerror=null; this.src='./images/logos/ton.svg';"
             style="width: 14px; height: 14px; vertical-align: middle;">
         </div>
       </div>
@@ -3344,31 +3489,31 @@
       </div>
 
       <div class="case-card case-card-full" onclick="openDailyModal()">
-        <img src="/images/logos/daily.png" class="case-img"
+        <img src="./images/logos/daily.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Бонус дня</div>
         <div class="case-price" style="color: var(--green-color); font-weight: 500;">До 500,000 ⭐</div>
       </div>
       <div class="case-card" onclick="switchTab('contracts')">
-        <img src="/images/logos/contract.png" class="case-img"
+        <img src="./images/logos/contract.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Контракты</div>
         <div class="case-price" style="color: #38bdf8; font-weight: 500;">1 до 9 шт • 50 PON</div>
       </div>
       <div class="case-card" onclick="switchTab('upgrade')">
-        <img src="/images/logos/upgrade.png" class="case-img"
+        <img src="./images/logos/upgrade.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Апгрейд</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Улучшить предмет</div>
       </div>
       <div class="case-card" onclick="switchTab('trade')">
-        <img src="/images/logos/trade.png" class="case-img"
+        <img src="./images/logos/trade.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Обмен</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Трейд с игроками</div>
       </div>
       <div class="case-card" onclick="openPromoModal()">
-        <img src="/images/logos/promo.png" class="case-img"
+        <img src="./images/logos/promo.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
         <div class="case-title">Промокод</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Ввести код</div>
@@ -3499,7 +3644,7 @@
           </div>
 
           <button class="btn-contract-spin" id="btnSignContract" onclick="startSignContract()">
-            SIGN UP (<img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';"
+            SIGN UP (<img src="./images/logos/ton.png" onerror="this.onerror=null; this.src='./images/logos/ton.svg';"
               alt="PON" style="width: 17px; height: 17px; vertical-align: middle;"> 50)
           </button>
           <div id="contractResultText"
@@ -3624,7 +3769,7 @@
         <div class="ton-bank-card">
           <div class="ton-bank-title">Глобальный банк PON</div>
           <div class="ton-bank-amount">
-            <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="PON">
+            <img src="./images/logos/ton.png" onerror="this.onerror=null; this.src='./images/logos/ton.svg';" alt="PON">
             <span id="tonBankDisplay">—</span>
           </div>
           <div class="ton-bank-sub">осталось из 100,000 PON • при трате возвращается в банк</div>
@@ -3696,13 +3841,13 @@
       <!-- Верхний блок: 2 кейса события -->
       <div class="cases-grid" style="margin-top: 10px; margin-bottom: 20px; z-index: 2;">
         <div class="case-card" onclick="openSpinScreen('autumn')">
-          <img src="/images/case_autumn/case_autumn.png" class="case-img"
+          <img src="./images/case_autumn/case_autumn.png" class="case-img"
             onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
           <div class="case-title">Осенний</div>
           <div class="case-price" style="color: #fb923c;">100 🍂</div>
         </div>
         <div class="case-card" onclick="openSpinScreen('pumpkin')">
-          <img src="/images/case_pumpkin/case_pumpkin.png" class="case-img"
+          <img src="./images/case_pumpkin/case_pumpkin.png" class="case-img"
             onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
           <div class="case-title">Тыквеный Спас</div>
           <div class="case-price" style="color: #fb923c;">250 🍂</div>
@@ -4089,240 +4234,263 @@
         name: 'Бомж',
         price: 0,
         pool: [
-          { name: 'Шапка шута', rarity: 'legendary', price: 500, chance: 0.5, icon: '/images/case_bomj/item6.png' },
-          { name: 'Лол-поп', rarity: 'epic', price: 325, chance: 6.5, icon: '/images/case_bomj/item5.png' },
-          { name: 'Кольцо', rarity: 'rare', price: 100, chance: 3.0, icon: '/images/case_bomj/item3.png' },
-          { name: 'Алмаз', rarity: 'rare', price: 100, chance: 8.0, icon: '/images/case_bomj/item2.png' },
-          { name: 'Роза', rarity: 'common', price: 25, chance: 17.0, icon: '/images/case_bomj/item4.png' },
-          { name: 'Сердце', rarity: 'common', price: 15, chance: 65.0, icon: '/images/case_bomj/item1.png' }
+          { name: 'Шапка шута', rarity: 'legendary', price: 500, chance: 0.5, icon: './images/case_bomj/item6.png' },
+          { name: 'Лол-поп', rarity: 'epic', price: 325, chance: 6.5, icon: './images/case_bomj/item5.png' },
+          { name: 'Кольцо', rarity: 'rare', price: 100, chance: 3.0, icon: './images/case_bomj/item3.png' },
+          { name: 'Алмаз', rarity: 'rare', price: 100, chance: 8.0, icon: './images/case_bomj/item2.png' },
+          { name: 'Роза', rarity: 'common', price: 25, chance: 17.0, icon: './images/case_bomj/item4.png' },
+          { name: 'Сердце', rarity: 'common', price: 15, chance: 65.0, icon: './images/case_bomj/item1.png' }
         ]
       },
       standart: {
         name: 'Бедняк',
         price: 200,
         pool: [
-          { name: 'Снуп Дог', rarity: 'legendary', price: 2075, chance: 0.5, icon: '/images/case_standart/item3.png' },
-          { name: 'Плюшевый Пепе', rarity: 'epic', price: 925, chance: 2.0, icon: '/images/case_standart/item1.png' },
-          { name: 'Медведь Террорист', rarity: 'epic', price: 725, chance: 5.0, icon: '/images/case_standart/item4.png' },
-          { name: 'Надувной Фламинго', rarity: 'rare', price: 450, chance: 10.0, icon: '/images/case_standart/item9.png' },
-          { name: 'Золотые Polex', rarity: 'rare', price: 450, chance: 12.0, icon: '/images/case_standart/item7.png' },
-          { name: 'Шляпа Шута', rarity: 'rare', price: 350, chance: 15.0, icon: '/images/case_standart/item5.png' },
-          { name: 'Шляпа', rarity: 'common', price: 325, chance: 16.0, icon: '/images/case_standart/item6.png' },
-          { name: 'Лепесток Сакуры', rarity: 'common', price: 100, chance: 18.5, icon: '/images/case_standart/item8.png' },
-          { name: 'Злой Глаз', rarity: 'common', price: 100, chance: 21.0, icon: '/images/case_standart/item2.png' }
+          { name: 'Снуп Дог', rarity: 'legendary', price: 2075, chance: 0.5, icon: './images/case_standart/item3.png' },
+          { name: 'Плюшевый Пепе', rarity: 'epic', price: 925, chance: 2.0, icon: './images/case_standart/item1.png' },
+          { name: 'Медведь Террорист', rarity: 'epic', price: 725, chance: 5.0, icon: './images/case_standart/item4.png' },
+          { name: 'Надувной Фламинго', rarity: 'rare', price: 450, chance: 10.0, icon: './images/case_standart/item9.png' },
+          { name: 'Золотые Polex', rarity: 'rare', price: 450, chance: 12.0, icon: './images/case_standart/item7.png' },
+          { name: 'Шляпа Шута', rarity: 'rare', price: 350, chance: 15.0, icon: './images/case_standart/item5.png' },
+          { name: 'Шляпа', rarity: 'common', price: 325, chance: 16.0, icon: './images/case_standart/item6.png' },
+          { name: 'Лепесток Сакуры', rarity: 'common', price: 100, chance: 18.5, icon: './images/case_standart/item8.png' },
+          { name: 'Злой Глаз', rarity: 'common', price: 100, chance: 21.0, icon: './images/case_standart/item2.png' }
         ]
       },
       romance: {
         name: 'Романтика',
         price: 420,
         pool: [
-          { name: 'Духи №5', rarity: 'legendary', price: 17350, chance: 0.1, icon: '/images/case_romance/item1.png' },
-          { name: 'Сигара Снупа', rarity: 'legendary', price: 8625, chance: 0.6, icon: '/images/case_romance/item2.png' },
-          { name: 'Вечная Роза', rarity: 'epic', price: 3325, chance: 3.0, icon: '/images/case_romance/item7.png' },
-          { name: 'Подвесная Звезда', rarity: 'epic', price: 1225, chance: 4.0, icon: '/images/case_romance/item6.png' },
-          { name: 'Золотое Кольцо', rarity: 'epic', price: 1075, chance: 6.0, icon: '/images/case_romance/item8.png' },
-          { name: 'Ведьмин Котёл', rarity: 'rare', price: 700, chance: 7.0, icon: '/images/case_romance/item9.png' },
-          { name: 'Кейс', rarity: 'rare', price: 450, chance: 8.0, icon: '/images/case_romance/item11.png' },
-          { name: 'Питомец Змейка', rarity: 'rare', price: 450, chance: 8.0, icon: '/images/case_romance/item10.png' },
-          { name: 'Шляпа Ведьмы', rarity: 'rare', price: 350, chance: 12.0, icon: '/images/case_romance/item3.png' },
-          { name: 'Новогодняя Змея 2025', rarity: 'common', price: 325, chance: 15.0, icon: '/images/case_romance/item5.png' },
-          { name: 'Шапка Санта Клауса', rarity: 'common', price: 100, chance: 36.3, icon: '/images/case_romance/item4.png' }
+          { name: 'Духи №5', rarity: 'legendary', price: 17350, chance: 0.1, icon: './images/case_romance/item1.png' },
+          { name: 'Сигара Снупа', rarity: 'legendary', price: 8625, chance: 0.6, icon: './images/case_romance/item2.png' },
+          { name: 'Вечная Роза', rarity: 'epic', price: 3325, chance: 3.0, icon: './images/case_romance/item7.png' },
+          { name: 'Подвесная Звезда', rarity: 'epic', price: 1225, chance: 4.0, icon: './images/case_romance/item6.png' },
+          { name: 'Золотое Кольцо', rarity: 'epic', price: 1075, chance: 6.0, icon: './images/case_romance/item8.png' },
+          { name: 'Ведьмин Котёл', rarity: 'rare', price: 700, chance: 7.0, icon: './images/case_romance/item9.png' },
+          { name: 'Кейс', rarity: 'rare', price: 450, chance: 8.0, icon: './images/case_romance/item11.png' },
+          { name: 'Питомец Змейка', rarity: 'rare', price: 450, chance: 8.0, icon: './images/case_romance/item10.png' },
+          { name: 'Шляпа Ведьмы', rarity: 'rare', price: 350, chance: 12.0, icon: './images/case_romance/item3.png' },
+          { name: 'Новогодняя Змея 2025', rarity: 'common', price: 325, chance: 15.0, icon: './images/case_romance/item5.png' },
+          { name: 'Шапка Санта Клауса', rarity: 'common', price: 100, chance: 36.3, icon: './images/case_romance/item4.png' }
         ]
       },
       manager: {
         name: 'Менеджер',
         price: 830,
         pool: [
-          { name: 'Подвесная Звезда (This Is Fine)', rarity: 'legendary', price: 19250, chance: 0.3, icon: '/images/case_manager/item10.png' },
-          { name: 'Кольцо (Пиксель)', rarity: 'legendary', price: 14825, chance: 0.7, icon: '/images/case_manager/item9.png' },
-          { name: 'Джингл Беллс (Золотые игральные кости)', rarity: 'epic', price: 8150, chance: 1.5, icon: '/images/case_manager/item6.png' },
-          { name: 'Домашний Торт (Шаловливый)', rarity: 'epic', price: 3025, chance: 2.5, icon: '/images/case_manager/item8.png' },
-          { name: 'Имбирьное Печенье (Санта)', rarity: 'epic', price: 2350, chance: 4.0, icon: '/images/case_manager/item3.png' },
-          { name: 'Пасхальное Яйцо (Крипер)', rarity: 'rare', price: 1425, chance: 7.0, icon: '/images/case_manager/item4.png' },
-          { name: 'Кристальный Шар (Череп)', rarity: 'rare', price: 1150, chance: 9.0, icon: '/images/case_manager/item5.png' },
-          { name: 'Конфета (Вишневый шарп)', rarity: 'common', price: 675, chance: 20.0, icon: '/images/case_manager/item2.png' },
-          { name: 'Джек в Коробке (Иннопланеятни)', rarity: 'common', price: 475, chance: 25.0, icon: '/images/case_manager/item1.png' },
-          { name: 'Лоли-Поп', rarity: 'common', price: 325, chance: 30.0, icon: '/images/case_manager/item7.png' }
+          { name: 'Подвесная Звезда (This Is Fine)', rarity: 'legendary', price: 19250, chance: 0.3, icon: './images/case_manager/item10.png' },
+          { name: 'Кольцо (Пиксель)', rarity: 'legendary', price: 14825, chance: 0.7, icon: './images/case_manager/item9.png' },
+          { name: 'Джингл Беллс (Золотые игральные кости)', rarity: 'epic', price: 8150, chance: 1.5, icon: './images/case_manager/item6.png' },
+          { name: 'Домашний Торт (Шаловливый)', rarity: 'epic', price: 3025, chance: 2.5, icon: './images/case_manager/item8.png' },
+          { name: 'Имбирьное Печенье (Санта)', rarity: 'epic', price: 2350, chance: 4.0, icon: './images/case_manager/item3.png' },
+          { name: 'Пасхальное Яйцо (Крипер)', rarity: 'rare', price: 1425, chance: 7.0, icon: './images/case_manager/item4.png' },
+          { name: 'Кристальный Шар (Череп)', rarity: 'rare', price: 1150, chance: 9.0, icon: './images/case_manager/item5.png' },
+          { name: 'Конфета (Вишневый шарп)', rarity: 'common', price: 675, chance: 20.0, icon: './images/case_manager/item2.png' },
+          { name: 'Джек в Коробке (Иннопланеятни)', rarity: 'common', price: 475, chance: 25.0, icon: './images/case_manager/item1.png' },
+          { name: 'Лоли-Поп', rarity: 'common', price: 325, chance: 30.0, icon: './images/case_manager/item7.png' }
         ]
       },
       rich: {
         name: 'На богатом',
         price: 1365,
         pool: [
-          { name: 'Героический шлем', rarity: 'legendary', price: 48625, chance: 0.15, icon: '/images/case_/item1.png' },
-          { name: 'Драгоценный значок', rarity: 'legendary', price: 14775, chance: 0.85, icon: '/images/case_/item2.png' },
-          { name: 'Шлем неко', rarity: 'epic', price: 5750, chance: 4.0, icon: '/images/case_/item3.png' },
-          { name: 'Ионный сушильник', rarity: 'epic', price: 3850, chance: 5.0, icon: '/images/case_/item4.png' },
-          { name: 'Безумная тыква', rarity: 'epic', price: 3500, chance: 9.0, icon: '/images/case_/item5.png' },
-          { name: 'Злой глаз', rarity: 'rare', price: 925, chance: 21.0, icon: '/images/case_/item6.png' },
-          { name: 'Мармеладный зайчик', rarity: 'rare', price: 800, chance: 25.0, icon: '/images/case_/item7.png' },
-          { name: 'Роскошный букет', rarity: 'common', price: 650, chance: 35.0, icon: '/images/case_/item8.png' }
+          { name: 'Героический шлем', rarity: 'legendary', price: 48625, chance: 0.15, icon: './images/case_/item1.png' },
+          { name: 'Драгоценный значок', rarity: 'legendary', price: 14775, chance: 0.85, icon: './images/case_/item2.png' },
+          { name: 'Шлем неко', rarity: 'epic', price: 5750, chance: 4.0, icon: './images/case_/item3.png' },
+          { name: 'Ионный сушильник', rarity: 'epic', price: 3850, chance: 5.0, icon: './images/case_/item4.png' },
+          { name: 'Безумная тыква', rarity: 'epic', price: 3500, chance: 9.0, icon: './images/case_/item5.png' },
+          { name: 'Злой глаз', rarity: 'rare', price: 925, chance: 21.0, icon: './images/case_/item6.png' },
+          { name: 'Мармеладный зайчик', rarity: 'rare', price: 800, chance: 25.0, icon: './images/case_/item7.png' },
+          { name: 'Роскошный букет', rarity: 'common', price: 650, chance: 35.0, icon: './images/case_/item8.png' }
         ]
       },
       night: {
         name: 'Ночь',
         price: 5000,
         pool: [
-          { name: 'Плюшевый Медведь (Темный Рыцарь)', rarity: 'legendary', price: 112050, chance: 0.4, icon: '/images/case_night/item4.png' },
-          { name: 'Шлем Неко (Чернота)', rarity: 'legendary', price: 74075, chance: 0.6, icon: '/images/case_night/item11.png' },
-          { name: 'Школьный рюкзак (Девушка-гот)', rarity: 'epic', price: 34225, chance: 1.0, icon: '/images/case_night/item3.png' },
-          { name: 'Сумка с Добычей (Черный Кошелек)', rarity: 'epic', price: 22625, chance: 1.75, icon: '/images/case_night/item2.png' },
-          { name: 'Polex (Bruce Wayne)', rarity: 'epic', price: 11775, chance: 3.5, icon: '/images/case_night/item9.png' },
-          { name: 'Перстень-Кольцо (Кольцо Настроения)', rarity: 'epic', price: 7975, chance: 6.0, icon: '/images/case_night/item8.png' },
-          { name: 'Проигрыватель (Черный Нуар)', rarity: 'rare', price: 5825, chance: 8.0, icon: '/images/case_night/item10.png' },
-          { name: 'Безумная Тыква (Темный Ритуал)', rarity: 'rare', price: 4600, chance: 9.0, icon: '/images/case_night/item7.png' },
-          { name: 'Шляпа Ведьмы (Черная Дыра)', rarity: 'rare', price: 3925, chance: 12.0, icon: '/images/case_night/item5.png' },
-          { name: 'Подвесная Звезда (Черная Дыра)', rarity: 'common', price: 3125, chance: 20.0, icon: '/images/case_night/item6.png' },
-          { name: 'Испуганный Кот (Салем)', rarity: 'common', price: 1725, chance: 37.75, icon: '/images/case_night/item1.png' }
+          { name: 'Плюшевый Медведь (Темный Рыцарь)', rarity: 'legendary', price: 112050, chance: 0.4, icon: './images/case_night/item4.png' },
+          { name: 'Шлем Неко (Чернота)', rarity: 'legendary', price: 74075, chance: 0.6, icon: './images/case_night/item11.png' },
+          { name: 'Школьный рюкзак (Девушка-гот)', rarity: 'epic', price: 34225, chance: 1.0, icon: './images/case_night/item3.png' },
+          { name: 'Сумка с Добычей (Черный Кошелек)', rarity: 'epic', price: 22625, chance: 1.75, icon: './images/case_night/item2.png' },
+          { name: 'Polex (Bruce Wayne)', rarity: 'epic', price: 11775, chance: 3.5, icon: './images/case_night/item9.png' },
+          { name: 'Перстень-Кольцо (Кольцо Настроения)', rarity: 'epic', price: 7975, chance: 6.0, icon: './images/case_night/item8.png' },
+          { name: 'Проигрыватель (Черный Нуар)', rarity: 'rare', price: 5825, chance: 8.0, icon: './images/case_night/item10.png' },
+          { name: 'Безумная Тыква (Темный Ритуал)', rarity: 'rare', price: 4600, chance: 9.0, icon: './images/case_night/item7.png' },
+          { name: 'Шляпа Ведьмы (Черная Дыра)', rarity: 'rare', price: 3925, chance: 12.0, icon: './images/case_night/item5.png' },
+          { name: 'Подвесная Звезда (Черная Дыра)', rarity: 'common', price: 3125, chance: 20.0, icon: './images/case_night/item6.png' },
+          { name: 'Испуганный Кот (Салем)', rarity: 'common', price: 1725, chance: 37.75, icon: './images/case_night/item1.png' }
         ]
       },
       summer: {
         name: 'Лето',
         price: 13999,
         pool: [
-          { name: 'Драгоценный Персик (Шмель)', rarity: 'legendary', price: 211725, chance: 0.3, icon: '/images/case_summer/item6.png' },
-          { name: "Астральный осколок (Яблоко Евы)", rarity: 'legendary', price: 117250, chance: 0.6, icon: '/images/case_summer/item1.png' },
-          { name: 'Духи (Розе Торн)', rarity: 'epic', price: 83225, chance: 2.4, icon: '/images/case_summer/item10.png' },
-          { name: 'Кольцо (Утка)', rarity: 'epic', price: 31825, chance: 5.2, icon: '/images/case_summer/item3.png' },
-          { name: 'Доска Для Серфинга', rarity: 'rare', price: 21750, chance: 10.0, icon: '/images/case_summer/item9.png' },
-          { name: 'Лягушка (Дерево)', rarity: 'rare', price: 18975, chance: 11.0, icon: '/images/case_summer/item4.png' },
-          { name: 'Лепесток Сакуры (Подсолнух)', rarity: 'rare', price: 12275, chance: 13.0, icon: '/images/case_summer/item2.png' },
-          { name: 'Любовное Зелье (Банан)', rarity: 'common', price: 8225, chance: 16.0, icon: '/images/case_summer/item7.png' },
-          { name: 'Амулет Купидона (Сердце Друида)', rarity: 'common', price: 5275, chance: 18.0, icon: '/images/case_summer/item5.png' },
-          { name: 'Кристальный Шар (Круг Друидов)', rarity: 'common', price: 3125, chance: 23.5, icon: '/images/case_summer/item8.png' }
+          { name: 'Драгоценный Персик (Шмель)', rarity: 'legendary', price: 211725, chance: 0.3, icon: './images/case_summer/item6.png' },
+          { name: "Астральный осколок (Яблоко Евы)", rarity: 'legendary', price: 117250, chance: 0.6, icon: './images/case_summer/item1.png' },
+          { name: 'Духи (Розе Торн)', rarity: 'epic', price: 83225, chance: 2.4, icon: './images/case_summer/item10.png' },
+          { name: 'Кольцо (Утка)', rarity: 'epic', price: 31825, chance: 5.2, icon: './images/case_summer/item3.png' },
+          { name: 'Доска Для Серфинга', rarity: 'rare', price: 21750, chance: 10.0, icon: './images/case_summer/item9.png' },
+          { name: 'Лягушка (Дерево)', rarity: 'rare', price: 18975, chance: 11.0, icon: './images/case_summer/item4.png' },
+          { name: 'Лепесток Сакуры (Подсолнух)', rarity: 'rare', price: 12275, chance: 13.0, icon: './images/case_summer/item2.png' },
+          { name: 'Любовное Зелье (Банан)', rarity: 'common', price: 8225, chance: 16.0, icon: './images/case_summer/item7.png' },
+          { name: 'Амулет Купидона (Сердце Друида)', rarity: 'common', price: 5275, chance: 18.0, icon: './images/case_summer/item5.png' },
+          { name: 'Кристальный Шар (Круг Друидов)', rarity: 'common', price: 3125, chance: 23.5, icon: './images/case_summer/item8.png' }
         ]
       },
       bourgeois: {
         name: 'Буржуй',
         price: 37999,
         pool: [
-          { name: 'Плюшевый Пепе (Хью Джестер)', rarity: 'legendary', price: 1337250, chance: 0.3, icon: '/images/case_bourgeois/item2.png' },
-          { name: 'Кепка Дурова (Пчелиный Мед)', rarity: 'legendary', price: 305750, chance: 0.6, icon: '/images/case_bourgeois/item1.png' },
-          { name: 'Мощная Рука (Кристальный Кулак)', rarity: 'epic', price: 132175, chance: 2.0, icon: '/images/case_bourgeois/item8.png' },
-          { name: 'Сумка с Добычей (Кондуктор)', rarity: 'epic', price: 84225, chance: 4.0, icon: '/images/case_bourgeois/item3.png' },
-          { name: 'Ионный Камень (Призматик)', rarity: 'rare', price: 56250, chance: 5.0, icon: '/images/case_bourgeois/item4.png' },
-          { name: 'Лампа Джина (Лава Лампа)', rarity: 'rare', price: 42875, chance: 10.0, icon: '/images/case_bourgeois/item7.png' },
-          { name: 'Астральный Осколок (Богартит)', rarity: 'common', price: 15000, chance: 15.0, icon: '/images/case_bourgeois/item9.png' },
-          { name: 'Алмазное Кольцо (Черная Дыра)', rarity: 'common', price: 23250, chance: 25.0, icon: '/images/case_bourgeois/item5.png' },
-          { name: 'Перстень-Кольцо', rarity: 'common', price: 17225, chance: 38.1, icon: '/images/case_bourgeois/item6.png' }
+          { name: 'Плюшевый Пепе (Хью Джестер)', rarity: 'legendary', price: 1337250, chance: 0.3, icon: './images/case_bourgeois/item2.png' },
+          { name: 'Кепка Дурова (Пчелиный Мед)', rarity: 'legendary', price: 305750, chance: 0.6, icon: './images/case_bourgeois/item1.png' },
+          { name: 'Мощная Рука (Кристальный Кулак)', rarity: 'epic', price: 132175, chance: 2.0, icon: './images/case_bourgeois/item8.png' },
+          { name: 'Сумка с Добычей (Кондуктор)', rarity: 'epic', price: 84225, chance: 4.0, icon: './images/case_bourgeois/item3.png' },
+          { name: 'Ионный Камень (Призматик)', rarity: 'rare', price: 56250, chance: 5.0, icon: './images/case_bourgeois/item4.png' },
+          { name: 'Лампа Джина (Лава Лампа)', rarity: 'rare', price: 42875, chance: 10.0, icon: './images/case_bourgeois/item7.png' },
+          { name: 'Астральный Осколок (Богартит)', rarity: 'common', price: 15000, chance: 15.0, icon: './images/case_bourgeois/item9.png' },
+          { name: 'Алмазное Кольцо (Черная Дыра)', rarity: 'common', price: 23250, chance: 25.0, icon: './images/case_bourgeois/item5.png' },
+          { name: 'Перстень-Кольцо', rarity: 'common', price: 17225, chance: 38.1, icon: './images/case_bourgeois/item6.png' }
         ]
       },
       lux: {
         name: 'Люкс',
         price: 120000,
         pool: [
-          { name: 'Плюшевый Пепе (Санта Пепе)', rarity: 'legendary', price: 6985225, chance: 0.1, icon: '/images/case_lux/item10.png' },
-          { name: 'Медальон Cердца (Цирк)', rarity: 'legendary', price: 1135075, chance: 0.2, icon: '/images/case_lux/item1.png' },
-          { name: 'Кепка Дурова (Сокол)', rarity: 'epic', price: 545725, chance: 1.0, icon: '/images/case_lux/item2.png' },
-          { name: 'Драгоценный Персик (Ангел)', rarity: 'epic', price: 245050, chance: 3.0, icon: '/images/case_lux/item3.png' },
-          { name: 'Браслет Из Гвоздя (Интерстеллар)', rarity: 'rare', price: 197425, chance: 5.0, icon: '/images/case_lux/item4.png' },
-          { name: 'Героический Шлем (Киберпанк)', rarity: 'rare', price: 147250, chance: 7.0, icon: '/images/case_lux/item5.png' },
-          { name: 'Кирпич (Бойцовский Клуб)', rarity: 'common', price: 112400, chance: 8.7, icon: '/images/case_lux/item6.png' },
-          { name: 'Мини Оскар (Огненно-Жаркий)', rarity: 'common', price: 87550, chance: 18.0, icon: '/images/case_lux/item7.png' },
-          { name: 'Электрический Череп (Терминатор)', rarity: 'common', price: 70225, chance: 25.0, icon: '/images/case_lux/item8.png' },
-          { name: 'Перстень-Кольцо (Звезда Смерти)', rarity: 'common', price: 49575, chance: 32.0, icon: '/images/case_lux/item9.png' }
+          { name: 'Плюшевый Пепе (Санта Пепе)', rarity: 'legendary', price: 6985225, chance: 0.1, icon: './images/case_lux/item10.png' },
+          { name: 'Медальон Cердца (Цирк)', rarity: 'legendary', price: 1135075, chance: 0.2, icon: './images/case_lux/item1.png' },
+          { name: 'Кепка Дурова (Сокол)', rarity: 'epic', price: 545725, chance: 1.0, icon: './images/case_lux/item2.png' },
+          { name: 'Драгоценный Персик (Ангел)', rarity: 'epic', price: 245050, chance: 3.0, icon: './images/case_lux/item3.png' },
+          { name: 'Браслет Из Гвоздя (Интерстеллар)', rarity: 'rare', price: 197425, chance: 5.0, icon: './images/case_lux/item4.png' },
+          { name: 'Героический Шлем (Киберпанк)', rarity: 'rare', price: 147250, chance: 7.0, icon: './images/case_lux/item5.png' },
+          { name: 'Кирпич (Бойцовский Клуб)', rarity: 'common', price: 112400, chance: 8.7, icon: './images/case_lux/item6.png' },
+          { name: 'Мини Оскар (Огненно-Жаркий)', rarity: 'common', price: 87550, chance: 18.0, icon: './images/case_lux/item7.png' },
+          { name: 'Электрический Череп (Терминатор)', rarity: 'common', price: 70225, chance: 25.0, icon: './images/case_lux/item8.png' },
+          { name: 'Перстень-Кольцо (Звезда Смерти)', rarity: 'common', price: 49575, chance: 32.0, icon: './images/case_lux/item9.png' }
         ]
       },
       frosty: {
         name: 'Морозный',
         price: 4500,
         pool: [
-          { name: 'Драгоценный Персик (Метель)', rarity: 'legendary', price: 202750, chance: 0.6, icon: '/images/case_frosty/item2.png' },
-          { name: 'Астральный Осколок (Арктика)', rarity: 'legendary', price: 28950, chance: 1.6, icon: '/images/case_frosty/item4.png' },
-          { name: 'Лягушка (Ледянная Жаба)', rarity: 'epic', price: 10500, chance: 4.0, icon: '/images/case_frosty/item7.png' },
-          { name: 'Безумная Тыква (Обморожение)', rarity: 'rare', price: 6025, chance: 10.0, icon: '/images/case_frosty/item3.png' },
-          { name: 'Амулет Купидона (Ледянное Стекло)', rarity: 'rare', price: 3375, chance: 23.0, icon: '/images/case_frosty/item1.png' },
-          { name: 'Любовное Зелье (Снежная Королева)', rarity: 'rare', price: 2550, chance: 15.0, icon: '/images/case_frosty/item5.png' },
-          { name: 'Вечная Свеча (Айсберг)', rarity: 'common', price: 1775, chance: 45.8, icon: '/images/case_frosty/item6.png' }
+          { name: 'Драгоценный Персик (Метель)', rarity: 'legendary', price: 202750, chance: 0.6, icon: './images/case_frosty/item2.png' },
+          { name: 'Астральный Осколок (Арктика)', rarity: 'legendary', price: 28950, chance: 1.6, icon: './images/case_frosty/item4.png' },
+          { name: 'Лягушка (Ледянная Жаба)', rarity: 'epic', price: 10500, chance: 4.0, icon: './images/case_frosty/item7.png' },
+          { name: 'Безумная Тыква (Обморожение)', rarity: 'rare', price: 6025, chance: 10.0, icon: './images/case_frosty/item3.png' },
+          { name: 'Амулет Купидона (Ледянное Стекло)', rarity: 'rare', price: 3375, chance: 23.0, icon: './images/case_frosty/item1.png' },
+          { name: 'Любовное Зелье (Снежная Королева)', rarity: 'rare', price: 2550, chance: 15.0, icon: './images/case_frosty/item5.png' },
+          { name: 'Вечная Свеча (Айсберг)', rarity: 'common', price: 1775, chance: 45.8, icon: './images/case_frosty/item6.png' }
         ]
       },
       pink: {
         name: 'Розовый Взрыв',
         price: 12000,
         pool: [
-          { name: "Кепка Дурова (Розовая Кепка)", rarity: 'legendary', price: 374025, chance: 0.25, icon: '/images/case_pink/item1.png' },
-          { name: 'Плюшевый Медведь (Фазбер)', rarity: 'legendary', price: 261750, chance: 0.35, icon: '/images/case_pink/item4.png' },
-          { name: 'Лягушка (Прудовая Фея)', rarity: 'legendary', price: 105275, chance: 1.0, icon: '/images/case_pink/item8.png' },
-          { name: 'Кирпич (Свитч)', rarity: 'epic', price: 74750, chance: 1.5, icon: '/images/case_pink/item9.png' },
-          { name: 'Астральный Осколок (Нектарин)', rarity: 'epic', price: 37050, chance: 3.0, icon: '/images/case_pink/item5.png' },
-          { name: 'Перстень-Кольцо (Радуга)', rarity: 'rare', price: 21075, chance: 5.0, icon: '/images/case_pink/item6.png' },
-          { name: 'Факел Свободы (Хватит-огонь)', rarity: 'rare', price: 13750, chance: 8.0, icon: '/images/case_pink/item10.png' },
-          { name: 'Злой Глаз (Розовый Глаз)', rarity: 'rare', price: 8350, chance: 17.0, icon: '/images/case_pink/item2.png' },
-          { name: 'Лоу Райдер (Фламинго)', rarity: 'common', price: 6025, chance: 25.9, icon: '/images/case_pink/item3.png' },
-          { name: 'Носки (Страсть)', rarity: 'common', price: 4465, chance: 38.0, icon: '/images/case_pink/item7.png' }
+          { name: "Кепка Дурова (Розовая Кепка)", rarity: 'legendary', price: 374025, chance: 0.25, icon: './images/case_pink/item1.png' },
+          { name: 'Плюшевый Медведь (Фазбер)', rarity: 'legendary', price: 261750, chance: 0.35, icon: './images/case_pink/item4.png' },
+          { name: 'Лягушка (Прудовая Фея)', rarity: 'legendary', price: 105275, chance: 1.0, icon: './images/case_pink/item8.png' },
+          { name: 'Кирпич (Свитч)', rarity: 'epic', price: 74750, chance: 1.5, icon: './images/case_pink/item9.png' },
+          { name: 'Астральный Осколок (Нектарин)', rarity: 'epic', price: 37050, chance: 3.0, icon: './images/case_pink/item5.png' },
+          { name: 'Перстень-Кольцо (Радуга)', rarity: 'rare', price: 21075, chance: 5.0, icon: './images/case_pink/item6.png' },
+          { name: 'Факел Свободы (Хватит-огонь)', rarity: 'rare', price: 13750, chance: 8.0, icon: './images/case_pink/item10.png' },
+          { name: 'Злой Глаз (Розовый Глаз)', rarity: 'rare', price: 8350, chance: 17.0, icon: './images/case_pink/item2.png' },
+          { name: 'Лоу Райдер (Фламинго)', rarity: 'common', price: 6025, chance: 25.9, icon: './images/case_pink/item3.png' },
+          { name: 'Носки (Страсть)', rarity: 'common', price: 4465, chance: 38.0, icon: './images/case_pink/item7.png' }
         ]
       },
       chernuar: {
         name: 'Чернуар',
         price: 135000,
         pool: [
-          { name: 'Медальон Сердца (Черепахи)', rarity: 'legendary', price: 12330325, chance: 0.1, icon: '/images/case_chernuar/item8.png' },
-          { name: 'Плюшевый Пепе (Эмо Бой)', rarity: 'legendary', price: 5036225, chance: 0.3, icon: '/images/case_chernuar/item5.png' },
-          { name: 'Медальон Сердца (Ночной Клуб)', rarity: 'legendary', price: 607050, chance: 2.0, icon: '/images/case_chernuar/item4.png' },
-          { name: 'Кепка Дурова (Тень)', rarity: 'epic', price: 225000, chance: 5.0, icon: '/images/case_chernuar/item3.png' },
-          { name: 'Сумка с Добычей (Черная Кошка)', rarity: 'epic', price: 112050, chance: 20.0, icon: '/images/case_chernuar/item1.png' },
-          { name: 'Драгоценный Персик (Черный Персик)', rarity: 'epic', price: 110725, chance: 20.0, icon: '/images/case_chernuar/item2.png' },
-          { name: 'Героический Шлем (Преторианец)', rarity: 'rare', price: 74025, chance: 22.6, icon: '/images/case_chernuar/item7.png' },
-          { name: 'Кирпич (Бетон)', rarity: 'common', price: 41250, chance: 30.0, icon: '/images/case_chernuar/item6.png' }
+          { name: 'Медальон Сердца (Черепахи)', rarity: 'legendary', price: 12330325, chance: 0.1, icon: './images/case_chernuar/item8.png' },
+          { name: 'Плюшевый Пепе (Эмо Бой)', rarity: 'legendary', price: 5036225, chance: 0.3, icon: './images/case_chernuar/item5.png' },
+          { name: 'Медальон Сердца (Ночной Клуб)', rarity: 'legendary', price: 607050, chance: 2.0, icon: './images/case_chernuar/item4.png' },
+          { name: 'Кепка Дурова (Тень)', rarity: 'epic', price: 225000, chance: 5.0, icon: './images/case_chernuar/item3.png' },
+          { name: 'Сумка с Добычей (Черная Кошка)', rarity: 'epic', price: 112050, chance: 20.0, icon: './images/case_chernuar/item1.png' },
+          { name: 'Драгоценный Персик (Черный Персик)', rarity: 'epic', price: 110725, chance: 20.0, icon: './images/case_chernuar/item2.png' },
+          { name: 'Героический Шлем (Преторианец)', rarity: 'rare', price: 74025, chance: 22.6, icon: './images/case_chernuar/item7.png' },
+          { name: 'Кирпич (Бетон)', rarity: 'common', price: 41250, chance: 30.0, icon: './images/case_chernuar/item6.png' }
         ]
       },
       mechta: {
         name: 'Мечта',
         price: 250000,
         pool: [
-          { name: 'Плюшевый Пепе (Аква)', rarity: 'legendary', price: 3625000, chance: 1.5, icon: '/images/case_mechta/item3.png' },
-          { name: 'Кепка Дурова (RGB)', rarity: 'legendary', price: 1075025, chance: 3.0, icon: '/images/case_mechta/item2.png' },
-          { name: 'Кирпич (USBrick)', rarity: 'epic', price: 360500, chance: 7.0, icon: '/images/case_mechta/item4.png' },
-          { name: 'Кепка Дурова (Восход)', rarity: 'epic', price: 237050, chance: 10.5, icon: '/images/case_mechta/item1.png' },
-          { name: 'Мощная Рука (Гладиатор)', rarity: 'rare', price: 133200, chance: 35.0, icon: '/images/case_mechta/item6.png' },
-          { name: 'Драгоценный Персик (Импичмент)', rarity: 'common', price: 30325, chance: 43.0, icon: '/images/case_mechta/item5.png' }
-        ]
-      },
-      pepe: {
-        name: 'Пепе',
-        price: 5000000,
-        pool: [
-          { name: 'Анимированный Пепе', rarity: 'legendary', price: 846461046, chance: 0.1, icon: '/images/case_pepe/item11.gif' },
-          { name: 'Плюшевый Пепе (Гуччи Лип)', rarity: 'legendary', price: 237725750, chance: 0.2, icon: '/images/case_pepe/item6.png' },
-          { name: 'Плюшевый Пепе (ХотХед)', rarity: 'legendary', price: 58350025, chance: 0.7, icon: '/images/case_pepe/item9.png' },
-          { name: 'Плюшевый Пепе (Мидас)', rarity: 'legendary', price: 10086725, chance: 4.0, icon: '/images/case_pepe/item5.png' },
-          { name: 'Плюшевый Пепе (Космос)', rarity: 'epic', price: 7425750, chance: 6.0, icon: '/images/case_pepe/item7.png' },
-          { name: 'Плюшевый Пепе (Мармелад)', rarity: 'epic', price: 6985225, chance: 8.0, icon: '/images/case_pepe/item4.png' },
-          { name: 'Плюшевый Пепе (Эмо Бой)', rarity: 'epic', price: 5036225, chance: 10.0, icon: '/images/case_pepe/item2.png' },
-          { name: 'Плюшевый Пепе (Аква)', rarity: 'rare', price: 3625000, chance: 12.0, icon: '/images/case_pepe/item1.png' },
-          { name: 'Плюшевый Пепе (Пятьдесят Оттенковм)', rarity: 'rare', price: 1625025, chance: 12.0, icon: '/images/case_pepe/item8.png' },
-          { name: 'Плюшевый Пепе (Хью Джестер)', rarity: 'common', price: 1337250, chance: 22.0, icon: '/images/case_pepe/item3.png' },
-          { name: 'Плюшевый Пепе (Стальная Лягушка)', rarity: 'common', price: 1205075, chance: 25.0, icon: '/images/case_pepe/item10.png' }
+          { name: 'Плюшевый Пепе (Аква)', rarity: 'legendary', price: 3625000, chance: 1.5, icon: './images/case_mechta/item3.png' },
+          { name: 'Кепка Дурова (RGB)', rarity: 'legendary', price: 1075025, chance: 3.0, icon: './images/case_mechta/item2.png' },
+          { name: 'Кирпич (USBrick)', rarity: 'epic', price: 360500, chance: 7.0, icon: './images/case_mechta/item4.png' },
+          { name: 'Кепка Дурова (Восход)', rarity: 'epic', price: 237050, chance: 10.5, icon: './images/case_mechta/item1.png' },
+          { name: 'Мощная Рука (Гладиатор)', rarity: 'rare', price: 133200, chance: 35.0, icon: './images/case_mechta/item6.png' },
+          { name: 'Драгоценный Персик (Импичмент)', rarity: 'common', price: 30325, chance: 43.0, icon: './images/case_mechta/item5.png' }
         ]
       },
       snoop: {
         name: 'Снуп Дог',
         price: 1000000,
         pool: [
-          { name: 'Снуп Дог (Кароль Snoop)', rarity: 'legendary', price: 120000000, chance: 0.2, icon: '/images/case_snoop/item8.png' },
-          { name: 'Снуп Дог (Голдиззл)', rarity: 'legendary', price: 30000000, chance: 0.5, icon: '/images/case_snoop/item7.png' },
-          { name: 'Снуп Дог (ДогФазер)', rarity: 'legendary', price: 12000000, chance: 1.0, icon: '/images/case_snoop/item6.png' },
-          { name: 'Lowrider (Золотая лихорадка)', rarity: 'legendary', price: 4500000, chance: 2.0, icon: '/images/case_snoop/item10.png' },
-          { name: 'Lowrider (Дорожная Обезьяна)', rarity: 'epic', price: 1500000, chance: 4.0, icon: '/images/case_snoop/item13.png' },
-          { name: 'Lowrider (Сухость Глаз)', rarity: 'epic', price: 900000, chance: 6.0, icon: '/images/case_snoop/item12.png' },
-          { name: 'Lowrider (Бомбей)', rarity: 'epic', price: 550000, chance: 8.0, icon: '/images/case_snoop/item11.png' },
-          { name: 'Снуп Дог (ИИ Дог)', rarity: 'rare', price: 300000, chance: 12.0, icon: '/images/case_snoop/item9.png' },
-          { name: 'Сигара Снупа (Snoop Graffiti)', rarity: 'rare', price: 175000, chance: 15.0, icon: '/images/case_snoop/item13.png' },
-          { name: 'Сигара Снупа (Позолоченная медь)', rarity: 'rare', price: 100000, chance: 18.0, icon: '/images/case_snoop/item3.png' },
-          { name: 'Сигара Снупа (Шоссе)', rarity: 'common', price: 65000, chance: 13.0, icon: '/images/case_snoop/item2.png' },
-          { name: 'Сигара Снупа (Фанк Данк)', rarity: 'common', price: 45000, chance: 10.0, icon: '/images/case_snoop/item4.png' },
-          { name: 'Lowrider', rarity: 'common', price: 35000, chance: 10.3, icon: '/images/case_snoop/item1.png' }
+          { name: 'Снуп Дог (Кароль Snoop)', rarity: 'legendary', price: 120000000, chance: 0.2, icon: './images/case_snoop/item8.png' },
+          { name: 'Снуп Дог (Голдиззл)', rarity: 'legendary', price: 30000000, chance: 0.5, icon: './images/case_snoop/item7.png' },
+          { name: 'Снуп Дог (ДогФазер)', rarity: 'legendary', price: 12000000, chance: 1.0, icon: './images/case_snoop/item6.png' },
+          { name: 'Lowrider (Золотая лихорадка)', rarity: 'legendary', price: 4500000, chance: 2.0, icon: './images/case_snoop/item10.png' },
+          { name: 'Lowrider (Дорожная Обезьяна)', rarity: 'epic', price: 1500000, chance: 4.0, icon: './images/case_snoop/item13.png' },
+          { name: 'Lowrider (Сухость Глаз)', rarity: 'epic', price: 900000, chance: 6.0, icon: './images/case_snoop/item12.png' },
+          { name: 'Lowrider (Бомбей)', rarity: 'epic', price: 550000, chance: 8.0, icon: './images/case_snoop/item11.png' },
+          { name: 'Снуп Дог (ИИ Дог)', rarity: 'rare', price: 300000, chance: 12.0, icon: './images/case_snoop/item9.png' },
+          { name: 'Сигара Снупа (Snoop Graffiti)', rarity: 'rare', price: 175000, chance: 15.0, icon: './images/case_snoop/item13.png' },
+          { name: 'Сигара Снупа (Позолоченная медь)', rarity: 'rare', price: 100000, chance: 18.0, icon: './images/case_snoop/item3.png' },
+          { name: 'Сигара Снупа (Шоссе)', rarity: 'common', price: 65000, chance: 13.0, icon: './images/case_snoop/item2.png' },
+          { name: 'Сигара Снупа (Фанк Данк)', rarity: 'common', price: 45000, chance: 10.0, icon: './images/case_snoop/item4.png' },
+          { name: 'Lowrider', rarity: 'common', price: 35000, chance: 10.3, icon: './images/case_snoop/item1.png' }
+        ]
+      },
+      pepe: {
+        name: 'Пепе',
+        price: 5000000,
+        pool: [
+          { name: 'Анимированный Пепе', rarity: 'legendary', price: 846461046, chance: 0.1, icon: './images/case_pepe/item11.gif' },
+          { name: 'Плюшевый Пепе (Гуччи Лип)', rarity: 'legendary', price: 237725750, chance: 0.2, icon: './images/case_pepe/item6.png' },
+          { name: 'Плюшевый Пепе (ХотХед)', rarity: 'legendary', price: 58350025, chance: 0.7, icon: './images/case_pepe/item9.png' },
+          { name: 'Плюшевый Пепе (Мидас)', rarity: 'legendary', price: 10086725, chance: 4.0, icon: './images/case_pepe/item5.png' },
+          { name: 'Плюшевый Пепе (Космос)', rarity: 'epic', price: 7425750, chance: 6.0, icon: './images/case_pepe/item7.png' },
+          { name: 'Плюшевый Пепе (Мармелад)', rarity: 'epic', price: 6985225, chance: 8.0, icon: './images/case_pepe/item4.png' },
+          { name: 'Плюшевый Пепе (Эмо Бой)', rarity: 'epic', price: 5036225, chance: 10.0, icon: './images/case_pepe/item2.png' },
+          { name: 'Плюшевый Пепе (Аква)', rarity: 'rare', price: 3625000, chance: 12.0, icon: './images/case_pepe/item1.png' },
+          { name: 'Плюшевый Пепе (Пятьдесят Оттенковм)', rarity: 'rare', price: 1625025, chance: 12.0, icon: './images/case_pepe/item8.png' },
+          { name: 'Плюшевый Пепе (Хью Джестер)', rarity: 'common', price: 1337250, chance: 22.0, icon: './images/case_pepe/item3.png' },
+          { name: 'Плюшевый Пепе (Стальная Лягушка)', rarity: 'common', price: 1205075, chance: 25.0, icon: './images/case_pepe/item10.png' }
+        ]
+      },
+      minicraft: {
+        name: 'Minicraft',
+        price: 199999999,
+        pool: [
+          { name: 'Редкая Птица (Чикен Джоки)', rarity: 'legendary', price: 1255555555555, chance: 0.005, icon: './images/case_minicraft/item2.gif' },
+          { name: 'Клавиша (Крипер)', rarity: 'legendary', price: 56187225060, chance: 0.195, icon: './images/case_minicraft/item4.gif' },
+          { name: 'Испуганная Кошка (Эндеркот)', rarity: 'epic', price: 3564181055, chance: 5.3, icon: './images/case_minicraft/item1.gif' },
+          { name: 'Кирпич (Пчела)', rarity: 'rare', price: 218745615, chance: 19.5, icon: './images/case_minicraft/item5.gif' },
+          { name: 'Испуганная Кошка (Крипер)', rarity: 'common', price: 136505405, chance: 35.0, icon: './images/case_minicraft/item3.gif' },
+          { name: 'Кирпич (Блок Травы)', rarity: 'common', price: 74566005, chance: 40.0, icon: './images/case_minicraft/item6.gif' }
         ]
       },
       gta6: {
         name: 'GTA VI',
         price: 999999999,
         pool: [
-          { name: 'Фигурка Дурова (Джейсон)', rarity: 'legendary', price: 150000000000, chance: 0.05, icon: '/images/case_gta6/item1.png' },
-          { name: 'Фигурка Дурова (Люсия)', rarity: 'legendary', price: 35000000000, chance: 0.5, icon: '/images/case_gta6/item2.png' },
-          { name: 'Кофта Дурова (Вайс-Сити)', rarity: 'epic', price: 6000000000, chance: 4.5, icon: '/images/case_gta6/item3.png' },
-          { name: 'Кепка Дурова (GTA VI)', rarity: 'rare', price: 1800000000, chance: 20.0, icon: '/images/case_gta6/item4.png' },
-          { name: 'Очки Дурова (GTA VI)', rarity: 'common', price: 120000000, chance: 74.95, icon: '/images/case_gta6/item5.png' }
+          { name: 'Фигурка Дурова (Джейсон)', rarity: 'legendary', price: 150000000000, chance: 0.05, icon: './images/case_gta6/item1.png' },
+          { name: 'Фигурка Дурова (Люсия)', rarity: 'legendary', price: 35000000000, chance: 0.5, icon: './images/case_gta6/item2.png' },
+          { name: 'Кофта Дурова (Вайс-Сити)', rarity: 'epic', price: 6000000000, chance: 4.5, icon: './images/case_gta6/item3.png' },
+          { name: 'Кепка Дурова (GTA VI)', rarity: 'rare', price: 1800000000, chance: 20.0, icon: './images/case_gta6/item4.png' },
+          { name: 'Очки Дурова (GTA VI)', rarity: 'common', price: 120000000, chance: 74.95, icon: './images/case_gta6/item5.png' }
+        ]
+      },
+      dornado: {
+        name: 'Dorndado Energy',
+        price: 1666666666,
+        pool: [
+          { name: 'Dornado (Bubble)', rarity: 'legendary', price: 276555666555, chance: 0.2, icon: './images/case_dornado/item2.png' },
+          { name: 'Dornado (Mango)', rarity: 'legendary', price: 32050355675, chance: 1.0, icon: './images/case_dornado/item3.png' },
+          { name: 'Dornado (Green Apple)', rarity: 'epic', price: 4784350890, chance: 18.8, icon: './images/case_dornado/item5.png' },
+          { name: 'Dornado (Skill)', rarity: 'rare', price: 2450899300, chance: 20.0, icon: './images/case_dornado/item4.png' },
+          { name: 'Dornado (Storm)', rarity: 'common', price: 834561095, chance: 60.0, icon: './images/case_dornado/item1.png' }
         ]
       },
       autumn: {
@@ -4330,11 +4498,11 @@
         price: 100,
         currency: 'leaves',
         pool: [
-          { name: 'Плюшевый Пепе (Осень)', rarity: 'legendary', price: 8469741220, chance: 1.0, icon: '/images/case_autumn/item1.png' },
-          { name: 'Кристальный Шар (Осень)', rarity: 'epic', price: 2998476125, chance: 2.5, icon: '/images/case_autumn/item2.png' },
-          { name: 'Лепесток Сакуры (Осень)', rarity: 'rare', price: 491673055, chance: 10.0, icon: '/images/case_autumn/item3.png' },
-          { name: 'Подвесная Звезда (Осень)', rarity: 'rare', price: 185934105, chance: 20.0, icon: '/images/case_autumn/item4.png' },
-          { name: 'Настольный Календарь (Октябрь)', rarity: 'common', price: 27591195, chance: 66.5, icon: '/images/case_autumn/item5.png' }
+          { name: 'Плюшевый Пепе (Осень)', rarity: 'legendary', price: 8469741220, chance: 1.0, icon: './images/case_autumn/item1.png' },
+          { name: 'Кристальный Шар (Осень)', rarity: 'epic', price: 2998476125, chance: 2.5, icon: './images/case_autumn/item2.png' },
+          { name: 'Лепесток Сакуры (Осень)', rarity: 'rare', price: 491673055, chance: 10.0, icon: './images/case_autumn/item3.png' },
+          { name: 'Подвесная Звезда (Осень)', rarity: 'rare', price: 185934105, chance: 20.0, icon: './images/case_autumn/item4.png' },
+          { name: 'Настольный Календарь (Октябрь)', rarity: 'common', price: 27591195, chance: 66.5, icon: './images/case_autumn/item5.png' }
         ]
       },
       pumpkin: {
@@ -4342,11 +4510,11 @@
         price: 250,
         currency: 'leaves',
         pool: [
-          { name: 'Собака В Капюшоне (Осень)', rarity: 'legendary', price: 22641344565, chance: 0.5, icon: '/images/case_pumpkin/item5.png' },
-          { name: 'Снуп Дог (Dr. Autumn)', rarity: 'legendary', price: 7945823135, chance: 1.75, icon: '/images/case_pumpkin/item2.png' },
-          { name: 'Героический Шлем (Осень)', rarity: 'epic', price: 2045197400, chance: 7.0, icon: '/images/case_pumpkin/item4.png' },
-          { name: 'Котел с Зельем (Осень)', rarity: 'rare', price: 791467250, chance: 20.0, icon: '/images/case_pumpkin/item1.png' },
-          { name: 'Леденец (Осень)', rarity: 'common', price: 120564325, chance: 70.75, icon: '/images/case_pumpkin/item3.png' }
+          { name: 'Собака В Капюшоне (Осень)', rarity: 'legendary', price: 22641344565, chance: 0.5, icon: './images/case_pumpkin/item5.png' },
+          { name: 'Снуп Дог (Dr. Autumn)', rarity: 'legendary', price: 7945823135, chance: 1.75, icon: './images/case_pumpkin/item2.png' },
+          { name: 'Героический Шлем (Осень)', rarity: 'epic', price: 2045197400, chance: 7.0, icon: './images/case_pumpkin/item4.png' },
+          { name: 'Котел с Зельем (Осень)', rarity: 'rare', price: 791467250, chance: 20.0, icon: './images/case_pumpkin/item1.png' },
+          { name: 'Леденец (Осень)', rarity: 'common', price: 120564325, chance: 70.75, icon: './images/case_pumpkin/item3.png' }
         ]
       },
       ton: {
@@ -4354,9 +4522,9 @@
         price: 2,
         currency: 'ton',
         pool: [
-          { name: 'Plush Pepe (X-Ray)', rarity: 'legendary', price: 1000206225, chance: 0.05, icon: '/images/case_ton/item2.gif' },
-          { name: 'Heart', rarity: 'common', price: 15, chance: 25.0, icon: '/images/case_ton/item1.png' },
-          { name: 'Plush Pepe (Hue Jester)', rarity: 'rare', price: 1337250, chance: 74.95, icon: '/images/case_ton/item3.png' }
+          { name: 'Plush Pepe (X-Ray)', rarity: 'legendary', price: 1000206225, chance: 0.05, icon: './images/case_ton/item2.gif' },
+          { name: 'Heart', rarity: 'common', price: 15, chance: 25.0, icon: './images/case_ton/item1.png' },
+          { name: 'Plush Pepe (Hue Jester)', rarity: 'rare', price: 1337250, chance: 74.95, icon: './images/case_ton/item3.png' }
         ]
       },
       ton_whale: {
@@ -4364,12 +4532,12 @@
         price: 10,
         currency: 'ton',
         pool: [
-          { name: 'Плюшевый Пепе (Щенок Мопса)', rarity: 'legendary', price: 10412223234, chance: 0.01, icon: '/images/case_ton_whale/item3.gif' },
-          { name: 'Фигурка Дурова (PON)', rarity: 'legendary', price: 3746634265, chance: 0.05, icon: '/images/case_ton_whale/item4.gif' },
-          { name: 'Надувной Круг (Несси)', rarity: 'epic', price: 793356832, chance: 0.6, icon: '/images/case_ton_whale/item5.gif' },
-          { name: 'Какашка (Туалетный Робот)', rarity: 'rare', price: 52228677, chance: 4.0, icon: '/images/case_ton_whale/item1.gif' },
-          { name: 'Школьный Рюкзак (Сейф)', rarity: 'common', price: 3124789, chance: 39.34, icon: '/images/case_ton_whale/item2.gif' },
-          { name: 'Плюшевый Медведь (Чертеж)', rarity: 'common', price: 1536235, chance: 56.0, icon: '/images/case_ton_whale/item6.gif' }
+          { name: 'Плюшевый Пепе (Щенок Мопса)', rarity: 'legendary', price: 10412223234, chance: 0.01, icon: './images/case_ton_whale/item3.gif' },
+          { name: 'Фигурка Дурова (PON)', rarity: 'legendary', price: 3746634265, chance: 0.05, icon: './images/case_ton_whale/item4.gif' },
+          { name: 'Надувной Круг (Несси)', rarity: 'epic', price: 793356832, chance: 0.6, icon: './images/case_ton_whale/item5.gif' },
+          { name: 'Какашка (Туалетный Робот)', rarity: 'rare', price: 52228677, chance: 4.0, icon: './images/case_ton_whale/item1.gif' },
+          { name: 'Школьный Рюкзак (Сейф)', rarity: 'common', price: 3124789, chance: 39.34, icon: './images/case_ton_whale/item2.gif' },
+          { name: 'Плюшевый Медведь (Чертеж)', rarity: 'common', price: 1536235, chance: 56.0, icon: './images/case_ton_whale/item6.gif' }
         ]
       },
       superhero: {
@@ -4377,11 +4545,11 @@
         price: 500,
         currency: 'ton',
         pool: [
-          { name: 'Фигурка Дурова (Омни-Мэн)', rarity: 'legendary', price: 250555555555, chance: 0.1, icon: '/images/case_superhero/item1.gif' },
-          { name: 'Фигурка Дурова (Патриот)', rarity: 'legendary', price: 57888888888, chance: 0.7, icon: '/images/case_superhero/item5.png' },
-          { name: 'Фигурка Дурова (Сумер-Мэн)', rarity: 'epic', price: 12333333333, chance: 5.2, icon: '/images/case_superhero/item2.gif' },
-          { name: 'Фигурка Дурова (Железный Человек)', rarity: 'rare', price: 4666666666, chance: 24.0, icon: '/images/case_superhero/item3.png' },
-          { name: 'Фигурка Дурова (Человек-Паук)', rarity: 'common', price: 1777777777, chance: 70.0, icon: '/images/case_superhero/item4.png' }
+          { name: 'Фигурка Дурова (Омни-Мэн)', rarity: 'legendary', price: 250555555555, chance: 0.1, icon: './images/case_superhero/item1.gif' },
+          { name: 'Фигурка Дурова (Патриот)', rarity: 'legendary', price: 57888888888, chance: 0.7, icon: './images/case_superhero/item5.png' },
+          { name: 'Фигурка Дурова (Сумер-Мэн)', rarity: 'epic', price: 12333333333, chance: 5.2, icon: './images/case_superhero/item2.gif' },
+          { name: 'Фигурка Дурова (Железный Человек)', rarity: 'rare', price: 4666666666, chance: 24.0, icon: './images/case_superhero/item3.png' },
+          { name: 'Фигурка Дурова (Человек-Паук)', rarity: 'common', price: 1777777777, chance: 70.0, icon: './images/case_superhero/item4.png' }
         ]
       }
     };
@@ -4423,42 +4591,42 @@
         id: 'night',
         name: 'Ночь',
         price: 500000,
-        image: '/images/wallpapers/wallpaper_night.png',
+        image: './images/wallpapers/wallpaper_night.png',
         desc: 'Атмосферный ночной фон со звёздами на витрину'
       },
       {
         id: 'burger',
         name: 'Бургер',
         price: 1000000,
-        image: '/images/wallpapers/wallpaper_burger.png',
+        image: './images/wallpapers/wallpaper_burger.png',
         desc: 'Фон на витрину с бургерами'
       },
       {
         id: 'pepe',
         name: 'Pepe',
         price: 10000000,
-        image: '/images/wallpapers/wallpaper_pepe.png',
+        image: './images/wallpapers/wallpaper_pepe.png',
         desc: 'Кастомный фон на витрину с Пепе'
       },
       {
         id: 'snoop',
         name: 'Снуп Дог',
         price: 10000000,
-        image: '/images/wallpapers/wallpaper_snoop.png',
+        image: './images/wallpapers/wallpaper_snoop.png',
         desc: 'Легендарный фон Snoop Dogg на витрину'
       },
       {
         id: 'durovsfigure',
         name: 'Дуровс фигур',
         price: 100000000,
-        image: '/images/wallpapers/wallpaper_durovsfigure.png',
+        image: './images/wallpapers/wallpaper_durovsfigure.png',
         desc: 'Премиальный фон на витрину с фигурками Дурова'
       },
       {
         id: 'telegram',
         name: 'Телеграм',
         price: 0,
-        image: '/images/wallpapers/wallpaper_telegram.png',
+        image: './images/wallpapers/wallpaper_telegram.png',
         desc: 'Эксклюзивный фон за 5-й день ежедневных наград',
         isExclusive: true
       }
@@ -4543,13 +4711,13 @@
           const param = window.Telegram.WebApp.initDataUnsafe.start_param;
           if (param) return String(param).trim();
         }
-      } catch (e) {}
+      } catch (e) { }
 
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const param = urlParams.get('tgWebAppStartParam') || urlParams.get('startapp') || urlParams.get('ref') || urlParams.get('start');
         if (param) return String(param).trim();
-      } catch (e) {}
+      } catch (e) { }
 
       try {
         const hash = window.location.hash.replace(/^#/, '');
@@ -4558,12 +4726,12 @@
           const param = hashParams.get('tgWebAppStartParam') || hashParams.get('startapp') || hashParams.get('ref') || hashParams.get('start');
           if (param) return String(param).trim();
         }
-      } catch (e) {}
+      } catch (e) { }
 
       try {
         const match = window.location.href.match(/[?&#](?:tgWebAppStartParam|startapp|ref|start)=([^&#]+)/i);
         if (match && match[1]) return decodeURIComponent(match[1]).trim();
-      } catch (e) {}
+      } catch (e) { }
 
       return '';
     }
@@ -4598,6 +4766,20 @@
           tonBalance = (data.ton_balance !== undefined && data.ton_balance !== null) ? data.ton_balance : localTon;
           autumnLeaves = (data.autumn_leaves !== undefined && data.autumn_leaves !== null) ? Math.max(data.autumn_leaves, localLeaves) : localLeaves;
           inventory = data.inventory ?? [];
+          if (Array.isArray(inventory)) {
+            inventory.forEach(it => {
+              if (it && typeof it.icon === 'string' && it.icon.startsWith('/images/')) {
+                it.icon = '.' + it.icon;
+              }
+            });
+          }
+          if (Array.isArray(showcase)) {
+            showcase.forEach(it => {
+              if (it && typeof it.icon === 'string' && it.icon.startsWith('/images/')) {
+                it.icon = '.' + it.icon;
+              }
+            });
+          }
           userFirstName = data.username ?? userFirstName;
           showcase = data.showcase ?? [null, null, null];
           lastDailyClaim = data.last_daily_claim ?? null;
@@ -4606,27 +4788,9 @@
           purchasedWallpapers = data.purchased_wallpapers ?? localWps;
           equippedWallpaper = (data.equipped_wallpaper !== undefined) ? data.equipped_wallpaper : localEquippedWp;
 
-          // Если пользователь ещё не имел пригласившего и перешёл по реферальной ссылке
-          if (refCandidate && refCandidate !== String(userId) && !data.referred_by) {
-            autumnLeaves += 50;
-            data.referred_by = refCandidate;
-            localStorage.setItem('autumn_leaves_balance', autumnLeaves.toString());
-            localStorage.setItem('opencaser_autumn_leaves_' + userId, autumnLeaves.toString());
-
-            try {
-              await supabaseClient
-                .from('users')
-                .update({ referred_by: refCandidate, autumn_leaves: autumnLeaves })
-                .eq('user_id', userId);
-            } catch (err) {
-              console.warn('Не удалось обновить referred_by:', err);
-            }
-
-            setTimeout(() => {
-              showToast('🎉 Добро пожаловать! Вам начислено +50 🍂 по ссылке друга!', 'success');
-            }, 1500);
-
-            creditReferrer(refCandidate, userId, userFirstName);
+          // Пользователь уже зарегистрирован и играл ранее — реферал не засчитывается
+          if (refCandidate && refCandidate !== String(userId)) {
+            console.log('Пользователь уже существует в базе, реферал доступен только новым игрокам.');
           }
         } else {
           purchasedWallpapers = localWps;
@@ -5190,7 +5354,7 @@
       if (cardEl) {
         if (wpToUse && wpToUse !== 'default') {
           const wp = WALLPAPERS.find(w => w.id === wpToUse);
-          const bgUrl = wp ? wp.image : `/images/wallpapers/wallpaper_${wpToUse}.png`;
+          const bgUrl = wp ? wp.image : `./images/wallpapers/wallpaper_${wpToUse}.png`;
           cardEl.style.backgroundImage = `linear-gradient(rgba(18, 19, 28, 0.42), rgba(18, 19, 28, 0.65)), url('${bgUrl}')`;
           cardEl.style.backgroundSize = 'cover';
           cardEl.style.backgroundPosition = 'center';
@@ -5421,7 +5585,7 @@
         let iconHtml = '⭐';
         let valHtml = item.label;
         if (item.type === 'ton') {
-          iconHtml = `<img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" style="width:20px;height:20px;margin:2px 0;">`;
+          iconHtml = `<img src="./images/logos/ton.png" onerror="this.onerror=null; this.src='./images/logos/ton.svg';" style="width:20px;height:20px;margin:2px 0;">`;
           valHtml = `<span style="color:#38bdf8; font-weight:bold;">${item.label}</span>`;
         } else if (item.type === 'wallpaper') {
           iconHtml = '🖼️';
@@ -5508,7 +5672,7 @@
         const gifts = allItems.filter(i => i.rarity === 'rare' || i.rarity === 'epic');
         const giftItem = gifts.length > 0
           ? { ...gifts[Math.floor(Math.random() * gifts.length)], id: Date.now() }
-          : { name: 'Плюшевый Пепе', rarity: 'epic', price: 925, icon: '/images/case_standart/item1.png', id: Date.now() };
+          : { name: 'Плюшевый Пепе', rarity: 'epic', price: 925, icon: './images/case_standart/item1.png', id: Date.now() };
         inventory.unshift(giftItem);
         rewardText = `Подарок: ${giftItem.name}!`;
       }
@@ -5937,7 +6101,7 @@
         card.innerHTML = `
           ${pkg.label ? `<div class="ton-pkg-badge">${pkg.label}</div>` : ''}
           <div class="ton-pkg-amount">
-            <img src="/images/logos/ton.png" onerror="this.onerror=null; this.src='/images/logos/ton.svg';" alt="PON">
+            <img src="./images/logos/ton.png" onerror="this.onerror=null; this.src='./images/logos/ton.svg';" alt="PON">
             ${formatNumber(pkg.amount)} PON
           </div>
           <div class="ton-pkg-price">${formatNumber(pkg.priceStars)} ⭐</div>
@@ -6345,6 +6509,23 @@
     async function creditReferrer(refId, newUserId, newUserName) {
       try {
         const cleanRefId = String(refId).trim();
+        const cleanNewUserId = String(newUserId).trim();
+
+        // Нельзя пригласить самого себя
+        if (cleanRefId === cleanNewUserId) return;
+
+        // Защита: проверяем, не был ли этот пользователь уже ранее зафиксирован в рефералах
+        const { data: existingRef } = await supabaseClient
+          .from('referrals')
+          .select('id')
+          .eq('referee_id', cleanNewUserId)
+          .maybeSingle();
+
+        if (existingRef) {
+          console.log('Пользователь уже зарегистрирован как реферал:', cleanNewUserId);
+          return;
+        }
+
         const { data: refUser } = await supabaseClient
           .from('users')
           .select('balance, autumn_leaves, referrals_count, referrals_earnings')
@@ -7257,14 +7438,52 @@
 
     // --- Инициализация приложения с экраном загрузки (мин. 5 сек либо до полной загрузки данных) ---
     async function initApp() {
+      const progressBar = document.getElementById('loadingProgressBar');
+      const progressPercent = document.getElementById('loadingProgressPercent');
+      const progressStatus = document.getElementById('loadingProgressStatus');
+
+      const statuses = [
+        { at: 0, text: 'Подключение к серверу...' },
+        { at: 20, text: 'Загрузка кейсов и коллекций...' },
+        { at: 50, text: 'Синхронизация профиля...' },
+        { at: 75, text: 'Подготовка рулетки...' },
+        { at: 94, text: 'Готово к открытию!' }
+      ];
+
+      let currentPct = 0;
+      const totalDuration = 4800; // 4.8 сек
+      const intervalMs = 50;
+      const step = 100 / (totalDuration / intervalMs);
+
+      const progressInterval = setInterval(() => {
+        if (currentPct < 96) {
+          currentPct = Math.min(96, currentPct + step + (Math.random() * 0.4 - 0.2));
+          const rounded = Math.round(currentPct);
+          if (progressBar) progressBar.style.width = rounded + '%';
+          if (progressPercent) progressPercent.innerText = rounded + '%';
+
+          const matchingStatus = [...statuses].reverse().find(s => currentPct >= s.at);
+          if (matchingStatus && progressStatus && progressStatus.innerText !== matchingStatus.text) {
+            progressStatus.innerText = matchingStatus.text;
+          }
+        }
+      }, intervalMs);
+
       const minDelay = new Promise(resolve => setTimeout(resolve, 5000));
       const dataLoad = loadUserData();
       await Promise.all([minDelay, dataLoad]);
 
+      clearInterval(progressInterval);
+      if (progressBar) progressBar.style.width = '100%';
+      if (progressPercent) progressPercent.innerText = '100%';
+      if (progressStatus) progressStatus.innerText = 'Готово к открытию!';
+
+      await new Promise(resolve => setTimeout(resolve, 250));
+
       const loadingScreen = document.getElementById('loadingScreen');
       if (loadingScreen) {
         loadingScreen.classList.add('hidden');
-        setTimeout(() => { loadingScreen.style.display = 'none'; }, 400);
+        setTimeout(() => { loadingScreen.style.display = 'none'; }, 500);
       }
     }
 
@@ -7411,7 +7630,7 @@
           name: 'Кубок Чемпиона (Золото)',
           rarity: 'legendary',
           price: 25000000,
-          icon: '/images/logos/upgrade.png'
+          icon: './images/logos/upgrade.png'
         };
       }
       const picked = candidates[Math.floor(Math.random() * candidates.length)];
