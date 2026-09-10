@@ -3705,6 +3705,11 @@
         <div class="case-title">Обмен</div>
         <div class="case-price" style="color: var(--text-muted); font-weight: 500;">Трейд с игроками</div>
       </div>
+      <div class="case-card" onclick="openMyProfile()">
+        <div style="font-size: 38px; margin-bottom: 6px; filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.5));">📖</div>
+        <div class="case-title">Бестиарий</div>
+        <div class="case-price" style="color: #38bdf8; font-weight: 600;">Коллекция предметов</div>
+      </div>
       <div class="case-card" onclick="openPromoModal()">
         <img src="./images/logos/promo.png" class="case-img"
           onerror="this.onerror=null; this.src='https://cdn-icons-png.flaticon.com/512/679/679821.png';">
@@ -4114,7 +4119,7 @@
         </div>
       </div>
 
-      <button class="btn-back" id="profileBackBtn" onclick="switchTab('shop')"
+      <button class="btn-back" id="profileBackBtn" onclick="switchTab('modes')"
         style="align-self: center; margin-top: 10px; display: none;">← Назад</button>
     </div>
   </div>
@@ -4773,8 +4778,11 @@
     let isSpinning = false;
     let isUpgrading = false;
     let isFusing = false;
-    let contractSlots = [null, null, null, null, null, null, null, null, null]; // 9 слотов для контракта
-    let contractWheelRotation = 0;
+    let selectedFuseItemName = null;
+    let fuseSlots = [null, null, null, null, null];
+    let unlockedBestiaryItems = new Set();
+    window.unlockedBestiaryItems = unlockedBestiaryItems;
+    let currentBestiaryFilter = 'all';
     let lastWonItemIndex = null;
     let selectedInventoryIndex = null;
     let spinSoundInterval = null;
@@ -5483,7 +5491,7 @@
       document.getElementById('profileTitleText').innerText = 'Мой профиль';
       document.getElementById('profileEditSection').style.display = 'flex';
       document.getElementById('profileNameInput').value = userFirstName;
-      document.getElementById('profileBackBtn').style.display = 'none';
+      document.getElementById('profileBackBtn').style.display = 'block';
 
       const settingsBtn = document.getElementById('btnShowcaseSettings');
       if (settingsBtn) settingsBtn.style.display = 'flex';
@@ -6882,8 +6890,9 @@
 
     // --- СИСТЕМА БЕСТИАРИЯ (КОЛЛЕКЦИЯ ПРЕДМЕТОВ) ---
     function initBestiary() {
-      if (!(unlockedBestiaryItems instanceof Set)) {
-        unlockedBestiaryItems = new Set();
+      if (!window.unlockedBestiaryItems || !(window.unlockedBestiaryItems instanceof Set)) {
+        window.unlockedBestiaryItems = new Set();
+        unlockedBestiaryItems = window.unlockedBestiaryItems;
       }
       try {
         const stored = localStorage.getItem('opencaser_bestiary_' + userId);
@@ -6911,21 +6920,29 @@
 
     function saveBestiary() {
       try {
-        localStorage.setItem('opencaser_bestiary_' + userId, JSON.stringify(Array.from(unlockedBestiaryItems)));
+        if (window.unlockedBestiaryItems && window.unlockedBestiaryItems instanceof Set) {
+          localStorage.setItem('opencaser_bestiary_' + userId, JSON.stringify(Array.from(window.unlockedBestiaryItems)));
+        }
       } catch (_) { }
     }
 
     function unlockBestiaryItem(itemOrName) {
+      if (!window.unlockedBestiaryItems || !(window.unlockedBestiaryItems instanceof Set)) {
+        initBestiary();
+      }
       if (!itemOrName) return;
       const name = typeof itemOrName === 'string' ? itemOrName : itemOrName.name;
       if (!name) return;
-      if (!unlockedBestiaryItems.has(name)) {
-        unlockedBestiaryItems.add(name);
+      if (!window.unlockedBestiaryItems.has(name)) {
+        window.unlockedBestiaryItems.add(name);
         saveBestiary();
       }
     }
 
     function renderBestiary(filterCase = null) {
+      if (!window.unlockedBestiaryItems || !(window.unlockedBestiaryItems instanceof Set)) {
+        initBestiary();
+      }
       if (filterCase !== null) currentBestiaryFilter = filterCase;
       const statsBadge = document.getElementById('bestiaryStatsBadge');
       const progFill = document.getElementById('bestiaryTotalProgressFill');
@@ -6943,7 +6960,7 @@
         if (c && Array.isArray(c.pool)) {
           c.pool.forEach(it => {
             totalItemsCount++;
-            if (unlockedBestiaryItems.has(it.name)) {
+            if (window.unlockedBestiaryItems.has(it.name)) {
               totalUnlockedCount++;
             }
           });
@@ -6960,7 +6977,7 @@
         allCasesKeys.forEach(k => {
           const c = casesData[k];
           let cTotal = c.pool.length;
-          let cUnlocked = c.pool.filter(it => unlockedBestiaryItems.has(it.name)).length;
+          let cUnlocked = c.pool.filter(it => window.unlockedBestiaryItems.has(it.name)).length;
           chipsHtml += `<div class="bestiary-filter-chip ${currentBestiaryFilter === k ? 'active' : ''}" onclick="renderBestiary('${k}')">${c.name} (${cUnlocked}/${cTotal})</div>`;
         });
         filterRow.innerHTML = chipsHtml;
@@ -6977,7 +6994,7 @@
         const caseSec = document.createElement('div');
         caseSec.className = 'bestiary-case-section';
 
-        let cUnlocked = c.pool.filter(it => unlockedBestiaryItems.has(it.name)).length;
+        let cUnlocked = c.pool.filter(it => window.unlockedBestiaryItems.has(it.name)).length;
         let cTotal = c.pool.length;
 
         caseSec.innerHTML = `
@@ -6990,7 +7007,7 @@
 
         const grid = caseSec.querySelector(`#bestiaryGrid_${k}`);
         c.pool.forEach(item => {
-          const isUnlocked = unlockedBestiaryItems.has(item.name);
+          const isUnlocked = window.unlockedBestiaryItems.has(item.name);
           const itemDiv = document.createElement('div');
           itemDiv.className = 'bestiary-item ' + (isUnlocked ? 'unlocked ' + (item.rarity || 'common') : 'locked');
 
@@ -7158,106 +7175,120 @@
 
     async function startFuseAction() {
       if (isFusing || isSpinning || isUpgrading) return;
-      if (!fuseSlots.every(Boolean) || fuseSlots.length !== 5) {
+      if (!fuseSlots || !fuseSlots.every(Boolean) || fuseSlots.length !== 5) {
         showToast('❌ Заполните все 5 слотов одинаковыми предметами!', 'error');
         return;
       }
 
       const sampleItem = fuseSlots[0];
-      const usedIds = new Set(fuseSlots.map(it => it.id));
+      const targetName = sampleItem.name;
 
       isFusing = true;
+      const btn = document.getElementById('btnFuseAction');
+      if (btn) btn.disabled = true;
       setActionLock(true);
       initAudio();
 
       const altar = document.getElementById('fuseAltarContainer');
       if (altar) altar.classList.add('fuse-animating');
 
-      // Звуковой эффект ускоряющейся зарядки
+      // Звуковой эффект зарядки
       let beepCount = 0;
       const chargeInterval = setInterval(() => {
         playClickSound();
         beepCount++;
-        if (beepCount > 10) clearInterval(chargeInterval);
-      }, 100);
+        if (beepCount > 8) clearInterval(chargeInterval);
+      }, 120);
 
       // Анимация притягивания слотов к центру
       setTimeout(() => {
         for (let i = 0; i < 5; i++) {
           const slot = document.getElementById('fuseSlot' + i);
           if (slot) {
-            slot.style.transition = 'all 0.9s cubic-bezier(0.6, -0.28, 0.735, 0.045)';
+            slot.style.transition = 'all 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045)';
             slot.style.top = '126px';
             slot.style.left = '126px';
             slot.style.transform = 'scale(0.15)';
             slot.style.opacity = '0.2';
           }
         }
-      }, 700);
+      }, 600);
 
       setTimeout(async () => {
-        clearInterval(chargeInterval);
+        try {
+          clearInterval(chargeInterval);
 
-        // Удаляем 5 использованных предметов из инвентаря
-        inventory = inventory.filter(it => !usedIds.has(it.id));
+          // Удаляем ровно 5 предметов с этим именем из инвентаря
+          let removed = 0;
+          inventory = inventory.filter(it => {
+            if (removed < 5 && it && !it.isNft && it.name === targetName) {
+              removed++;
+              return false;
+            }
+            return true;
+          });
 
-        // Выбираем 1 из 7 цветов радуги
-        const chosenColor = RAINBOW_COLORS[Math.floor(Math.random() * RAINBOW_COLORS.length)];
-        const nftId = generateUniqueNftId();
+          // Выбираем 1 из 7 цветов радуги
+          const chosenColor = RAINBOW_COLORS[Math.floor(Math.random() * RAINBOW_COLORS.length)] || RAINBOW_COLORS[0];
+          const nftId = generateUniqueNftId();
 
-        // Конвертация цены в PON
-        let nftPrice = 0;
-        if (sampleItem.currency === 'ton') {
-          nftPrice = Math.max(1, sampleItem.price * 5);
-        } else {
-          nftPrice = Math.max(1, Math.round(sampleItem.price / 10000000));
-        }
-
-        const nftItem = {
-          id: Date.now() + Math.random(),
-          name: sampleItem.name,
-          rarity: sampleItem.rarity || 'legendary',
-          icon: sampleItem.icon,
-          price: nftPrice,
-          currency: 'ton',
-          isNft: true,
-          nftId: nftId,
-          nftColor: chosenColor.hex,
-          nftColorName: chosenColor.name,
-          nftColorGlow: chosenColor.glow
-        };
-
-        inventory.unshift(nftItem);
-        unlockBestiaryItem(nftItem);
-
-        playWinSound();
-        if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
-
-        // Сбрасываем слоты алтаря
-        fuseSlots = [null, null, null, null, null];
-        selectedFuseItemName = null;
-        if (altar) altar.classList.remove('fuse-animating');
-        for (let i = 0; i < 5; i++) {
-          const slot = document.getElementById('fuseSlot' + i);
-          if (slot) {
-            slot.style.transition = '';
-            slot.style.top = '';
-            slot.style.left = '';
-            slot.style.transform = '';
-            slot.style.opacity = '';
+          // Конвертация цены в PON
+          let nftPrice = 0;
+          if (sampleItem.currency === 'ton') {
+            nftPrice = Math.max(1, (sampleItem.price || 1) * 5);
+          } else {
+            nftPrice = Math.max(1, Math.round((sampleItem.price || 10000000) / 10000000));
           }
+
+          const nftItem = {
+            id: Date.now() + Math.random(),
+            name: sampleItem.name,
+            rarity: sampleItem.rarity || 'legendary',
+            icon: sampleItem.icon,
+            price: nftPrice,
+            currency: 'ton',
+            isNft: true,
+            nftId: nftId,
+            nftColor: chosenColor.hex,
+            nftColorName: chosenColor.name,
+            nftColorGlow: chosenColor.glow
+          };
+
+          inventory.unshift(nftItem);
+          unlockBestiaryItem(nftItem);
+
+          playWinSound();
+          if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
+
+          // Сбрасываем слоты алтаря
+          fuseSlots = [null, null, null, null, null];
+          selectedFuseItemName = null;
+
+          updateBalanceUI();
+          syncUserData().catch(() => {});
+
+          // Показываем модальное окно успешного создания NFT
+          showFuseSuccessModal(nftItem, chosenColor);
+        } catch (err) {
+          console.error('Fuse error:', err);
+          showToast('Произошла ошибка при слиянии: ' + err.message, 'error');
+        } finally {
+          if (altar) altar.classList.remove('fuse-animating');
+          for (let i = 0; i < 5; i++) {
+            const slot = document.getElementById('fuseSlot' + i);
+            if (slot) {
+              slot.style.transition = '';
+              slot.style.top = '';
+              slot.style.left = '';
+              slot.style.transform = '';
+              slot.style.opacity = '';
+            }
+          }
+          isFusing = false;
+          setActionLock(false);
+          renderFuseScreen();
         }
-
-        renderFuseScreen();
-        updateBalanceUI();
-        await syncUserData();
-
-        isFusing = false;
-        setActionLock(false);
-
-        // Показываем модальное окно успешного создания NFT
-        showFuseSuccessModal(nftItem, chosenColor);
-      }, 1800);
+      }, 1600);
     }
 
     function showFuseSuccessModal(nftItem, colorObj) {
