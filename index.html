@@ -1473,8 +1473,13 @@
     }
 
     @keyframes fuseRingSpin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
 
     .fuse-core {
@@ -1495,8 +1500,15 @@
     }
 
     @keyframes fuseCorePulse {
-      0% { transform: scale(0.95); box-shadow: 0 0 25px rgba(168, 85, 247, 0.5); }
-      100% { transform: scale(1.08); box-shadow: 0 0 45px rgba(236, 72, 153, 0.9), 0 0 20px #06b6d4; }
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
+      }
+
+      100% {
+        transform: scale(1.08);
+        box-shadow: 0 0 45px rgba(236, 72, 153, 0.9), 0 0 20px #06b6d4;
+      }
     }
 
     .fuse-slot {
@@ -1529,11 +1541,30 @@
     }
 
     /* 5 слотов вокруг центра (угол: 0, 72, 144, 216, 288 градусов, R=115px) */
-    .fuse-slot-0 { top: 12px; left: 126px; }
-    .fuse-slot-1 { top: 92px; left: 236px; }
-    .fuse-slot-2 { top: 218px; left: 194px; }
-    .fuse-slot-3 { top: 218px; left: 58px; }
-    .fuse-slot-4 { top: 92px; left: 16px; }
+    .fuse-slot-0 {
+      top: 12px;
+      left: 126px;
+    }
+
+    .fuse-slot-1 {
+      top: 92px;
+      left: 236px;
+    }
+
+    .fuse-slot-2 {
+      top: 218px;
+      left: 194px;
+    }
+
+    .fuse-slot-3 {
+      top: 218px;
+      left: 58px;
+    }
+
+    .fuse-slot-4 {
+      top: 92px;
+      left: 16px;
+    }
 
     .fuse-slot-del {
       position: absolute;
@@ -1549,7 +1580,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
     }
 
     .fuse-info-card {
@@ -1680,9 +1711,20 @@
 
     /* Анимация слияния слотов */
     @keyframes fuseItemFlyToCenter {
-      0% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.15); filter: brightness(1.6); }
-      100% { transform: translate(0, 0) scale(0.1); opacity: 0; }
+      0% {
+        transform: scale(1);
+        opacity: 1;
+      }
+
+      50% {
+        transform: scale(1.15);
+        filter: brightness(1.6);
+      }
+
+      100% {
+        transform: translate(0, 0) scale(0.1);
+        opacity: 0;
+      }
     }
 
     .fuse-animating .fuse-slot {
@@ -1690,9 +1732,17 @@
     }
 
     @keyframes fuseShake {
-      0% { transform: translate(1px, 1px) rotate(0deg); }
-      50% { transform: translate(-1px, -2px) rotate(-1deg); }
-      100% { transform: translate(-2px, 1px) rotate(1deg); }
+      0% {
+        transform: translate(1px, 1px) rotate(0deg);
+      }
+
+      50% {
+        transform: translate(-1px, -2px) rotate(-1deg);
+      }
+
+      100% {
+        transform: translate(-2px, 1px) rotate(1deg);
+      }
     }
 
     /* --- СТИЛИ NFT ПРЕДМЕТОВ --- */
@@ -1713,7 +1763,7 @@
       text-transform: uppercase;
       letter-spacing: 0.5px;
       z-index: 2;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.6);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
     }
 
     /* --- СТИЛИ БЕСТИАРИЯ В ПРОФИЛЕ --- */
@@ -1857,7 +1907,7 @@
       font-size: 24px;
       font-weight: 900;
       color: #475569;
-      text-shadow: 0 0 10px rgba(0,0,0,0.9);
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
       user-select: none;
     }
 
@@ -3638,7 +3688,8 @@
         <div class="case-price" style="color: var(--green-color); font-weight: 500;">До 500,000 ⭐</div>
       </div>
       <div class="case-card" onclick="switchTab('fuse')">
-        <div style="font-size: 38px; margin-bottom: 6px; filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));">🌈</div>
+        <div style="font-size: 38px; margin-bottom: 6px; filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));">🌈
+        </div>
         <div class="case-title">Fuse</div>
         <div class="case-price" style="color: #c084fc; font-weight: 600;">5 одинаковых → NFT</div>
       </div>
@@ -3787,7 +3838,8 @@
       <div class="fuse-picker-section">
         <div class="fuse-picker-header">
           <div style="font-size: 13px; font-weight: 700;">Ваши предметы (группы):</div>
-          <button class="btn-sort" onclick="clearFuseSlots()" style="font-size: 11px; padding: 3px 8px;">Сбросить</button>
+          <button class="btn-sort" onclick="clearFuseSlots()"
+            style="font-size: 11px; padding: 3px 8px;">Сбросить</button>
         </div>
         <div class="fuse-stacks-grid" id="fuseStacksGrid">
           <!-- Заполняется динамически -->
@@ -4122,23 +4174,30 @@
     </div>
   </div>
 
-  
+
   <!-- Модальное окно создания NFT в Fuse -->
   <div class="modal-overlay" id="fuseSuccessModal">
     <div class="modal-card" style="max-width: 390px; width: 92%; text-align: center;">
-      <h3 style="background: linear-gradient(90deg, #ec4899, #a855f7, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px;">🎉 NFT СОЗДАН!</h3>
-      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Вы успешно объединили 5 предметов в коллекционный NFT!</div>
-      
-      <div id="fuseModalPreview" style="margin: 15px auto; width: 140px; height: 140px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px; box-sizing: border-box;">
+      <h3
+        style="background: linear-gradient(90deg, #ec4899, #a855f7, #38bdf8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px;">
+        🎉 NFT СОЗДАН!</h3>
+      <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Вы успешно объединили 5 предметов в
+        коллекционный NFT!</div>
+
+      <div id="fuseModalPreview"
+        style="margin: 15px auto; width: 140px; height: 140px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; padding: 10px; box-sizing: border-box;">
         <!-- Иконка и цвет NFT -->
       </div>
 
       <div id="fuseModalItemName" style="font-size: 16px; font-weight: 800; margin-bottom: 4px;"></div>
       <div id="fuseModalNftId" style="font-size: 13px; font-weight: 700; color: #a855f7; margin-bottom: 6px;"></div>
-      <div id="fuseModalColorBanner" style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 12px;"></div>
-      
+      <div id="fuseModalColorBanner"
+        style="font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 12px; display: inline-block; margin-bottom: 12px;">
+      </div>
+
       <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">
-        Стоимость продажи: <span id="fuseModalPriceText" style="color: #38bdf8; font-weight: 800; font-size: 15px;"></span>
+        Стоимость продажи: <span id="fuseModalPriceText"
+          style="color: #38bdf8; font-weight: 800; font-size: 15px;"></span>
       </div>
 
       <div class="modal-actions">
@@ -6103,7 +6162,7 @@
           playWinSound();
           const wonItem = { ...upgradeTargetItem, id: Date.now() };
           inventory.unshift(wonItem);
-      unlockBestiaryItem(wonItem);
+          unlockBestiaryItem(wonItem);
           resText.innerHTML = `<span style="color: var(--green-color);">Успех! Вы апгрейднули предмет до ${wonItem.name}!</span>`;
           if (tg.HapticFeedback) tg.HapticFeedback.notificationOccurred('success');
         } else {
@@ -6167,10 +6226,10 @@
       } else if (tabName === 'modes') {
         document.getElementById('tab-modes').classList.add('active');
         document.getElementById('nav-modes').classList.add('active');
-      } else if (tabName === 'contracts') {
-        document.getElementById('tab-contracts').classList.add('active');
+      } else if (tabName === 'fuse') {
+        document.getElementById('tab-fuse').classList.add('active');
         document.getElementById('nav-modes').classList.add('active');
-        renderContractBoard();
+        renderFuseScreen();
       } else if (tabName === 'upgrade') {
         document.getElementById('tab-upgrade').classList.add('active');
         document.getElementById('nav-modes').classList.add('active');
@@ -6823,15 +6882,18 @@
 
     // --- СИСТЕМА БЕСТИАРИЯ (КОЛЛЕКЦИЯ ПРЕДМЕТОВ) ---
     function initBestiary() {
+      if (!(unlockedBestiaryItems instanceof Set)) {
+        unlockedBestiaryItems = new Set();
+      }
       try {
         const stored = localStorage.getItem('opencaser_bestiary_' + userId);
         if (stored) {
           const arr = JSON.parse(stored);
           if (Array.isArray(arr)) {
-            unlockedBestiaryItems = new Set(arr);
+            arr.forEach(name => unlockedBestiaryItems.add(name));
           }
         }
-      } catch (_) {}
+      } catch (_) { }
 
       // Автоматически добавляем все предметы, которые уже есть в инвентаре и на витрине игрока
       if (Array.isArray(inventory)) {
@@ -6850,7 +6912,7 @@
     function saveBestiary() {
       try {
         localStorage.setItem('opencaser_bestiary_' + userId, JSON.stringify(Array.from(unlockedBestiaryItems)));
-      } catch (_) {}
+      } catch (_) { }
     }
 
     function unlockBestiaryItem(itemOrName) {
@@ -7805,17 +7867,32 @@
         }
       }, intervalMs);
 
-      const minDelay = new Promise(resolve => setTimeout(resolve, 5000));
-      const dataLoad = loadUserData();
-      await Promise.all([minDelay, dataLoad]);
-      initBestiary();
+      try {
+        const minDelay = new Promise(resolve => setTimeout(resolve, 4500));
+        const dataLoad = loadUserData().catch(err => {
+          console.warn('loadUserData error:', err);
+        });
+        // Гарантия: максимум 5.5 сек и экран обязательно завершит загрузку
+        await Promise.race([
+          Promise.all([minDelay, dataLoad]),
+          new Promise(resolve => setTimeout(resolve, 5500))
+        ]);
+      } catch (err) {
+        console.warn('Init error:', err);
+      }
+
+      try {
+        initBestiary();
+      } catch (err) {
+        console.warn('initBestiary error:', err);
+      }
 
       clearInterval(progressInterval);
       if (progressBar) progressBar.style.width = '100%';
       if (progressPercent) progressPercent.innerText = '100%';
       if (progressStatus) progressStatus.innerText = 'Готово к открытию!';
 
-      await new Promise(resolve => setTimeout(resolve, 250));
+      await new Promise(resolve => setTimeout(resolve, 200));
 
       const loadingScreen = document.getElementById('loadingScreen');
       if (loadingScreen) {
