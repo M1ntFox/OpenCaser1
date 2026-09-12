@@ -14,8 +14,7 @@
           e.target.src = '.' + src;
         }
       }
-    }, true);
-  </script>
+    }, true);</script>
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <!-- Supabase JS Client SDK -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -25,6 +24,94 @@
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=Unbounded:wght@500;600;700;800;900&display=swap" rel="stylesheet">
 
   <style>
+
+    /* === ROBUST IMAGE & MEDIA SIZING (PREVENTS ANY LAYOUT BLOWUP) === */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .case-img {
+      width: 88px !important;
+      height: 88px !important;
+      max-width: 88px !important;
+      max-height: 88px !important;
+      object-fit: contain;
+      z-index: 2;
+    }
+
+    .item-img,
+    .item-card img,
+    .item-card .item-img {
+      width: 48px !important;
+      height: 48px !important;
+      max-width: 48px !important;
+      max-height: 48px !important;
+      object-fit: contain;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .content-item-card img {
+      width: 48px !important;
+      height: 48px !important;
+      max-width: 48px !important;
+      max-height: 48px !important;
+      object-fit: contain;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .roulette-item img,
+    .roulette-card img {
+      width: 48px !important;
+      height: 48px !important;
+      max-width: 48px !important;
+      max-height: 48px !important;
+      object-fit: contain;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .bestiary-item img {
+      width: 42px !important;
+      height: 42px !important;
+      max-width: 42px !important;
+      max-height: 42px !important;
+      object-fit: contain;
+      margin-bottom: 3px;
+      display: block;
+    }
+
+    .showcase-slot img {
+      width: 44px !important;
+      height: 44px !important;
+      max-width: 44px !important;
+      max-height: 44px !important;
+      object-fit: contain;
+      display: block;
+    }
+
+    .trade-offer-img {
+      width: 38px !important;
+      height: 38px !important;
+      max-width: 38px !important;
+      max-height: 38px !important;
+      object-fit: contain;
+      margin-bottom: 3px;
+      display: block;
+    }
+
+    .modal-item-preview .item-img,
+    .modal-item-preview img {
+      width: 72px !important;
+      height: 72px !important;
+      max-width: 72px !important;
+      max-height: 72px !important;
+      object-fit: contain;
+      margin-bottom: 8px;
+    }
+
     @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=Unbounded:wght@500;600;700;800;900&display=swap');
 
         :root {
@@ -381,23 +468,26 @@
 
     /* === BACK BUTTON === */
     .btn-back {
-      align-self: flex-start;
-      background: #150e26;
-      border: 2px solid #000;
-      box-shadow: 3px 3px 0 #000;
-      color: #fff;
+      background: #181428;
+      border: 1.5px solid #2f2746;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+      color: #ffffff;
       font-family: var(--font-heading);
-      font-size: 12.5px;
-      font-weight: 900;
-      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 800;
       padding: 8px 16px;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
-      margin-bottom: 16px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
+      margin-bottom: 12px;
       transition: all 0.12s ease;
+    }
+
+    .btn-back:hover {
+      background: #231c38;
+      border-color: #8b5cf6;
     }
 
     .btn-back:hover {
@@ -439,11 +529,11 @@
       top: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 3px;
+      width: 2px;
       height: 100%;
-      background: var(--accent-yellow);
+      background: #ef4444;
       z-index: 25;
-      box-shadow: 0 0 0 1px #000;
+      box-shadow: 0 0 10px #ef4444, 0 0 4px #ff2a70;
       pointer-events: none;
     }
 
@@ -455,10 +545,9 @@
       transform: translateX(-50%);
       width: 0;
       height: 0;
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-top: 14px solid var(--accent-yellow);
-      filter: drop-shadow(0 2px 0 #000);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 10px solid #ef4444;
     }
 
     .pointer::after {
@@ -469,10 +558,9 @@
       transform: translateX(-50%);
       width: 0;
       height: 0;
-      border-left: 8px solid transparent;
-      border-right: 8px solid transparent;
-      border-bottom: 14px solid var(--accent-yellow);
-      filter: drop-shadow(0 -2px 0 #000);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 10px solid #ef4444;
     }
 
     .roulette-tape {
@@ -699,31 +787,31 @@
     /* === ARCADE SPIN BUTTON === */
     .btn-spin {
       width: 100%;
-      padding: 16px 20px;
+      padding: 15px 20px;
       font-family: var(--font-heading);
-      font-size: 16px;
-      font-weight: 900;
-      letter-spacing: 0.5px;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
       text-transform: uppercase;
-      color: #000;
-      background: var(--accent-green);
-      border: 3px solid #000;
+      color: #ffffff;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 14px;
       cursor: pointer;
-      box-shadow: 5px 5px 0 #000;
-      transition: all 0.12s ease;
+      box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45);
+      transition: all 0.15s ease;
       position: relative;
     }
 
     .btn-spin:hover:not(:disabled) {
-      background: #26ff8c;
-      transform: translate(-2px, -2px);
-      box-shadow: 7px 7px 0 #000;
+      background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(124, 58, 237, 0.55);
     }
 
     .btn-spin:active:not(:disabled) {
-      transform: translate(3px, 3px);
-      box-shadow: 1px 1px 0 #000;
+      transform: translateY(1px);
+      box-shadow: 0 2px 10px rgba(79, 70, 229, 0.4);
     }
 
     .btn-spin:disabled {
@@ -795,24 +883,71 @@
       color: var(--text-muted);
     }
 
+    .case-contents-section {
+      width: 100%;
+      max-width: 440px;
+      margin: 22px auto 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .case-contents-title {
+      font-family: var(--font-heading);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: var(--text-muted);
+      margin-bottom: 2px;
+    }
+
     .contents-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
       width: 100%;
+      max-width: 440px;
     }
 
     .content-item-card {
-      background: #171929;
-      border: 2px solid #000;
-      box-shadow: 3px 3px 0 #000;
-      border-radius: 12px;
-      padding: 10px 6px;
+      background: #161026;
+      border: 1.5px solid #2f2746;
+      border-radius: 14px;
+      padding: 12px 6px 10px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      transition: all 0.12s ease;
+      text-align: center;
+      min-width: 0;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+      transition: all 0.15s ease;
+    }
+
+    .content-item-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    }
+
+    .content-item-card .item-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 10px;
+      color: #ffffff;
+      margin-bottom: 2px;
+      width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .content-item-card .item-price {
+      font-family: var(--font-heading);
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #10b981;
+      margin-bottom: 2px;
     }
 
     .content-item-card:hover {
@@ -2929,6 +3064,59 @@
       border-radius: 6px;
       z-index: 5;
     }
+  
+    /* Rarity card styling */
+    .content-item-card.common { border-color: rgba(148, 163, 184, 0.35); }
+    .content-item-card.uncommon { border-color: rgba(16, 185, 129, 0.6); box-shadow: 0 0 10px rgba(16, 185, 129, 0.15); }
+    .content-item-card.rare { border-color: rgba(6, 182, 212, 0.65); box-shadow: 0 0 12px rgba(6, 182, 212, 0.2); }
+    .content-item-card.epic { border-color: rgba(168, 85, 247, 0.7); box-shadow: 0 0 14px rgba(168, 85, 247, 0.25); }
+    .content-item-card.legendary { border-color: rgba(245, 158, 11, 0.75); box-shadow: 0 0 16px rgba(245, 158, 11, 0.3); }
+
+  
+    /* === DYNAMIC TEXT SCALING & OVERFLOW CONTAINMENT === */
+    .case-title {
+      font-family: var(--font-heading);
+      font-size: clamp(10px, 3.2vw, 14px);
+      font-weight: 800;
+      max-width: 100%;
+      width: 100%;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .item-name,
+    .content-item-card .item-name,
+    .item-card .item-name,
+    .trade-offer-name,
+    .bestiary-item-name {
+      font-family: var(--font-heading);
+      font-size: clamp(7.5px, 2.4cqw, 10.5px);
+      font-weight: 700;
+      max-width: 100%;
+      width: 100%;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1.15;
+      color: #ffffff;
+      margin-bottom: 2px;
+      display: block;
+    }
+
+    .case-card,
+    .content-item-card,
+    .item-card,
+    .roulette-item,
+    .trade-card {
+      min-width: 0;
+      overflow: hidden;
+    }
+
   </style>
 
 
@@ -4838,7 +5026,7 @@
         const card = document.createElement('div');
         card.className = `item-card ${item.rarity}`;
         card.style.width = '80px'; card.style.height = '90px';
-        card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:10px;">${item.name}</div>`;
+        card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div class="item-name">${item.name}</div>`;
         card.onclick = () => addTradeItem(idx);
         picker.appendChild(card);
       });
@@ -5156,7 +5344,7 @@
           const card = document.createElement('div');
           card.className = `item-card ${item.rarity}`;
           card.style.width = '80px'; card.style.height = '90px';
-          card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div style="font-size:10px;">${item.name}</div>`;
+          card.innerHTML = `<img src="${item.icon}" style="width:35px;height:35px;object-fit:contain;"><div class="item-name">${item.name}</div>`;
           card.onclick = () => selectItemForShowcase(invIdx);
           picker.appendChild(card);
         });
@@ -5516,7 +5704,7 @@
       return `
         ${nftBadge}
         <img src="${item.icon}" class="item-img" onerror="this.onerror=null; this.src='${fallback}';">
-        <div>${item.name}</div>
+        <div class="item-name">${item.name}</div>
         ${priceHtml}
       `;
     }
@@ -5527,11 +5715,11 @@
       currentCase.pool.forEach((item) => {
         const div = document.createElement('div');
         div.className = `content-item-card ${item.rarity}`;
-        const fallback = `https://via.placeholder.com/40/000000/FFFFFF?text=${encodeURIComponent(item.name[0])}`;
+        const fallback = `https://via.placeholder.com/48/181428/FFFFFF?text=${encodeURIComponent(item.name[0])}`;
         div.innerHTML = `
           <img src="${item.icon}" onerror="this.onerror=null; this.src='${fallback}';">
-          <div style="font-weight: bold; font-size: 10px;">${item.name}</div>
-          <div style="color: var(--green-color);">${formatNumber(item.price)} ⭐</div>
+          <div class="item-name">${item.name}</div>
+          <div class="item-price">${formatNumber(item.price)} ⭐</div>
           <div class="content-item-chance">${item.chance}%</div>
         `;
         grid.appendChild(div);
@@ -7202,7 +7390,7 @@
         div.className = `content-item-card ${item.rarity}`;
         div.innerHTML = `
           <img src="${item.icon}">
-          <div style="font-weight: bold; font-size: 10px;">${item.name}</div>
+          <div class="item-name">${item.name}</div>
           <div style="color: var(--green-color);">${formatNumber(item.price)} ⭐</div>
         `;
         grid.appendChild(div);
@@ -8110,8 +8298,95 @@
       }
     }, 1000);
 
-    initApp();
+    initApp();</script>
+
+  <script>
+    // === AUTO-SCALING TEXT SIZER: The longer the text, the smaller the font size ===
+    (function() {
+      function autoScaleElement(el) {
+        if (!el || el.dataset.autoscaled) return;
+        const text = (el.innerText || el.textContent || '').trim();
+        if (!text) return;
+
+        let baseSize = 10.5;
+        let minSize = 7.5;
+        let threshold = 9;
+
+        if (el.classList.contains('case-title')) {
+          baseSize = 13.5;
+          minSize = 9.5;
+          threshold = 8;
+        } else if (el.classList.contains('item-name') || el.classList.contains('trade-offer-name')) {
+          baseSize = 10.5;
+          minSize = 7.5;
+          threshold = 8;
+        } else if (el.classList.contains('bestiary-item-name')) {
+          baseSize = 9.5;
+          minSize = 7.0;
+          threshold = 7;
+        } else if (el.id === 'openBtn' || el.classList.contains('btn-spin')) {
+          baseSize = 15.0;
+          minSize = 11.0;
+          threshold = 20;
+        } else if (el.classList.contains('page-title')) {
+          baseSize = 19.0;
+          minSize = 13.0;
+          threshold = 18;
+        }
+
+        const len = text.length;
+        if (len > threshold) {
+          const reduction = (len - threshold) * 0.45;
+          const finalSize = Math.max(minSize, baseSize - reduction);
+          el.style.fontSize = finalSize.toFixed(1) + 'px';
+        } else {
+          el.style.fontSize = baseSize + 'px';
+        }
+
+        el.style.maxWidth = '100%';
+        el.style.whiteSpace = 'nowrap';
+        el.style.overflow = 'hidden';
+        el.style.textOverflow = 'ellipsis';
+        el.dataset.autoscaled = 'true';
+      }
+
+      function applyTextScaling(root) {
+        const targetRoot = root || document;
+        if (!targetRoot || !targetRoot.querySelectorAll) return;
+        const targets = targetRoot.querySelectorAll('.case-title, .item-name, .trade-offer-name, .bestiary-item-name, #openBtn, .page-title');
+        targets.forEach(el => autoScaleElement(el));
+      }
+
+      window.applyTextScaling = applyTextScaling;
+
+      document.addEventListener('DOMContentLoaded', () => {
+        applyTextScaling();
+
+        if (window.MutationObserver && document.body) {
+          const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+              mutation.addedNodes.forEach((node) => {
+                if (node.nodeType === 1) {
+                  if (node.matches && node.matches('.case-title, .item-name, .trade-offer-name, .bestiary-item-name, #openBtn')) {
+                    autoScaleElement(node);
+                  }
+                  if (node.querySelectorAll) {
+                    node.querySelectorAll('.case-title, .item-name, .trade-offer-name, .bestiary-item-name, #openBtn').forEach(autoScaleElement);
+                  }
+                }
+              });
+            });
+          });
+          observer.observe(document.body, { childList: true, subtree: true });
+        }
+      });
+
+      window.addEventListener('resize', () => applyTextScaling());
+      setTimeout(() => applyTextScaling(), 500);
+      setTimeout(() => applyTextScaling(), 1500);
+    })();
   </script>
+
 </body>
 
 </html>
